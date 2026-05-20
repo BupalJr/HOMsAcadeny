@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard — History of Muslims Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #080F1E;
+      --navy2:  #0D1E35;
+      --gold:   #C9A96E;
+      --gold2:  #E8C987;
+      --cream:  #F5F0E8;
+      --green:  #6FCF97;
+      --red:    #EB5757;
+      --text:   #D6CBBA;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(0,0,0,.45);
+
+      /* medal colours */
+      --gold-medal:   #FFD700;
+      --silver-medal: #C0C0C0;
+      --bronze-medal: #CD7F32;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── ANIMATED BACKGROUND PARTICLES ──────────────────────── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .35;
+    }
+
+    /* ── TOP BAR ─────────────────────────────────────────────── */
+    .top-bar {
+      background: var(--navy2);
+      border-bottom: 2px solid var(--gold);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 16px rgba(0,0,0,.6);
+    }
+    .top-bar .brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.72rem, 2vw, 1rem);
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .top-bar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+    .btn-link {
+      background: none;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .btn-link:hover { background: var(--gold); color: var(--navy); }
+
+    .btn-signout {
+      background: var(--red);
+      border: none;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-signout:hover { opacity: .8; }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 16px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── PAGE HERO HEADER ────────────────────────────────────── */
+    .page-hero {
+      text-align: center;
+      padding: 10px 0 4px;
+    }
+    .page-hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.4rem, 5vw, 2.4rem);
+      color: var(--gold2);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 30px rgba(201,169,110,.5);
+    }
+    .page-hero-sub {
+      font-size: .9rem;
+      color: #8899aa;
+    }
+
+    /* ── CARDS ───────────────────────────────────────────────── */
+    .card {
+      background: var(--navy2);
+      border: 1px solid rgba(201,169,110,.22);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .95rem;
+      color: var(--gold);
+      margin-bottom: 16px;
+      letter-spacing: .5px;
+    }
+
+    /* ── GLOBAL STATS BAR ────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat-pill {
+      background: rgba(201,169,110,.08);
+      border: 1px solid rgba(201,169,110,.25);
+      border-radius: 30px;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .85rem;
+      color: var(--cream);
+      transition: border-color .3s;
+    }
+    .stat-pill:hover { border-color: var(--gold); }
+    .stat-pill-val {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1rem;
+      color: var(--gold2);
+    }
+    .stat-pill-lbl { color: #8899aa; font-size: .78rem; }
+
+    /* ── TABS ────────────────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(201,169,110,.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #8899aa;
+      font-family: 'Lato', sans-serif;
+      font-size: .85rem;
+      font-weight: 700;
+      padding: 12px 8px;
+      cursor: pointer;
+      transition: background .25s, color .25s;
+      letter-spacing: .3px;
+      position: relative;
+    }
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 15%;
+      width: 70%;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform .25s;
+    }
+    .tab-btn.active {
+      background: rgba(201,169,110,.12);
+      color: var(--gold2);
+    }
+    .tab-btn.active::after { transform: scaleX(1); }
+    .tab-btn:hover:not(.active) { background: rgba(201,169,110,.06); color: var(--cream); }
+
+    /* ── LAST UPDATED ────────────────────────────────────────── */
+    .update-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      font-size: .75rem;
+      color: #556677;
+      margin-bottom: -8px;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .4; transform: scale(.7); }
+    }
+
+    /* ── PODIUM ──────────────────────────────────────────────── */
+    .podium-section {
+      margin-bottom: 28px;
+    }
+    .podium-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .8rem;
+      color: #556677;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .podium-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Podium columns: 2nd | 1st | 3rd */
+    .podium-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      max-width: 160px;
+    }
+    .podium-col.rank-1 { order: 2; }
+    .podium-col.rank-2 { order: 1; }
+    .podium-col.rank-3 { order: 3; }
+
+    .podium-avatar-wrap { position: relative; }
+    .podium-avatar {
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: var(--navy);
+      font-size: 1.3rem;
+      border: 3px solid transparent;
+      transition: transform .3s;
+      overflow: hidden;
+    }
+    .podium-avatar:hover { transform: scale(1.06); }
+
+    .podium-col.rank-1 .podium-avatar {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      border-color: #FFD700;
+      box-shadow: 0 0 24px rgba(255,215,0,.55);
+      font-size: 1.5rem;
+    }
+    .podium-col.rank-2 .podium-avatar {
+      width: 66px; height: 66px;
+      background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+      border-color: #C0C0C0;
+      box-shadow: 0 0 16px rgba(192,192,192,.4);
+    }
+    .podium-col.rank-3 .podium-avatar {
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, #CD7F32, #A0522D);
+      border-color: #CD7F32;
+      box-shadow: 0 0 12px rgba(205,127,50,.4);
+    }
+
+    .medal-badge {
+      position: absolute;
+      bottom: -6px;
+      right: -4px;
+      font-size: 1.3rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.5));
+    }
+
+    .podium-name {
+      font-weight: 700;
+      font-size: .82rem;
+      color: var(--cream);
+      text-align: center;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .podium-col.rank-1 .podium-name { font-size: .9rem; color: var(--gold2); }
+
+    .podium-score {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .85rem;
+      color: var(--gold);
+      text-align: center;
+    }
+    .podium-col.rank-1 .podium-score { font-size: 1rem; }
+
+    .podium-secondary {
+      font-size: .72rem;
+      color: #8899aa;
+      text-align: center;
+    }
+
+    .podium-block {
+      border-radius: 10px 10px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel Decorative', serif;
+      color: rgba(255,255,255,.6);
+      font-size: .75rem;
+      width: 100%;
+    }
+    .podium-col.rank-1 .podium-block {
+      height: 70px;
+      background: linear-gradient(180deg, rgba(255,215,0,.25), rgba(255,215,0,.08));
+      border: 1px solid rgba(255,215,0,.3);
+      font-size: 1rem;
+    }
+    .podium-col.rank-2 .podium-block {
+      height: 50px;
+      background: linear-gradient(180deg, rgba(192,192,192,.2), rgba(192,192,192,.05));
+      border: 1px solid rgba(192,192,192,.25);
+    }
+    .podium-col.rank-3 .podium-block {
+      height: 36px;
+      background: linear-gradient(180deg, rgba(205,127,50,.2), rgba(205,127,50,.05));
+      border: 1px solid rgba(205,127,50,.2);
+    }
+
+    /* ── RANKED LIST (4–10) ──────────────────────────────────── */
+    .rank-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .rank-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(201,169,110,.1);
+      border-radius: 10px;
+      padding: 12px 16px;
+      transition: border-color .2s, background .2s, transform .15s;
+      animation: slide-in .4s ease both;
+    }
+    .rank-row:hover {
+      border-color: rgba(201,169,110,.3);
+      background: rgba(201,169,110,.05);
+      transform: translateX(4px);
+    }
+    .rank-row.current-user {
+      border-color: var(--gold);
+      background: rgba(201,169,110,.1);
+      box-shadow: 0 0 14px rgba(201,169,110,.2);
+    }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateX(-18px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .rank-num {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1rem;
+      color: #556677;
+      min-width: 28px;
+      text-align: center;
+    }
+    .rank-row.current-user .rank-num { color: var(--gold2); }
+
+    .rank-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), rgba(201,169,110,.4));
+      border: 2px solid rgba(201,169,110,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      font-weight: 900;
+      color: var(--gold2);
+      flex-shrink: 0;
+    }
+    .rank-row.current-user .rank-avatar {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(201,169,110,.3), rgba(232,201,135,.2));
+    }
+
+    .rank-info { flex: 1; min-width: 0; }
+    .rank-name {
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--cream);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .rank-row.current-user .rank-name { color: var(--gold2); }
+    .rank-sub {
+      font-size: .74rem;
+      color: #8899aa;
+      margin-top: 2px;
+    }
+
+    .rank-metric {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .rank-metric-val {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .95rem;
+      color: var(--gold);
+      display: block;
+    }
+    .rank-metric-lbl {
+      font-size: .68rem;
+      color: #8899aa;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    /* ── YOU CARD ────────────────────────────────────────────── */
+    .you-card {
+      background: linear-gradient(135deg, rgba(201,169,110,.12), rgba(232,201,135,.06));
+      border: 1px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      box-shadow: 0 0 24px rgba(201,169,110,.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .you-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -20%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(201,169,110,.06), transparent);
+      transform: skewX(-20deg);
+      animation: shimmer 4s infinite;
+    }
+    @keyframes shimmer {
+      from { left: -60%; }
+      to   { left: 120%; }
+    }
+    .you-icon { font-size: 2.4rem; flex-shrink: 0; }
+    .you-info { flex: 1; min-width: 160px; }
+    .you-label {
+      font-size: .75rem;
+      color: #8899aa;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .you-rank {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.6rem;
+      color: var(--gold2);
+      line-height: 1.2;
+    }
+    .you-name { font-size: .88rem; color: var(--cream); margin-top: 4px; }
+    .you-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+    .you-stat {
+      background: rgba(0,0,0,.25);
+      border-radius: 8px;
+      padding: 6px 14px;
+      text-align: center;
+    }
+    .you-stat-val {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .9rem;
+      color: var(--gold);
+      display: block;
+    }
+    .you-stat-lbl { font-size: .68rem; color: #8899aa; text-transform: uppercase; letter-spacing: .3px; }
+
+    /* ── SHARE BUTTON ────────────────────────────────────────── */
+    .btn-share {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border: none;
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: .82rem;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-share:hover { opacity: .88; transform: scale(1.03); }
+    .btn-share:active { transform: scale(.97); }
+
+    /* ── PROGRESS NUDGE CARD ─────────────────────────────────── */
+    .nudge-close-card {
+      background: linear-gradient(135deg, rgba(111,207,151,.1), rgba(111,207,151,.04));
+      border: 1px solid rgba(111,207,151,.4);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: glow-pulse 3s infinite;
+    }
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(111,207,151,.15); }
+      50%       { box-shadow: 0 0 22px rgba(111,207,151,.35); }
+    }
+    .nudge-close-icon { font-size: 2rem; flex-shrink: 0; }
+    .nudge-close-info { flex: 1; }
+    .nudge-close-title {
+      font-weight: 700;
+      color: var(--green);
+      font-size: .92rem;
+      margin-bottom: 4px;
+    }
+    .nudge-close-sub { font-size: .8rem; color: #8899aa; }
+
+    /* ── JOIN CTA ────────────────────────────────────────────── */
+    .join-card {
+      text-align: center;
+      padding: 36px 22px;
+      background: linear-gradient(135deg, rgba(201,169,110,.06), rgba(201,169,110,.02));
+      border: 1px dashed rgba(201,169,110,.4);
+      border-radius: var(--radius);
+    }
+    .join-card-icon { font-size: 3rem; margin-bottom: 14px; }
+    .join-card-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.1rem;
+      color: var(--gold2);
+      margin-bottom: 10px;
+    }
+    .join-card-sub { color: #8899aa; font-size: .88rem; margin-bottom: 22px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .btn-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 900;
+      font-size: .92rem;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+      box-shadow: 0 4px 18px rgba(201,169,110,.4);
+    }
+    .btn-cta:hover { opacity: .88; transform: scale(1.04); }
+
+    /* ── SKELETON LOADING ────────────────────────────────────── */
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,.05) 25%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.05) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-wave 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes skeleton-wave {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+    .skel-podium { display: flex; justify-content: center; gap: 14px; align-items: flex-end; margin-bottom: 24px; }
+    .skel-pod    { border-radius: 10px; }
+    .skel-row    { height: 64px; margin-bottom: 8px; border-radius: 10px; }
+    .skel-circle { border-radius: 50%; flex-shrink: 0; }
+
+    /* ── NO DATA ─────────────────────────────────────────────── */
+    .no-data { color: #556677; font-size: .88rem; text-align: center; padding: 24px 0; }
+
+    /* ── TOAST ───────────────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy2);
+      border: 1px solid var(--gold);
+      color: var(--cream);
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: .88rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FULL-PAGE LOADER ────────────────────────────────────── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #loading.hidden { display: none; }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(201,169,110,.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading p {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .85rem;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────────── */
+    .divider {
+      text-align: center;
+      font-size: .72rem;
+      color: #334455;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 4px 0;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: rgba(201,169,110,.15);
+    }
+    .divider::before { left: 0; }
+    .divider::after  { right: 0; }
+
+    /* ── SCROLLBAR ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: rgba(201,169,110,.4); border-radius: 3px; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .podium-col.rank-1 .podium-avatar { width: 66px; height: 66px; font-size: 1.2rem; }
+      .podium-col.rank-2 .podium-avatar { width: 54px; height: 54px; }
+      .podium-col.rank-3 .podium-avatar { width: 48px; height: 48px; }
+      .tab-btn { font-size: .75rem; padding: 10px 4px; }
+      .you-rank { font-size: 1.2rem; }
+    }
+
+    /* ── ENTRANCE ANIMATIONS ─────────────────────────────────── */
+    .fade-in {
+      animation: fade-in .5s ease both;
+    }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .podium-col {
+      animation: pop-in .5s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .podium-col.rank-1 { animation-delay: .1s; }
+    .podium-col.rank-2 { animation-delay: .25s; }
+    .podium-col.rank-3 { animation-delay: .4s; }
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(.7) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* stagger rank rows */
+    .rank-row:nth-child(1)  { animation-delay: .05s; }
+    .rank-row:nth-child(2)  { animation-delay: .10s; }
+    .rank-row:nth-child(3)  { animation-delay: .15s; }
+    .rank-row:nth-child(4)  { animation-delay: .20s; }
+    .rank-row:nth-child(5)  { animation-delay: .25s; }
+    .rank-row:nth-child(6)  { animation-delay: .30s; }
+    .rank-row:nth-child(7)  { animation-delay: .35s; }
+  </style>
+</head>
+<body>
+
+<!-- Full-page loading overlay -->
+<div id="loading">
+  <div class="spinner"></div>
+  <p>Loading Leaderboard…</p>
+</div>
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<!-- Animated star-particle background -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ══ TOP BAR ════════════════════════════════════════════════ -->
+<header class="top-bar">
+  <span class="brand">HOM Academy</span>
+  <div class="top-bar-actions">
+    <a href="profile.html" class="btn-link">&#8592; My Dashboard</a>
+    <a href="lessons.html" class="btn-link">Lessons</a>
+    <a href="quiz.html"    class="btn-link">Quiz</a>
+    <button class="btn-signout" id="btn-signout">Sign Out</button>
+  </div>
+</header>
+
+<!-- ══ PAGE ═══════════════════════════════════════════════════ -->
+<main class="page-wrap">
+
+  <!-- Page hero title -->
+  <div class="page-hero fade-in">
+    <div class="page-hero-title">🏆 Leaderboard</div>
+    <div class="page-hero-sub">Compete. Learn. Rise through the ranks.</div>
+  </div>
+
+  <!-- Global stats bar -->
+  <div class="card fade-in" id="global-stats-card">
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-pill">
+        <span class="stat-pill-val" id="stat-total-players">—</span>
+        <span class="stat-pill-lbl">Total Players</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-val" id="stat-total-quizzes">—</span>
+        <span class="stat-pill-lbl">Quizzes Taken</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-val" id="stat-top-score">—</span>
+        <span class="stat-pill-lbl">Top Score</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar fade-in" role="tablist" aria-label="Leaderboard categories">
+    <button class="tab-btn active" id="tab-score"  role="tab" aria-selected="true"  onclick="switchTab('score')" >🏅 Top Scorers</button>
+    <button class="tab-btn"        id="tab-active" role="tab" aria-selected="false" onclick="switchTab('active')">⚡ Most Active</button>
+    <button class="tab-btn"        id="tab-streak" role="tab" aria-selected="false" onclick="switchTab('streak')">🔥 Hottest Streaks</button>
+  </div>
+
+  <!-- Main leaderboard card -->
+  <div class="card fade-in" id="leaderboard-card">
+
+    <!-- Live status row -->
+    <div class="update-row">
+      <div class="live-dot"></div>
+      <span id="last-updated-text">Connecting…</span>
+    </div>
+
+    <!-- Podium + ranked list container -->
+    <div id="leaderboard-content">
+      <!-- Populated by JS -->
+      <div id="skeleton-loading">
+        <div class="skel-podium">
+          <div class="skeleton skel-pod" style="width:80px;height:110px;"></div>
+          <div class="skeleton skel-pod" style="width:90px;height:140px;"></div>
+          <div class="skeleton skel-pod" style="width:80px;height:90px;"></div>
+        </div>
+        <div class="skeleton skel-row"></div>
+        <div class="skeleton skel-row"></div>
+        <div class="skeleton skel-row"></div>
+        <div class="skeleton skel-row"></div>
+        <div class="skeleton skel-row"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── YOUR RANK CARD ────────────────────────────────────── -->
+  <div id="your-rank-section" style="display:none;">
+
+    <!-- Close-to-top-10 progress nudge -->
+    <div class="nudge-close-card fade-in" id="close-nudge" style="display:none;">
+      <div class="nudge-close-icon">🚀</div>
+      <div class="nudge-close-info">
+        <div class="nudge-close-title" id="close-nudge-title">You're almost there!</div>
+        <div class="nudge-close-sub"  id="close-nudge-sub">Keep going to crack the top 10!</div>
+      </div>
+    </div>
+
+    <!-- Your rank card -->
+    <div class="you-card fade-in">
+      <div class="you-icon">👤</div>
+      <div class="you-info">
+        <div class="you-label">Your Rank</div>
+        <div class="you-rank" id="your-rank-num">—</div>
+        <div class="you-name" id="your-rank-name">—</div>
+      </div>
+      <div class="you-stats">
+        <div class="you-stat">
+          <span class="you-stat-val" id="your-score">—</span>
+          <span class="you-stat-lbl">Score</span>
+        </div>
+        <div class="you-stat">
+          <span class="you-stat-val" id="your-quizzes">—</span>
+          <span class="you-stat-lbl">Quizzes</span>
+        </div>
+        <div class="you-stat">
+          <span class="you-stat-val" id="your-streak">—</span>
+          <span class="you-stat-lbl">Streak</span>
+        </div>
+      </div>
+      <button class="btn-share" id="btn-share-rank">🔗 Share Rank</button>
+    </div>
+
+  </div>
+
+  <!-- ── JOIN CTA (shown when user has no score) ────────────── -->
+  <div class="join-card fade-in" id="join-cta" style="display:none;">
+    <div class="join-card-icon">🌟</div>
+    <div class="join-card-title">Join the Competition!</div>
+    <div class="join-card-sub">You haven't taken any quizzes yet. Start now to earn points, climb the ranks, and be recognised among the greatest scholars of History of Muslims Academy.</div>
+    <a href="quiz.html" class="btn-cta">Start a Quiz Now</a>
+  </div>
+
+</main>
+
+<!-- ══ FIREBASE CDN (compat v9) ═══════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  FIREBASE CONFIG  —  replace with your project config
+// ════════════════════════════════════════════════════════════════
+const firebaseConfig = { /* REPLACE WITH YOUR CONFIG */ };
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// ════════════════════════════════════════════════════════════════
+//  ANIMATED BACKGROUND CANVAS
+// ════════════════════════════════════════════════════════════════
+(function initCanvas() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, stars = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 90; i++) {
+    stars.push({
+      x: Math.random() * 2000,
+      y: Math.random() * 2000,
+      r: Math.random() * 1.2 + 0.3,
+      a: Math.random(),
+      da: (Math.random() - 0.5) * 0.008,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a <= 0 || s.a >= 1) s.da *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201,169,110,${s.a.toFixed(2)})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ════════════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════════════
+let currentTab     = 'score';
+let currentUser    = null;
+let userLbData     = null;   // current user's leaderboard doc
+let unsubListeners = {};     // tab → onSnapshot unsub fn
+
+const TAB_CONFIG = {
+  score:  { field: 'totalScore',       label: 'pts',    secondary: (d) => `${d.quizzesCompleted||0} quizzes · ${d.currentStreak||0}🔥 streak` },
+  active: { field: 'quizzesCompleted', label: 'quizzes', secondary: (d) => `${d.totalScore||0} pts · ${d.currentStreak||0}🔥 streak` },
+  streak: { field: 'currentStreak',    label: 'day streak', secondary: (d) => `${d.totalScore||0} pts · ${d.quizzesCompleted||0} quizzes` },
+};
+
+// ════════════════════════════════════════════════════════════════
+//  UTILITIES
+// ════════════════════════════════════════════════════════════════
+function toast(msg, duration = 2800) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), duration);
+}
+
+function fmtNum(n) {
+  if (n == null) return '0';
+  return Number(n).toLocaleString();
+}
+
+function avatarInitial(name) {
+  if (!name) return '?';
+  return name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().substring(0, 2);
+}
+
+function timeAgo(ts) {
+  if (!ts) return 'just now';
+  const diff = Math.floor((Date.now() - ts) / 1000);
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+}
+
+function copyText(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => toast('✅ Copied to clipboard!'));
+  } else {
+    const ta = Object.assign(document.createElement('textarea'), { value: text });
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('✅ Copied!');
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  GLOBAL STATS
+// ════════════════════════════════════════════════════════════════
+async function loadGlobalStats() {
+  try {
+    const snap = await db.collection('globalStats').doc('leaderboard').get();
+    if (snap.exists) {
+      const d = snap.data();
+      document.getElementById('stat-total-players').textContent  = fmtNum(d.totalPlayers);
+      document.getElementById('stat-total-quizzes').textContent  = fmtNum(d.totalQuizzesTaken);
+      document.getElementById('stat-top-score').textContent      = fmtNum(d.topScore);
+    } else {
+      // Fallback: count from leaderboard collection
+      const lb = await db.collection('leaderboard').get();
+      let maxScore = 0, totalQ = 0;
+      lb.forEach(doc => {
+        const d = doc.data();
+        maxScore = Math.max(maxScore, d.totalScore || 0);
+        totalQ  += d.quizzesCompleted || 0;
+      });
+      document.getElementById('stat-total-players').textContent  = fmtNum(lb.size);
+      document.getElementById('stat-total-quizzes').textContent  = fmtNum(totalQ);
+      document.getElementById('stat-top-score').textContent      = fmtNum(maxScore);
+    }
+  } catch (e) {
+    console.warn('Could not load global stats:', e);
+    document.getElementById('stat-total-players').textContent  = '—';
+    document.getElementById('stat-total-quizzes').textContent  = '—';
+    document.getElementById('stat-top-score').textContent      = '—';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  LOAD USER LEADERBOARD DOC + RANK
+// ════════════════════════════════════════════════════════════════
+async function loadUserRank(uid) {
+  try {
+    const snap = await db.collection('leaderboard').doc(uid).get();
+    if (!snap.exists) {
+      userLbData = null;
+      return null;
+    }
+    userLbData = { id: snap.id, ...snap.data() };
+    return userLbData;
+  } catch (e) {
+    console.warn('Could not load user leaderboard doc:', e);
+    return null;
+  }
+}
+
+// Determine user's actual rank position for a given sort field
+async function getUserRankPosition(uid, field) {
+  try {
+    // Count how many users have a higher value than the current user
+    const userDoc = await db.collection('leaderboard').doc(uid).get();
+    if (!userDoc.exists) return null;
+    const myVal = userDoc.data()[field] || 0;
+
+    const higherSnap = await db.collection('leaderboard')
+      .where(field, '>', myVal)
+      .get();
+    return higherSnap.size + 1; // rank = those ahead + 1
+  } catch (e) {
+    console.warn('Could not compute rank position:', e);
+    return null;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER SKELETON
+// ════════════════════════════════════════════════════════════════
+function showSkeleton() {
+  document.getElementById('leaderboard-content').innerHTML = `
+    <div id="skeleton-loading" style="margin-top:20px;">
+      <div class="skel-podium">
+        <div class="skeleton skel-pod" style="width:80px;height:110px;"></div>
+        <div class="skeleton skel-pod" style="width:90px;height:140px;"></div>
+        <div class="skeleton skel-pod" style="width:80px;height:90px;"></div>
+      </div>
+      <div class="skeleton skel-row"></div>
+      <div class="skeleton skel-row"></div>
+      <div class="skeleton skel-row"></div>
+      <div class="skeleton skel-row"></div>
+      <div class="skeleton skel-row"></div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER PODIUM (top 3)
+// ════════════════════════════════════════════════════════════════
+function renderPodium(entries, tab) {
+  const cfg  = TAB_CONFIG[tab];
+  const top3 = entries.slice(0, 3);
+  const medals = ['🥇','🥈','🥉'];
+
+  if (!top3.length) return '<div class="no-data">No data yet. Be the first!</div>';
+
+  // Build podium columns in visual order: rank2, rank1, rank3
+  const order = [1, 0, 2]; // indices: second place, first place, third place
+  let html = '<div class="podium-section"><div class="podium-title">Hall of Champions</div><div class="podium-row">';
+
+  order.forEach(idx => {
+    if (!top3[idx]) return; // skip if fewer than 3 entries
+    const entry   = top3[idx];
+    const rank    = idx + 1;
+    const initial = avatarInitial(entry.displayName);
+    const metric  = fmtNum(entry[cfg.field]);
+    const isYou   = currentUser && entry.id === currentUser.uid;
+
+    html += `
+      <div class="podium-col rank-${rank}">
+        <div class="podium-avatar-wrap">
+          <div class="podium-avatar" title="${entry.displayName || 'Scholar'}${isYou ? ' (You)' : ''}">
+            ${initial}
+          </div>
+          <span class="medal-badge">${medals[idx]}</span>
+        </div>
+        <div class="podium-name">${entry.displayName || 'Scholar'}${isYou ? ' 👈' : ''}</div>
+        <div class="podium-score">${metric} <span style="font-size:.65rem;font-family:'Lato',sans-serif;opacity:.7;">${cfg.label}</span></div>
+        <div class="podium-secondary">${cfg.secondary(entry)}</div>
+        <div class="podium-block">#${rank}</div>
+      </div>`;
+  });
+
+  html += '</div></div>';
+  return html;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER RANK LIST (positions 4–10)
+// ════════════════════════════════════════════════════════════════
+function renderRankList(entries, tab) {
+  const cfg     = TAB_CONFIG[tab];
+  const rest    = entries.slice(3); // positions 4-10
+  if (!rest.length) return '';
+
+  let html = '<div class="divider">Ranked Players</div><div class="rank-list" style="margin-top:14px;">';
+
+  rest.forEach((entry, i) => {
+    const rank    = i + 4;
+    const initial = avatarInitial(entry.displayName);
+    const metric  = fmtNum(entry[cfg.field]);
+    const isYou   = currentUser && entry.id === currentUser.uid;
+
+    html += `
+      <div class="rank-row${isYou ? ' current-user' : ''}">
+        <div class="rank-num">#${rank}</div>
+        <div class="rank-avatar">${initial}</div>
+        <div class="rank-info">
+          <div class="rank-name">${entry.displayName || 'Scholar'}${isYou ? ' 👈 You' : ''}</div>
+          <div class="rank-sub">${cfg.secondary(entry)}</div>
+        </div>
+        <div class="rank-metric">
+          <span class="rank-metric-val">${metric}</span>
+          <span class="rank-metric-lbl">${cfg.label}</span>
+        </div>
+      </div>`;
+  });
+
+  html += '</div>';
+  return html;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  UPDATE LAST-UPDATED TIMESTAMP
+// ════════════════════════════════════════════════════════════════
+function updateTimestamp() {
+  const el = document.getElementById('last-updated-text');
+  if (!el) return;
+  el.textContent = 'Live · updated just now';
+  // After 30s start showing relative time
+  const t0 = Date.now();
+  const interval = setInterval(() => {
+    if (!document.getElementById('last-updated-text')) { clearInterval(interval); return; }
+    document.getElementById('last-updated-text').textContent = `Live · updated ${timeAgo(t0)}`;
+  }, 30000);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER YOUR RANK + PROGRESS NUDGE
+// ════════════════════════════════════════════════════════════════
+async function renderYourRank(tab) {
+  if (!currentUser || !userLbData) {
+    document.getElementById('your-rank-section').style.display = 'none';
+    document.getElementById('join-cta').style.display =
+      (currentUser && (!userLbData || !(userLbData.quizzesCompleted > 0))) ? 'block' : 'none';
+    return;
+  }
+
+  const d   = userLbData;
+  const cfg = TAB_CONFIG[tab];
+
+  // Show join CTA if user has no quizzes
+  const hasActivity = (d.quizzesCompleted || 0) > 0 || (d.totalScore || 0) > 0;
+  document.getElementById('join-cta').style.display = hasActivity ? 'none' : 'block';
+  document.getElementById('your-rank-section').style.display = hasActivity ? 'block' : 'none';
+
+  if (!hasActivity) return;
+
+  // Get rank position
+  const rankPos = await getUserRankPosition(currentUser.uid, cfg.field);
+
+  document.getElementById('your-rank-num').textContent  = rankPos ? `#${rankPos}` : '—';
+  document.getElementById('your-rank-name').textContent = d.displayName || currentUser.displayName || 'You';
+  document.getElementById('your-score').textContent     = fmtNum(d.totalScore);
+  document.getElementById('your-quizzes').textContent   = fmtNum(d.quizzesCompleted);
+  document.getElementById('your-streak').textContent    = `${d.currentStreak || 0}🔥`;
+
+  // Share button
+  document.getElementById('btn-share-rank').onclick = () => {
+    const msg = `I'm ranked #${rankPos || '?'} on History of Muslims Academy! 🏆 Can you beat me? homsacademy.com`;
+    if (navigator.share) {
+      navigator.share({ title: 'HOM Academy Leaderboard', text: msg, url: window.location.href })
+        .catch(() => copyText(msg));
+    } else {
+      copyText(msg);
+    }
+  };
+
+  // Progress nudge: close to top 10?
+  await renderCloseNudge(d, tab, rankPos);
+}
+
+async function renderCloseNudge(d, tab, rankPos) {
+  const nudgeEl    = document.getElementById('close-nudge');
+  const nudgeTitle = document.getElementById('close-nudge-title');
+  const nudgeSub   = document.getElementById('close-nudge-sub');
+
+  if (!rankPos || rankPos <= 10) {
+    nudgeEl.style.display = 'none';
+    return;
+  }
+
+  // Fetch the 10th-place entry to see how far behind user is
+  const cfg = TAB_CONFIG[tab];
+  try {
+    const topSnap = await db.collection('leaderboard')
+      .orderBy(cfg.field, 'desc')
+      .limit(10)
+      .get();
+
+    if (topSnap.empty) { nudgeEl.style.display = 'none'; return; }
+
+    const docs = [];
+    topSnap.forEach(doc => docs.push(doc.data()));
+    const tenthVal = docs[docs.length - 1][cfg.field] || 0;
+    const myVal    = d[cfg.field] || 0;
+    const diff     = tenthVal - myVal;
+
+    // Show nudge only if within 20% of 10th place value
+    const threshold = Math.max(1, tenthVal * 0.2);
+    if (diff > 0 && diff <= threshold) {
+      nudgeEl.style.display = 'flex';
+      nudgeTitle.textContent = `You're only ${fmtNum(diff)} ${cfg.label} away from #10!`;
+      nudgeSub.textContent   = `You're currently ranked #${rankPos}. Just a little more to crack the top 10!`;
+    } else if (diff === 0) {
+      nudgeEl.style.display = 'flex';
+      nudgeTitle.textContent = `You're tied for 10th place!`;
+      nudgeSub.textContent   = `Keep going to secure your spot in the top 10!`;
+    } else {
+      nudgeEl.style.display = 'none';
+    }
+  } catch (e) {
+    nudgeEl.style.display = 'none';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  MAIN RENDER — attach onSnapshot for real-time updates
+// ════════════════════════════════════════════════════════════════
+function listenToTab(tab) {
+  // Unsubscribe previous listener for this tab if any
+  if (unsubListeners[tab]) {
+    unsubListeners[tab]();
+    delete unsubListeners[tab];
+  }
+
+  const cfg = TAB_CONFIG[tab];
+  showSkeleton();
+
+  const query = db.collection('leaderboard')
+    .orderBy(cfg.field, 'desc')
+    .limit(10);
+
+  unsubListeners[tab] = query.onSnapshot(
+    (snap) => {
+      const entries = [];
+      snap.forEach(doc => entries.push({ id: doc.id, ...doc.data() }));
+      renderLeaderboard(entries, tab);
+      updateTimestamp();
+    },
+    (err) => {
+      console.error('Leaderboard snapshot error:', err);
+      document.getElementById('leaderboard-content').innerHTML =
+        '<div class="no-data">⚠️ Could not load leaderboard. Check your connection.</div>';
+    }
+  );
+}
+
+function renderLeaderboard(entries, tab) {
+  const content = document.getElementById('leaderboard-content');
+  if (!entries.length) {
+    content.innerHTML = '<div class="no-data" style="margin-top:24px;">No leaderboard data yet. Be the first to play!</div>';
+    return;
+  }
+  content.innerHTML = renderPodium(entries, tab) + renderRankList(entries, tab);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  TAB SWITCHING
+// ════════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  if (currentTab === tab) return;
+
+  // Pause old listener
+  if (unsubListeners[currentTab]) {
+    unsubListeners[currentTab]();
+    delete unsubListeners[currentTab];
+  }
+
+  currentTab = tab;
+
+  // Update tab UI
+  ['score', 'active', 'streak'].forEach(t => {
+    const btn = document.getElementById(`tab-${t}`);
+    btn.classList.toggle('active', t === tab);
+    btn.setAttribute('aria-selected', t === tab);
+  });
+
+  // Start new listener
+  listenToTab(tab);
+
+  // Update your-rank card for new sort field
+  renderYourRank(tab);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  SIGN OUT
+// ════════════════════════════════════════════════════════════════
+document.getElementById('btn-signout').onclick = () => {
+  // Cleanup all listeners
+  Object.values(unsubListeners).forEach(fn => fn());
+  auth.signOut().then(() => { window.location.href = 'index.html'; });
+};
+
+// ════════════════════════════════════════════════════════════════
+//  AUTH LISTENER + BOOT
+// ════════════════════════════════════════════════════════════════
+auth.onAuthStateChanged(async (user) => {
+  if (!user) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  currentUser = user;
+
+  // Parallel: load global stats + user leaderboard doc
+  await Promise.all([
+    loadGlobalStats(),
+    loadUserRank(user.uid),
+  ]);
+
+  // Render "your rank" section
+  await renderYourRank(currentTab);
+
+  // Start real-time leaderboard listener (default tab)
+  listenToTab(currentTab);
+
+  // Hide loader
+  document.getElementById('loading').classList.add('hidden');
+});
+</script>
+</body>
+</html>
