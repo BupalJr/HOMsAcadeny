@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Preferences — History of Muslims Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #080F1E;
+      --navy2:  #0D1E35;
+      --gold:   #C9A96E;
+      --gold2:  #E8C987;
+      --cream:  #F5F0E8;
+      --green:  #6FCF97;
+      --red:    #EB5757;
+      --text:   #D6CBBA;
+      --muted:  #7B8A9A;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(0,0,0,.45);
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── TOP BAR ─────────────────────────────────────────────── */
+    .top-bar {
+      background: var(--navy2);
+      border-bottom: 2px solid var(--gold);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.6);
+    }
+    .top-bar .brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.72rem, 2vw, 1rem);
+      color: var(--gold);
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+    .top-bar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn-link {
+      background: none;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-link:hover { background: var(--gold); color: var(--navy); }
+    .btn-signout {
+      background: var(--red);
+      border: none;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-signout:hover { opacity: .8; }
+
+    /* ── BREADCRUMB ──────────────────────────────────────────── */
+    .breadcrumb {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 14px 20px 0;
+      font-size: .82rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { color: var(--muted); }
+
+    /* ── PAGE WRAP ───────────────────────────────────────────── */
+    .page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ── PAGE TITLE ──────────────────────────────────────────── */
+    .page-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--gold2);
+      letter-spacing: 1px;
+    }
+    .page-subtitle {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-top: 6px;
+    }
+
+    /* ── CARDS ───────────────────────────────────────────────── */
+    .card {
+      background: var(--navy2);
+      border: 1px solid rgba(201,169,110,.22);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .95rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      letter-spacing: .5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(201,169,110,.12);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── NOTIFICATION BANNER ─────────────────────────────────── */
+    .banner {
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: .9rem;
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .banner.visible { display: flex; }
+    .banner.success {
+      background: rgba(111,207,151,.12);
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+    .banner.error {
+      background: rgba(235,87,87,.1);
+      border: 1px solid var(--red);
+      color: var(--red);
+    }
+    .banner.info {
+      background: rgba(201,169,110,.1);
+      border: 1px solid var(--gold);
+      color: var(--gold2);
+    }
+    .banner-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── UNSUBSCRIBE CONFIRM ─────────────────────────────────── */
+    #unsubscribe-confirm {
+      background: linear-gradient(135deg, rgba(111,207,151,.08), rgba(201,169,110,.08));
+      border: 1px solid var(--green);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      display: none;
+    }
+    #unsubscribe-confirm.visible { display: block; }
+    #unsubscribe-confirm h2 {
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--green);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+    #unsubscribe-confirm p { color: var(--text); font-size: .95rem; margin-bottom: 18px; }
+
+    /* ── TOGGLE ITEMS ────────────────────────────────────────── */
+    .pref-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .pref-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(201,169,110,.1);
+    }
+    .pref-item:last-child { border-bottom: none; }
+    .pref-info { flex: 1; min-width: 0; }
+    .pref-name {
+      font-weight: 700;
+      color: var(--cream);
+      font-size: .95rem;
+      margin-bottom: 3px;
+    }
+    .pref-desc {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .pref-badge {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(201,169,110,.12);
+      color: var(--gold);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── TOGGLE SWITCH ───────────────────────────────────────── */
+    .toggle-wrap { flex-shrink: 0; }
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      display: block;
+      cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: background .25s, border-color .25s;
+    }
+    .toggle-knob {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: transform .25s, background .25s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.4);
+    }
+    .toggle-switch input:checked ~ .toggle-track {
+      background: rgba(111,207,151,.25);
+      border-color: var(--green);
+    }
+    .toggle-switch input:checked ~ .toggle-knob {
+      transform: translateX(24px);
+      background: var(--green);
+    }
+    /* saving indicator on knob */
+    .toggle-switch.saving .toggle-knob {
+      background: var(--gold);
+    }
+
+    /* ── BUTTONS ─────────────────────────────────────────────── */
+    .btn {
+      font-family: 'Lato', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      letter-spacing: .3px;
+    }
+    .btn:hover { opacity: .85; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .btn-outline:hover { background: rgba(201,169,110,.1); }
+    .btn-red {
+      background: var(--red);
+      color: #fff;
+    }
+    .btn-green {
+      background: var(--green);
+      color: var(--navy);
+    }
+    .btn-ghost {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--text);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.1); }
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── UNSUBSCRIBE LINK BOX ────────────────────────────────── */
+    .link-box {
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(201,169,110,.2);
+      border-radius: 9px;
+      padding: 12px 14px;
+      font-size: .8rem;
+      color: var(--muted);
+      word-break: break-all;
+      font-family: monospace;
+      letter-spacing: .3px;
+      margin-top: 14px;
+      position: relative;
+    }
+    .link-box .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(201,169,110,.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: .72rem;
+      padding: 3px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      transition: background .2s;
+    }
+    .link-box .copy-btn:hover { background: var(--gold); color: var(--navy); }
+
+    /* ── EMAIL PREVIEW ───────────────────────────────────────── */
+    .preview-wrapper {
+      border: 1px solid rgba(201,169,110,.2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .preview-label {
+      background: rgba(201,169,110,.08);
+      padding: 8px 16px;
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(201,169,110,.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .preview-frame {
+      background: #f5f5f5;
+      padding: 0;
+      width: 100%;
+      overflow-x: auto;
+    }
+    .preview-email {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #1a1a1a;
+    }
+    .pe-header {
+      background: #080F1E;
+      padding: 28px 32px 20px;
+      text-align: center;
+      border-bottom: 3px solid #C9A96E;
+    }
+    .pe-header h1 {
+      font-family: Georgia, serif;
+      color: #C9A96E;
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .pe-header p { color: #7B8A9A; font-size: 12px; }
+    .pe-body { padding: 28px 32px; }
+    .pe-greeting { font-size: 16px; color: #1a1a1a; margin-bottom: 20px; }
+    .pe-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .pe-stat {
+      background: #F5F0E8;
+      border-radius: 10px;
+      padding: 14px 10px;
+      text-align: center;
+      border-top: 3px solid #C9A96E;
+    }
+    .pe-stat-val {
+      font-size: 24px;
+      font-weight: 900;
+      color: #080F1E;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .pe-stat-label { font-size: 11px; color: #7B8A9A; text-transform: uppercase; letter-spacing: .5px; }
+    .pe-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #C9A96E;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ede8df;
+    }
+    .pe-quiz-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0ece4;
+      font-size: 13px;
+    }
+    .pe-quiz-row:last-child { border-bottom: none; }
+    .pe-quiz-name { color: #333; }
+    .pe-quiz-score {
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .pe-quiz-score.good { background: #e8f8ef; color: #2d8a58; }
+    .pe-quiz-score.ok { background: #fff5e0; color: #b87c00; }
+    .pe-streak-bar {
+      background: linear-gradient(90deg, #C9A96E, #E8C987);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 18px 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .pe-streak-fire { font-size: 28px; }
+    .pe-streak-text { font-size: 14px; font-weight: 700; color: #080F1E; }
+    .pe-streak-sub { font-size: 11px; color: rgba(8,15,30,.7); }
+    .pe-rank-chip {
+      background: #080F1E;
+      color: #C9A96E;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-size: 14px;
+    }
+    .pe-cta {
+      text-align: center;
+      margin: 24px 0 8px;
+    }
+    .pe-cta a {
+      background: linear-gradient(135deg, #C9A96E, #E8C987);
+      color: #080F1E;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 14px;
+      display: inline-block;
+    }
+    .pe-footer {
+      background: #080F1E;
+      padding: 18px 32px;
+      text-align: center;
+      font-size: 11px;
+      color: #4a5568;
+    }
+    .pe-footer a { color: #C9A96E; text-decoration: none; }
+
+    /* ── GDPR SECTION ────────────────────────────────────────── */
+    .gdpr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 4px;
+    }
+    .gdpr-item {
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(201,169,110,.15);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .gdpr-item h4 {
+      color: var(--gold);
+      font-size: .85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .gdpr-item p { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .82rem;
+      margin-top: 16px;
+    }
+    .data-table th {
+      text-align: left;
+      color: var(--gold);
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(201,169,110,.2);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .data-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      color: var(--text);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table td:first-child { color: var(--cream); font-weight: 600; }
+
+    /* ── GDPR ACTIONS ────────────────────────────────────────── */
+    .gdpr-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    /* ── MODAL ───────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--navy2);
+      border: 1px solid rgba(201,169,110,.3);
+      border-radius: var(--radius);
+      padding: 32px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 16px 60px rgba(0,0,0,.7);
+      animation: modal-in .2s ease;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(.94) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal h3 {
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--red);
+      font-size: 1.05rem;
+      margin-bottom: 14px;
+    }
+    .modal p { color: var(--text); font-size: .9rem; margin-bottom: 14px; line-height: 1.55; }
+    .modal-input {
+      width: 100%;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(235,87,87,.4);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--cream);
+      font-family: 'Lato', sans-serif;
+      font-size: .9rem;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .modal-input:focus { border-color: var(--red); }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+
+    /* ── SAVE STATUS ─────────────────────────────────────────── */
+    .save-status {
+      font-size: .78rem;
+      color: var(--green);
+      display: none;
+      align-items: center;
+      gap: 5px;
+    }
+    .save-status.visible { display: flex; }
+    .save-status.error { color: var(--red); }
+
+    /* ── LOADING OVERLAY ─────────────────────────────────────── */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      gap: 16px;
+      transition: opacity .4s;
+    }
+    #loading-screen.fade { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(201,169,110,.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading-screen p {
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--gold);
+      font-size: .85rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECTION DIVIDER ─────────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+    .section-divider::before, .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(201,169,110,.15);
+    }
+
+    /* ── UNSUB ALL SECTION ───────────────────────────────────── */
+    .unsub-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .unsub-section p {
+      font-size: .88rem;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .card { padding: 18px; }
+      .pe-stats-grid { grid-template-columns: repeat(2,1fr); }
+      .pe-body { padding: 20px 18px; }
+      .pe-header { padding: 20px 18px 16px; }
+      .pe-footer { padding: 14px 18px; }
+      .unsub-section { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <p>Loading Preferences…</p>
+</div>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <a class="brand" href="index.html">History of Muslims Academy</a>
+  <div class="top-bar-actions">
+    <a class="btn-link" href="profile.html">&#8592; My Dashboard</a>
+    <button class="btn-signout" id="btn-signout">Sign Out</button>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">Home</a>
+  <span>&#8250;</span>
+  <a href="profile.html">Profile</a>
+  <span>&#8250;</span>
+  <span>Email Preferences</span>
+</nav>
+
+<!-- MAIN PAGE -->
+<main class="page-wrap" id="main-content" style="display:none;">
+
+  <!-- Unsubscribe confirmation (shown when ?unsubscribe= param handled) -->
+  <div id="unsubscribe-confirm">
+    <h2>&#10003; Unsubscribed Successfully</h2>
+    <p>You have been unsubscribed from all History of Muslims Academy emails.<br>
+       You can re-enable preferences below at any time.</p>
+    <a href="profile.html" class="btn btn-outline" style="margin-top:8px;">Back to Profile</a>
+  </div>
+
+  <!-- Global save banner -->
+  <div class="banner" id="global-banner" role="alert">
+    <span class="banner-icon"></span>
+    <span id="global-banner-msg"></span>
+  </div>
+
+  <!-- Page heading -->
+  <div>
+    <h1 class="page-title">Email Preferences</h1>
+    <p class="page-subtitle">Choose which emails you receive from History of Muslims Academy. Changes save instantly.</p>
+  </div>
+
+  <!-- ── TOGGLE PREFERENCES CARD ─────────────────────────────── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon">&#9993;</span>
+      Notification Preferences
+    </div>
+
+    <div class="pref-list" id="pref-list">
+
+      <!-- 1. Weekly Digest -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">Weekly Progress Digest</div>
+          <div class="pref-desc">A summary of your week — lessons completed, streak, quiz scores, and leaderboard position. Sent every Monday at 9 AM.</div>
+        </div>
+        <span class="pref-badge">Weekly</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle Weekly Progress Digest">
+            <input type="checkbox" id="pref-weeklyDigest" data-key="weeklyDigest" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 2. Daily Streak -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">Daily Streak Reminders</div>
+          <div class="pref-desc">Get a reminder when you are at risk of losing your learning streak. Sent at 7 PM if you have not studied that day.</div>
+        </div>
+        <span class="pref-badge">Daily</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle Daily Streak Reminders">
+            <input type="checkbox" id="pref-dailyStreak" data-key="dailyStreak" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 3. New Lessons -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">New Lesson Alerts</div>
+          <div class="pref-desc">Be the first to know when new lessons, modules, or series are published on the platform.</div>
+        </div>
+        <span class="pref-badge">Occasional</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle New Lesson Alerts">
+            <input type="checkbox" id="pref-newLessons" data-key="newLessons" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 4. Leaderboard -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">Leaderboard Position Updates</div>
+          <div class="pref-desc">Receive a notification whenever your global or weekly leaderboard rank changes significantly.</div>
+        </div>
+        <span class="pref-badge">Occasional</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle Leaderboard Position Updates">
+            <input type="checkbox" id="pref-leaderboardUpdates" data-key="leaderboardUpdates" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 5. Achievements -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">Achievement &amp; Certificate Alerts</div>
+          <div class="pref-desc">Get notified when you earn a new badge, milestone, or downloadable certificate of completion.</div>
+        </div>
+        <span class="pref-badge">Occasional</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle Achievement &amp; Certificate Alerts">
+            <input type="checkbox" id="pref-achievementNotifications" data-key="achievementNotifications" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 6. Quiz Results -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">Quiz Result Summaries</div>
+          <div class="pref-desc">Receive a detailed breakdown of your quiz performance after each attempt, including correct answers.</div>
+        </div>
+        <span class="pref-badge">After each quiz</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle Quiz Result Summaries">
+            <input type="checkbox" id="pref-quizResults" data-key="quizResults" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 7. Premium Offers -->
+      <div class="pref-item">
+        <div class="pref-info">
+          <div class="pref-name">Exclusive Premium Offers</div>
+          <div class="pref-desc">Promotional emails with discounts, limited-time access, and exclusive premium content offers.</div>
+        </div>
+        <span class="pref-badge">Occasional</span>
+        <div class="toggle-wrap">
+          <label class="toggle-switch" title="Toggle Exclusive Premium Offers">
+            <input type="checkbox" id="pref-premiumOffers" data-key="premiumOffers" />
+            <span class="toggle-track"></span>
+            <span class="toggle-knob"></span>
+          </label>
+        </div>
+      </div>
+
+    </div><!-- /pref-list -->
+  </div><!-- /card -->
+
+  <!-- ── UNSUBSCRIBE ALL CARD ─────────────────────────────────── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon">&#128683;</span>
+      Unsubscribe Options
+    </div>
+
+    <div class="unsub-section">
+      <p>Turn off every email type at once. You can re-enable individual preferences above at any time.</p>
+      <button class="btn btn-red" id="btn-unsub-all">&#128683; Unsubscribe from All</button>
+    </div>
+
+    <div id="unsub-link-wrap" style="display:none;">
+      <p style="font-size:.84rem; color:var(--muted); margin-top:20px; margin-bottom:4px;">
+        <strong style="color:var(--cream);">One-click unsubscribe link</strong> — paste this into your email templates:
+      </p>
+      <div class="link-box" id="unsub-link-box">
+        <span id="unsub-link-text">Generating…</span>
+        <button class="copy-btn" id="btn-copy-link">Copy</button>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ── EMAIL PREVIEW CARD ──────────────────────────────────── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon">&#128214;</span>
+      Weekly Digest Preview
+    </div>
+    <p style="font-size:.85rem; color:var(--muted); margin-bottom:18px;">
+      This is what your Monday morning digest email looks like, based on your current data.
+    </p>
+
+    <div class="preview-wrapper">
+      <div class="preview-label">
+        <span>Email Preview — Weekly Digest</span>
+        <span id="preview-date-label"></span>
+      </div>
+      <div class="preview-frame">
+        <div class="preview-email">
+
+          <!-- Email Header -->
+          <div class="pe-header">
+            <h1>History of Muslims Academy</h1>
+            <p>Your Weekly Progress Digest</p>
+          </div>
+
+          <!-- Email Body -->
+          <div class="pe-body">
+            <div class="pe-greeting">
+              As-salamu alaykum, <strong id="preview-name">Scholar</strong>! Here is your learning recap for the past week.
+            </div>
+
+            <!-- Stats row -->
+            <div class="pe-stats-grid">
+              <div class="pe-stat">
+                <div class="pe-stat-val" id="preview-lessons">0</div>
+                <div class="pe-stat-label">Lessons<br>Completed</div>
+              </div>
+              <div class="pe-stat">
+                <div class="pe-stat-val" id="preview-xp">0</div>
+                <div class="pe-stat-label">XP<br>Earned</div>
+              </div>
+              <div class="pe-stat">
+                <div class="pe-stat-val" id="preview-quizzes">0</div>
+                <div class="pe-stat-label">Quizzes<br>Taken</div>
+              </div>
+            </div>
+
+            <!-- Streak bar -->
+            <div class="pe-streak-bar">
+              <span class="pe-streak-fire">&#128293;</span>
+              <div>
+                <div class="pe-streak-text"><span id="preview-streak">0</span>-Day Learning Streak!</div>
+                <div class="pe-streak-sub">Keep it going — study today to extend your streak.</div>
+              </div>
+            </div>
+
+            <!-- Leaderboard rank -->
+            <div class="pe-rank-chip">
+              &#127942; Your leaderboard rank this week: <strong style="color:#E8C987;">#<span id="preview-rank">—</span></strong>
+              &nbsp;<span style="font-size:11px; color:#4a5568;" id="preview-rank-change"></span>
+            </div>
+
+            <!-- Recent quizzes -->
+            <div class="pe-section-title">Recent Quiz Results</div>
+            <div id="preview-quiz-list">
+              <div class="pe-quiz-row">
+                <span class="pe-quiz-name">The Rightly Guided Caliphs</span>
+                <span class="pe-quiz-score good">92%</span>
+              </div>
+              <div class="pe-quiz-row">
+                <span class="pe-quiz-name">Golden Age of Islam</span>
+                <span class="pe-quiz-score ok">74%</span>
+              </div>
+              <div class="pe-quiz-row">
+                <span class="pe-quiz-name">The Prophetic Era</span>
+                <span class="pe-quiz-score good">88%</span>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="pe-cta">
+              <a href="#">Continue Learning &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="pe-footer">
+            History of Muslims Academy &mdash; <a href="#">Unsubscribe</a> &middot; <a href="#">Manage Preferences</a><br>
+            You are receiving this because you enabled Weekly Progress Digest.
+          </div>
+
+        </div><!-- /preview-email -->
+      </div><!-- /preview-frame -->
+    </div><!-- /preview-wrapper -->
+  </div><!-- /card -->
+
+  <!-- ── GDPR / YOUR DATA CARD ───────────────────────────────── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon">&#128274;</span>
+      Your Data &amp; Privacy
+    </div>
+
+    <div class="gdpr-grid">
+      <div class="gdpr-item">
+        <h4>&#128203; What We Store</h4>
+        <p>Email preferences, learning progress, quiz scores, streak data, and leaderboard positions.</p>
+      </div>
+      <div class="gdpr-item">
+        <h4>&#128276; How It Is Used</h4>
+        <p>Your data is used solely to personalise your learning experience and send the emails you choose.</p>
+      </div>
+      <div class="gdpr-item">
+        <h4>&#128100; Third Parties</h4>
+        <p>We use Firebase (Google) for authentication and data storage. No data is sold to advertisers.</p>
+      </div>
+      <div class="gdpr-item">
+        <h4>&#8987; Retention</h4>
+        <p>Data is kept while your account is active. Deleted accounts have data removed within 30 days.</p>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Data Field</th>
+          <th>Purpose</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Email Preferences</td>
+          <td>Controls which emails you receive</td>
+          <td>Firestore: users/{uid}/emailPreferences</td>
+        </tr>
+        <tr>
+          <td>Unsubscribe Token</td>
+          <td>Allows one-click unsubscribe from emails</td>
+          <td>Firestore: users/{uid}/unsubscribeToken</td>
+        </tr>
+        <tr>
+          <td>Learning Progress</td>
+          <td>Track lessons completed, XP, streaks</td>
+          <td>Firestore: users/{uid}/progress</td>
+        </tr>
+        <tr>
+          <td>Quiz Results</td>
+          <td>Personalise digest and result summaries</td>
+          <td>Firestore: users/{uid}/quizResults</td>
+        </tr>
+        <tr>
+          <td>Auth Identity</td>
+          <td>Secure sign-in and account management</td>
+          <td>Firebase Authentication</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="gdpr-actions">
+      <button class="btn btn-outline" id="btn-export-data">
+        &#128229; Request Data Export
+      </button>
+      <button class="btn btn-red" id="btn-delete-account">
+        &#128465; Delete My Account
+      </button>
+    </div>
+    <div class="save-status" id="export-status" style="margin-top:10px;">
+      <span>&#10003;</span><span>Data export request submitted. We will email you within 72 hours.</span>
+    </div>
+  </div><!-- /card -->
+
+</main><!-- /page-wrap -->
+
+<!-- ── DELETE ACCOUNT MODAL ────────────────────────────────────── -->
+<div class="modal-overlay" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+  <div class="modal">
+    <h3 id="delete-modal-title">&#9888; Delete My Account</h3>
+    <p>This action is <strong>permanent and irreversible</strong>. All your progress, quiz history, streak data, and preferences will be deleted within 30 days.</p>
+    <p>To confirm, type <strong style="color:var(--red);">DELETE</strong> below:</p>
+    <input type="text" class="modal-input" id="delete-confirm-input" placeholder="Type DELETE to confirm" autocomplete="off" />
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btn-cancel-delete">Cancel</button>
+      <button class="btn btn-red" id="btn-confirm-delete" disabled>Delete Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── FIREBASE SDK ────────────────────────────────────────────── -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   FIREBASE CONFIG — REPLACE WITH YOUR OWN
+══════════════════════════════════════════════════════════════ */
+const firebaseConfig = { /* REPLACE WITH YOUR CONFIG */ };
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+/* ══════════════════════════════════════════════════════════════
+   CONSTANTS
+══════════════════════════════════════════════════════════════ */
+const PREF_KEYS = [
+  'weeklyDigest',
+  'dailyStreak',
+  'newLessons',
+  'leaderboardUpdates',
+  'achievementNotifications',
+  'quizResults',
+  'premiumOffers'
+];
+
+const DEFAULT_PREFS = Object.fromEntries(PREF_KEYS.map(k => [k, true]));
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBALS
+══════════════════════════════════════════════════════════════ */
+let currentUser   = null;
+let saveDebounce  = null;
+
+/* ══════════════════════════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════════════════════════ */
+function showBanner(msg, type = 'success', durationMs = 4000) {
+  const el  = document.getElementById('global-banner');
+  const txt = document.getElementById('global-banner-msg');
+  const icons = { success: '✔', error: '✖', info: 'ℹ' };
+  el.className = `banner visible ${type}`;
+  el.querySelector('.banner-icon').textContent = icons[type] || '';
+  txt.textContent = msg;
+  if (durationMs) setTimeout(() => el.classList.remove('visible'), durationMs);
+}
+
+function generateToken() {
+  return Math.random().toString(36).substring(2, 10) +
+         Math.random().toString(36).substring(2, 10);
+}
+
+function hideLoading() {
+  const ls = document.getElementById('loading-screen');
+  ls.classList.add('fade');
+  setTimeout(() => ls.remove(), 450);
+}
+
+function showMainContent() {
+  document.getElementById('main-content').style.display = 'flex';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   URL PARAM HANDLING
+══════════════════════════════════════════════════════════════ */
+const urlParams = new URLSearchParams(window.location.search);
+const unsubscribeToken = urlParams.get('unsubscribe');
+
+/* ══════════════════════════════════════════════════════════════
+   LOAD & APPLY PREFERENCES TO UI
+══════════════════════════════════════════════════════════════ */
+function applyPrefsToUI(prefs) {
+  PREF_KEYS.forEach(key => {
+    const checkbox = document.getElementById(`pref-${key}`);
+    if (checkbox) checkbox.checked = !!prefs[key];
+  });
+}
+
+async function loadPreferences(uid) {
+  try {
+    const doc = await db.collection('users').doc(uid).get();
+    if (doc.exists && doc.data().emailPreferences) {
+      return { ...DEFAULT_PREFS, ...doc.data().emailPreferences };
+    }
+  } catch (e) {
+    console.warn('Could not load preferences:', e);
+  }
+  return { ...DEFAULT_PREFS };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SAVE SINGLE PREFERENCE
+══════════════════════════════════════════════════════════════ */
+async function savePref(uid, key, value) {
+  const label = document.querySelector(`label[title*="${key}"]`);
+  if (label) label.classList.add('saving');
+  try {
+    await db.collection('users').doc(uid).set(
+      { emailPreferences: { [key]: value } },
+      { merge: true }
+    );
+  } catch (e) {
+    console.error('Save failed:', e);
+    showBanner('Could not save preference. Please try again.', 'error');
+  } finally {
+    if (label) label.classList.remove('saving');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SAVE ALL PREFERENCES
+══════════════════════════════════════════════════════════════ */
+async function saveAllPrefs(uid, prefs) {
+  try {
+    await db.collection('users').doc(uid).set(
+      { emailPreferences: prefs },
+      { merge: true }
+    );
+  } catch (e) {
+    console.error('Bulk save failed:', e);
+    showBanner('Could not save preferences. Please try again.', 'error');
+    return false;
+  }
+  return true;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNSUBSCRIBE TOKEN
+══════════════════════════════════════════════════════════════ */
+async function getOrCreateUnsubToken(uid) {
+  try {
+    const doc = await db.collection('users').doc(uid).get();
+    if (doc.exists && doc.data().unsubscribeToken) {
+      return doc.data().unsubscribeToken;
+    }
+    // Create one
+    const token = generateToken();
+    await db.collection('users').doc(uid).set(
+      { unsubscribeToken: token },
+      { merge: true }
+    );
+    return token;
+  } catch (e) {
+    console.error('Token error:', e);
+    return generateToken(); // fallback local
+  }
+}
+
+function renderUnsubLink(token) {
+  const base = window.location.href.split('?')[0];
+  const link = `${base}?unsubscribe=${token}`;
+  document.getElementById('unsub-link-text').textContent = link;
+  document.getElementById('unsub-link-wrap').style.display = 'block';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HANDLE ?unsubscribe= WITHOUT AUTH
+══════════════════════════════════════════════════════════════ */
+async function handleUnsubscribeByToken(token) {
+  showMainContent();
+  // Try to find user with this token and set all prefs to false
+  try {
+    const snap = await db.collection('users')
+      .where('unsubscribeToken', '==', token)
+      .limit(1)
+      .get();
+
+    if (!snap.empty) {
+      const docRef = snap.docs[0].ref;
+      const falsePrefs = Object.fromEntries(PREF_KEYS.map(k => [k, false]));
+      await docRef.set({ emailPreferences: falsePrefs }, { merge: true });
+    }
+    // Show confirm either way (don't reveal whether token was valid)
+    document.getElementById('unsubscribe-confirm').classList.add('visible');
+  } catch (e) {
+    console.error('Unsubscribe by token failed:', e);
+    document.getElementById('unsubscribe-confirm').classList.add('visible');
+  }
+  hideLoading();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EMAIL PREVIEW — populate from localStorage / Firestore
+══════════════════════════════════════════════════════════════ */
+function populatePreview(userData) {
+  // Name
+  const name = userData.displayName || localStorage.getItem('hom_displayName') || 'Scholar';
+  document.getElementById('preview-name').textContent = name.split(' ')[0];
+
+  // Stats — try localStorage first then user doc
+  const lessons  = userData.lessonsCompleted || parseInt(localStorage.getItem('hom_lessons') || '0');
+  const xp       = userData.totalXP          || parseInt(localStorage.getItem('hom_xp')      || '0');
+  const quizzes  = userData.quizzesTaken      || parseInt(localStorage.getItem('hom_quizzes') || '0');
+  const streak   = userData.streak            || parseInt(localStorage.getItem('hom_streak')  || '0');
+  const rank     = userData.leaderboardRank   || localStorage.getItem('hom_rank') || '—';
+
+  document.getElementById('preview-lessons').textContent = lessons;
+  document.getElementById('preview-xp').textContent      = xp.toLocaleString();
+  document.getElementById('preview-quizzes').textContent = quizzes;
+  document.getElementById('preview-streak').textContent  = streak;
+  document.getElementById('preview-rank').textContent    = rank;
+
+  // Week label
+  const now = new Date();
+  const weekStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  document.getElementById('preview-date-label').textContent = `Week of ${weekStr}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WIRE UP TOGGLES
+══════════════════════════════════════════════════════════════ */
+function wireToggles(uid) {
+  PREF_KEYS.forEach(key => {
+    const checkbox = document.getElementById(`pref-${key}`);
+    if (!checkbox) return;
+    checkbox.addEventListener('change', async () => {
+      await savePref(uid, key, checkbox.checked);
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNSUBSCRIBE ALL
+══════════════════════════════════════════════════════════════ */
+async function unsubscribeAll(uid) {
+  const btn = document.getElementById('btn-unsub-all');
+  btn.disabled = true;
+  btn.textContent = 'Unsubscribing…';
+
+  const falsePrefs = Object.fromEntries(PREF_KEYS.map(k => [k, false]));
+  const ok = await saveAllPrefs(uid, falsePrefs);
+
+  if (ok) {
+    applyPrefsToUI(falsePrefs);
+    showBanner('You have been unsubscribed from all emails.', 'success');
+
+    // Generate / retrieve token and show link
+    const token = await getOrCreateUnsubToken(uid);
+    renderUnsubLink(token);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '&#128683; Unsubscribe from All';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COPY LINK
+══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-copy-link').addEventListener('click', async () => {
+  const link = document.getElementById('unsub-link-text').textContent;
+  try {
+    await navigator.clipboard.writeText(link);
+    const btn = document.getElementById('btn-copy-link');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  } catch (e) {
+    showBanner('Could not copy link automatically. Please select and copy manually.', 'info', 5000);
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════
+   DATA EXPORT
+══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-export-data').addEventListener('click', async () => {
+  if (!currentUser) return;
+  const btn = document.getElementById('btn-export-data');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  try {
+    await db.collection('dataExportRequests').doc(currentUser.uid).set({
+      uid:         currentUser.uid,
+      email:       currentUser.email,
+      requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status:      'pending'
+    });
+    const status = document.getElementById('export-status');
+    status.classList.add('visible');
+    setTimeout(() => status.classList.remove('visible'), 8000);
+  } catch (e) {
+    showBanner('Could not submit export request. Please try again.', 'error');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '&#128229; Request Data Export';
+});
+
+/* ══════════════════════════════════════════════════════════════
+   DELETE ACCOUNT MODAL
+══════════════════════════════════════════════════════════════ */
+const deleteModal       = document.getElementById('delete-modal');
+const deleteInput       = document.getElementById('delete-confirm-input');
+const btnConfirmDelete  = document.getElementById('btn-confirm-delete');
+
+document.getElementById('btn-delete-account').addEventListener('click', () => {
+  deleteInput.value = '';
+  btnConfirmDelete.disabled = true;
+  deleteModal.classList.add('open');
+  deleteInput.focus();
+});
+
+document.getElementById('btn-cancel-delete').addEventListener('click', () => {
+  deleteModal.classList.remove('open');
+});
+
+deleteModal.addEventListener('click', e => {
+  if (e.target === deleteModal) deleteModal.classList.remove('open');
+});
+
+deleteInput.addEventListener('input', () => {
+  btnConfirmDelete.disabled = deleteInput.value.trim() !== 'DELETE';
+});
+
+btnConfirmDelete.addEventListener('click', async () => {
+  if (!currentUser || deleteInput.value.trim() !== 'DELETE') return;
+  btnConfirmDelete.disabled = true;
+  btnConfirmDelete.textContent = 'Submitting…';
+  try {
+    await db.collection('dataDeleteRequests').doc(currentUser.uid).set({
+      uid:         currentUser.uid,
+      email:       currentUser.email,
+      requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status:      'pending'
+    });
+    deleteModal.classList.remove('open');
+    showBanner(
+      'Account deletion request submitted. Your account and data will be removed within 30 days.',
+      'info',
+      10000
+    );
+  } catch (e) {
+    showBanner('Could not submit deletion request. Please try again.', 'error');
+    btnConfirmDelete.disabled = false;
+    btnConfirmDelete.textContent = 'Delete Account';
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════
+   SIGN OUT
+══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-signout').addEventListener('click', async () => {
+  await auth.signOut();
+  window.location.href = 'index.html';
+});
+
+/* ══════════════════════════════════════════════════════════════
+   AUTH STATE — MAIN ENTRY POINT
+══════════════════════════════════════════════════════════════ */
+auth.onAuthStateChanged(async user => {
+
+  // ── UNSUBSCRIBE FLOW (no auth required) ──────────────────
+  if (unsubscribeToken) {
+    currentUser = user; // might be null — that's OK
+    await handleUnsubscribeByToken(unsubscribeToken);
+    // If user is also logged in, load their prefs so they can re-enable
+    if (user) {
+      const prefs = await loadPreferences(user.uid);
+      applyPrefsToUI(prefs);
+      wireToggles(user.uid);
+      document.getElementById('btn-unsub-all').addEventListener('click', () => unsubscribeAll(user.uid));
+    }
+    return;
+  }
+
+  // ── NOT LOGGED IN ─────────────────────────────────────────
+  if (!user) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // ── AUTHENTICATED ─────────────────────────────────────────
+  currentUser = user;
+  showMainContent();
+
+  // Load user doc for preview
+  let userData = { displayName: user.displayName };
+  try {
+    const doc = await db.collection('users').doc(user.uid).get();
+    if (doc.exists) userData = { ...userData, ...doc.data() };
+  } catch (e) { /* silent */ }
+
+  // Load & display preferences
+  const prefs = await loadPreferences(user.uid);
+  applyPrefsToUI(prefs);
+  wireToggles(user.uid);
+
+  // Populate email preview
+  populatePreview(userData);
+
+  // Wire unsubscribe-all button
+  document.getElementById('btn-unsub-all').addEventListener('click', () => unsubscribeAll(user.uid));
+
+  // Show unsubscribe link if already have a token
+  try {
+    const doc = await db.collection('users').doc(user.uid).get();
+    if (doc.exists && doc.data().unsubscribeToken) {
+      renderUnsubLink(doc.data().unsubscribeToken);
+    }
+  } catch (e) { /* silent */ }
+
+  hideLoading();
+});
+</script>
+
+</body>
+</html>
