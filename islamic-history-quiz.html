@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Islamic History Quiz — History of Muslims Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:  #080F1E;
+      --navy2: #0D1E35;
+      --gold:  #C9A96E;
+      --gold2: #E8C987;
+      --cream: #F5F0E8;
+      --green: #6FCF97;
+      --red:   #EB5757;
+      --text-light: rgba(245,240,232,0.85);
+      --border-gold: rgba(201,169,110,0.35);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--navy);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy2); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== GEOMETRIC BACKGROUND ===== */
+    .geo-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .geo-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(201,169,110,0.04) 59px, rgba(201,169,110,0.04) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(201,169,110,0.04) 59px, rgba(201,169,110,0.04) 60px);
+    }
+    .geo-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 84px, rgba(201,169,110,0.025) 84px, rgba(201,169,110,0.025) 85px),
+        repeating-linear-gradient(-45deg, transparent, transparent 84px, rgba(201,169,110,0.025) 84px, rgba(201,169,110,0.025) 85px);
+    }
+
+    /* ===== SPARKLE PARTICLES ===== */
+    .sparkle {
+      position: fixed;
+      border-radius: 50%;
+      background: var(--gold2);
+      animation: sparkle-float linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes sparkle-float {
+      0%   { transform: translateY(0) scale(1); opacity: 0; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+    }
+
+    /* ===== LAYOUT ===== */
+    .page-wrap {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* ===== HEADER / NAV ===== */
+    .top-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(13,30,53,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-gold);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.9rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--gold2); }
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-light); text-decoration: none;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--border-gold);
+      transition: all 0.2s;
+    }
+    .nav-back:hover { background: rgba(201,169,110,0.1); color: var(--gold); }
+    .nav-user {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.8rem; color: var(--text-light);
+    }
+    .nav-user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.75rem; color: var(--navy);
+    }
+
+    /* ===== MAIN CONTENT AREA ===== */
+    .quiz-main {
+      flex: 1;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 32px 16px 60px;
+    }
+    .quiz-container {
+      width: 100%; max-width: 780px;
+    }
+
+    /* ===== SCREEN MANAGEMENT ===== */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ===== ORNAMENTAL DIVIDER ===== */
+    .ornament {
+      display: flex; align-items: center; gap: 14px;
+      margin: 18px 0;
+    }
+    .ornament::before, .ornament::after {
+      content: ''; flex: 1;
+      height: 1px; background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+    }
+    .ornament-icon { color: var(--gold); font-size: 1.1rem; }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: rgba(13,30,53,0.85);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      padding: 32px;
+    }
+    .card-sm { padding: 20px 24px; }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* ===== START SCREEN ===== */
+    .start-hero {
+      text-align: center;
+      padding: 40px 0 24px;
+    }
+    .start-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .start-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: var(--gold);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .start-subtitle {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    /* ===== PART SELECTOR ===== */
+    .part-selector {
+      margin-bottom: 28px;
+    }
+    .part-selector-label {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .part-tabs {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    }
+    .part-tab {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border-gold);
+      background: transparent;
+      color: var(--text-light);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .part-tab:hover { background: rgba(201,169,110,0.1); color: var(--gold); }
+    .part-tab.selected {
+      background: linear-gradient(135deg, rgba(201,169,110,0.2), rgba(232,201,135,0.1));
+      border-color: var(--gold);
+      color: var(--gold2);
+    }
+    .part-tab-title { display: block; font-size: 0.75rem; }
+    .part-tab-sub { display: block; font-size: 0.65rem; color: var(--text-light); margin-top: 2px; opacity: 0.7; }
+    .part-tab.selected .part-tab-sub { color: var(--gold); opacity: 0.8; }
+
+    /* ===== DIFFICULTY SELECTOR ===== */
+    .difficulty-wrap {
+      margin-bottom: 28px;
+    }
+    .difficulty-label {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .difficulty-btns {
+      display: flex; gap: 10px; justify-content: center;
+    }
+    .diff-btn {
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--border-gold);
+      background: transparent;
+      color: var(--text-light);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.22s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .diff-btn:hover { background: rgba(201,169,110,0.1); }
+    .diff-btn.easy.selected  { border-color: var(--green); background: rgba(111,207,151,0.12); color: var(--green); }
+    .diff-btn.medium.selected{ border-color: var(--gold);  background: rgba(201,169,110,0.15); color: var(--gold2); }
+    .diff-btn.hard.selected  { border-color: var(--red);   background: rgba(235,87,87,0.12);   color: var(--red); }
+
+    /* ===== QUIZ INFO ROW ===== */
+    .info-row {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .info-pill {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-gold);
+      background: rgba(8,15,30,0.5);
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .info-pill strong { color: var(--gold2); }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.22s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+      box-shadow: 0 4px 20px rgba(201,169,110,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(201,169,110,0.5);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .btn-outline:hover { background: rgba(201,169,110,0.1); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-light);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+    .btn-sm { padding: 9px 18px; font-size: 0.82rem; border-radius: 9px; }
+    .btn-full { width: 100%; }
+
+    /* ===== QUIZ HEADER (progress) ===== */
+    .quiz-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px;
+    }
+    .q-counter {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.75rem;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: rgba(201,169,110,0.15);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+    .q-score-live {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold2);
+      white-space: nowrap;
+    }
+
+    /* ===== QUESTION CARD ===== */
+    .question-card {
+      background: rgba(13,30,53,0.9);
+      border: 1px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 32px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(12px);
+    }
+    .q-meta {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px;
+    }
+    .q-difficulty-badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .badge-easy   { background: rgba(111,207,151,0.15); color: var(--green); border: 1px solid rgba(111,207,151,0.3); }
+    .badge-medium { background: rgba(201,169,110,0.15); color: var(--gold2); border: 1px solid rgba(201,169,110,0.3); }
+    .badge-hard   { background: rgba(235,87,87,0.15);   color: var(--red);   border: 1px solid rgba(235,87,87,0.3); }
+    .q-part-tag {
+      font-size: 0.7rem;
+      color: rgba(245,240,232,0.45);
+    }
+    .q-text {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--cream);
+      margin-bottom: 26px;
+    }
+
+    /* ===== OPTIONS ===== */
+    .options-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .option-btn {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-gold);
+      background: rgba(8,15,30,0.6);
+      color: var(--text-light);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      display: flex; align-items: center; gap: 14px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: rgba(201,169,110,0.1);
+      border-color: rgba(201,169,110,0.6);
+      transform: translateX(4px);
+    }
+    .option-btn:disabled { cursor: default; }
+    .option-label {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(201,169,110,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .option-btn:hover:not(:disabled) .option-label {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.15);
+      color: var(--gold);
+    }
+    .option-btn.correct {
+      background: rgba(111,207,151,0.15);
+      border-color: var(--green);
+      color: var(--green);
+      transform: translateX(0);
+    }
+    .option-btn.correct .option-label {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--navy);
+    }
+    .option-btn.wrong {
+      background: rgba(235,87,87,0.12);
+      border-color: var(--red);
+      color: var(--red);
+    }
+    .option-btn.wrong .option-label {
+      background: var(--red);
+      border-color: var(--red);
+      color: white;
+    }
+    .option-btn.eliminated {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .option-btn.selected-wrong {
+      background: rgba(235,87,87,0.18);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* ===== FEEDBACK BOX ===== */
+    .feedback-box {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      display: none;
+    }
+    .feedback-box.show { display: block; }
+    .feedback-box.correct-fb {
+      background: rgba(111,207,151,0.1);
+      border: 1px solid rgba(111,207,151,0.3);
+      color: var(--green);
+    }
+    .feedback-box.wrong-fb {
+      background: rgba(235,87,87,0.08);
+      border: 1px solid rgba(235,87,87,0.25);
+      color: rgba(245,240,232,0.85);
+    }
+    .feedback-icon { font-size: 1.1rem; margin-right: 6px; }
+    .feedback-explanation {
+      margin-top: 8px;
+      font-size: 0.83rem;
+      color: rgba(245,240,232,0.65);
+      font-style: italic;
+    }
+
+    /* ===== HINT SECTION ===== */
+    .hint-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 12px 16px;
+      background: rgba(201,169,110,0.06);
+      border: 1px solid rgba(201,169,110,0.15);
+      border-radius: 10px;
+    }
+    .hint-info {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .hint-info strong { color: var(--gold2); }
+    .btn-hint {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Lato', sans-serif;
+    }
+    .btn-hint:hover:not(:disabled) { background: rgba(201,169,110,0.12); }
+    .btn-hint:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ===== NEXT BUTTON ===== */
+    .next-btn-wrap {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    /* ===== RESULTS SCREEN ===== */
+    .results-wrap {
+      text-align: center;
+    }
+    .results-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .results-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 32px;
+    }
+
+    /* Score Ring */
+    .score-ring-wrap {
+      display: flex; justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .score-ring-svg {
+      width: 180px; height: 180px;
+      transform: rotate(-90deg);
+    }
+    .score-ring-bg { fill: none; stroke: rgba(201,169,110,0.15); stroke-width: 14; }
+    .score-ring-fill {
+      fill: none;
+      stroke: url(#ring-gradient);
+      stroke-width: 14;
+      stroke-linecap: round;
+      stroke-dasharray: 502;
+      stroke-dashoffset: 502;
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .score-ring-fill.failed { stroke: url(#ring-gradient-fail); }
+    .score-ring-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .score-ring-pct {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold2);
+      line-height: 1;
+    }
+    .score-ring-label {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Stats Grid */
+    .results-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: rgba(8,15,30,0.6);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 16px 10px;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.5rem;
+      color: var(--gold2);
+      margin-bottom: 4px;
+    }
+    .stat-lbl {
+      font-size: 0.7rem;
+      color: rgba(245,240,232,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Pass/Fail banner */
+    .pass-banner {
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .pass-banner.pass {
+      background: rgba(111,207,151,0.12);
+      border: 1px solid rgba(111,207,151,0.35);
+      color: var(--green);
+    }
+    .pass-banner.fail {
+      background: rgba(235,87,87,0.1);
+      border: 1px solid rgba(235,87,87,0.3);
+      color: var(--red);
+    }
+    .performance-msg {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .pass-details {
+      font-size: 0.82rem;
+      opacity: 0.8;
+      font-weight: 400;
+      margin-top: 4px;
+    }
+
+    /* Streak badge */
+    .streak-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      background: rgba(201,169,110,0.12);
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold2);
+      margin-bottom: 24px;
+    }
+
+    /* Share buttons */
+    .share-section { margin-bottom: 24px; }
+    .share-label {
+      font-size: 0.75rem;
+      color: rgba(245,240,232,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .share-btns {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    }
+    .share-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px;
+      border-radius: 9px;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      transition: all 0.2s;
+    }
+    .share-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .share-twitter  { background: #1DA1F2; color: white; }
+    .share-whatsapp { background: #25D366; color: white; }
+    .share-facebook { background: #1877F2; color: white; }
+    .share-native   { background: rgba(201,169,110,0.18); color: var(--gold); border: 1px solid var(--gold); }
+
+    /* Action buttons at end */
+    .results-actions {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* ===== UPSELL MODAL ===== */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(8,15,30,0.88);
+      backdrop-filter: blur(8px);
+      z-index: 500;
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--navy2);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 36px 32px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none;
+      color: var(--text-light); font-size: 1.2rem;
+      cursor: pointer; padding: 4px;
+    }
+    .modal-icon { font-size: 2.8rem; margin-bottom: 14px; }
+    .modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .modal-body {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .modal-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .modal-features li {
+      padding: 7px 0;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+    }
+    .modal-features li:last-child { border-bottom: none; }
+    .modal-features .feat-icon { color: var(--gold); }
+
+    /* ===== LOADING OVERLAY ===== */
+    .loading-overlay {
+      position: fixed; inset: 0;
+      background: var(--navy);
+      z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+    }
+    .loading-overlay.hidden { display: none; }
+    .loading-spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(201,169,110,0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.8rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .top-nav { padding: 12px 16px; }
+      .nav-logo { font-size: 0.75rem; }
+      .quiz-main { padding: 20px 12px 50px; }
+      .question-card { padding: 22px 18px; }
+      .card { padding: 22px 18px; }
+      .results-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stat-val { font-size: 1.2rem; }
+      .difficulty-btns { flex-wrap: wrap; }
+      .diff-btn { flex: 1; min-width: 80px; padding: 10px 14px; justify-content: center; }
+      .score-ring-svg { width: 150px; height: 150px; }
+      .score-ring-pct { font-size: 2rem; }
+    }
+    @media (max-width: 380px) {
+      .results-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== ANIMATION UTILITIES ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-fadeup { animation: fadeInUp 0.4s ease both; }
+
+    @keyframes pulse-gold {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.4); }
+      50%       { box-shadow: 0 0 0 8px rgba(201,169,110,0); }
+    }
+    .pulse { animation: pulse-gold 1.5s ease infinite; }
+
+    @keyframes confetti-fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120px) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOADING OVERLAY ===== -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading Quiz…</div>
+</div>
+
+<!-- ===== GEOMETRIC BACKGROUND ===== -->
+<div class="geo-bg"></div>
+<div id="sparkleContainer"></div>
+
+<!-- ===== PAGE WRAP ===== -->
+<div class="page-wrap">
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">History of <span>Muslims</span> Academy</a>
+    <div class="nav-user" id="navUser">
+      <div class="nav-user-avatar" id="navAvatar">?</div>
+      <span id="navName">Loading…</span>
+    </div>
+    <a href="index.html" class="nav-back">&#8592; Home</a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="quiz-main">
+    <div class="quiz-container">
+
+      <!-- ===== SCREEN: START ===== -->
+      <section class="screen active" id="screenStart">
+        <div class="start-hero">
+          <span class="start-icon">🏛️</span>
+          <h1 class="start-title">Islamic History Quiz</h1>
+          <p class="start-subtitle">Test your knowledge of Islamic history through carefully crafted questions. Choose your part and difficulty level, then answer 10 questions to earn points and maintain your streak.</p>
+        </div>
+
+        <div class="card">
+          <!-- PART SELECTOR -->
+          <div class="part-selector">
+            <p class="part-selector-label">Select Quiz Part</p>
+            <div class="part-tabs" id="partTabs">
+              <button class="part-tab selected" data-part="1">
+                <span class="part-tab-title">Part 1</span>
+                <span class="part-tab-sub">Geography</span>
+              </button>
+              <button class="part-tab" data-part="2">
+                <span class="part-tab-title">Part 2</span>
+                <span class="part-tab-sub">Society &amp; Tribes</span>
+              </button>
+              <button class="part-tab" data-part="3">
+                <span class="part-tab-title">Part 3</span>
+                <span class="part-tab-sub">Religion</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="ornament"><span class="ornament-icon">✦</span></div>
+
+          <!-- DIFFICULTY -->
+          <div class="difficulty-wrap">
+            <p class="difficulty-label">Select Difficulty</p>
+            <div class="difficulty-btns">
+              <button class="diff-btn easy selected" data-diff="easy">⭐ Easy</button>
+              <button class="diff-btn medium" data-diff="medium">⚡ Medium</button>
+              <button class="diff-btn hard" data-diff="hard">🔥 Hard</button>
+            </div>
+          </div>
+
+          <div class="ornament"><span class="ornament-icon">✦</span></div>
+
+          <!-- INFO PILLS -->
+          <div class="info-row">
+            <div class="info-pill">📝 <span><strong>10</strong> Questions/Session</span></div>
+            <div class="info-pill">✅ <span><strong>70%</strong> Pass Threshold</span></div>
+            <div class="info-pill">💡 <span><strong>1</strong> Hint/Day</span></div>
+            <div class="info-pill">🏆 <span><strong>Streak</strong> Bonus Active</span></div>
+          </div>
+
+          <div class="ornament"><span class="ornament-icon">✦</span></div>
+
+          <!-- Scoring breakdown -->
+          <div style="margin-bottom:28px;">
+            <p class="section-label" style="text-align:center; margin-bottom:12px;">Scoring</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.82rem; color:var(--text-light);">
+              <div style="padding:10px; background:rgba(8,15,30,0.5); border-radius:9px; border:1px solid var(--border-gold);">✅ Correct: <strong style="color:var(--gold2)">+10 pts</strong></div>
+              <div style="padding:10px; background:rgba(8,15,30,0.5); border-radius:9px; border:1px solid var(--border-gold);">⚡ Streak: <strong style="color:var(--gold2)">+10 pts</strong></div>
+              <div style="padding:10px; background:rgba(8,15,30,0.5); border-radius:9px; border:1px solid var(--border-gold);">🌟 Easy: <strong style="color:var(--green)">+5 pts</strong></div>
+              <div style="padding:10px; background:rgba(8,15,30,0.5); border-radius:9px; border:1px solid var(--border-gold);">⚡ Medium: <strong style="color:var(--gold2)">+10 pts</strong></div>
+              <div style="padding:10px; background:rgba(8,15,30,0.5); border-radius:9px; border:1px solid var(--border-gold);">🔥 Hard: <strong style="color:var(--red)">+15 pts</strong></div>
+              <div style="padding:10px; background:rgba(8,15,30,0.5); border-radius:9px; border:1px solid var(--border-gold);">💡 Hint: <strong style="color:var(--red)">-2 pts</strong></div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <button class="btn btn-primary" id="btnStartQuiz" style="font-size:1.05rem; padding:16px 48px;">
+              🚀 Start Quiz
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SCREEN: QUIZ ===== -->
+      <section class="screen" id="screenQuiz">
+        <!-- Progress header -->
+        <div class="quiz-header">
+          <div class="q-counter" id="qCounter">Q 1 / 10</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+          </div>
+          <div class="q-score-live" id="scoreLive">0 pts</div>
+        </div>
+
+        <!-- Hint row -->
+        <div class="hint-row">
+          <div class="hint-info">
+            💡 Daily Hint: <strong id="hintStatus">Available</strong>
+            <span style="color:rgba(245,240,232,0.45); font-size:0.75rem; margin-left:6px;">(−2 pts, eliminates 2 wrong answers)</span>
+          </div>
+          <button class="btn-hint" id="btnHint">Use Hint</button>
+        </div>
+
+        <!-- Question card -->
+        <div class="question-card" id="questionCard">
+          <div class="q-meta">
+            <span class="q-difficulty-badge badge-easy" id="qDiffBadge">Easy</span>
+            <span class="q-part-tag" id="qPartTag">Level 1 · Part 1</span>
+          </div>
+          <p class="q-text" id="qText">Loading question…</p>
+          <div class="options-grid" id="optionsGrid"></div>
+          <div class="feedback-box" id="feedbackBox"></div>
+        </div>
+
+        <div class="next-btn-wrap">
+          <button class="btn btn-primary" id="btnNext" style="display:none;">
+            Next Question ›
+          </button>
+        </div>
+      </section>
+
+      <!-- ===== SCREEN: RESULTS ===== -->
+      <section class="screen" id="screenResults">
+        <div class="results-wrap">
+          <div class="ornament"><span class="ornament-icon">✦</span></div>
+          <h2 class="results-title">Quiz Complete!</h2>
+          <p class="results-subtitle" id="resultsSubtitle">Level 1 · Part 1 · Easy</p>
+
+          <!-- Score ring -->
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" viewBox="0 0 180 180" aria-hidden="true">
+              <defs>
+                <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#C9A96E"/>
+                  <stop offset="100%" stop-color="#E8C987"/>
+                </linearGradient>
+                <linearGradient id="ring-gradient-fail" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#EB5757"/>
+                  <stop offset="100%" stop-color="#ff8a8a"/>
+                </linearGradient>
+              </defs>
+              <circle class="score-ring-bg" cx="90" cy="90" r="80"/>
+              <circle class="score-ring-fill" id="scoreRingFill" cx="90" cy="90" r="80"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-pct" id="scoreRingPct">0%</div>
+              <div class="score-ring-label">Score</div>
+            </div>
+          </div>
+
+          <!-- Pass/fail banner -->
+          <div class="pass-banner" id="passBanner">
+            <div class="performance-msg" id="perfMsg"></div>
+            <div class="pass-details" id="passDetails"></div>
+          </div>
+
+          <!-- Stats -->
+          <div class="results-stats">
+            <div class="stat-card">
+              <div class="stat-val" id="statCorrect">0</div>
+              <div class="stat-lbl">Correct</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="statPoints">0</div>
+              <div class="stat-lbl">Points</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="statStreak">0</div>
+              <div class="stat-lbl">Streak</div>
+            </div>
+          </div>
+
+          <!-- Streak badge (conditional) -->
+          <div class="streak-badge" id="streakBadgeWrap" style="display:none;">
+            🔥 <span id="streakBadgeText">Day Streak Active!</span>
+          </div>
+
+          <!-- Share -->
+          <div class="share-section">
+            <p class="share-label">Share Your Score</p>
+            <div class="share-btns">
+              <button class="share-btn share-twitter"  id="shareTwitter">🐦 Twitter</button>
+              <button class="share-btn share-whatsapp" id="shareWhatsApp">💬 WhatsApp</button>
+              <button class="share-btn share-facebook" id="shareFacebook">📘 Facebook</button>
+              <button class="share-btn share-native"   id="shareNative">📤 Share</button>
+            </div>
+          </div>
+
+          <div class="ornament"><span class="ornament-icon">✦</span></div>
+
+          <!-- Actions -->
+          <div class="results-actions">
+            <a href="lessons.html" class="btn btn-primary">📖 Continue Learning</a>
+            <button class="btn btn-outline" id="btnRetry">🔄 Retry Quiz</button>
+            <button class="btn btn-ghost btn-sm" id="btnHome" onclick="window.location.href='index.html'">🏠 Home</button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /quiz-container -->
+  </main>
+</div><!-- /page-wrap -->
+
+<!-- ===== UPSELL MODAL ===== -->
+<div class="modal-overlay" id="upsellModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeUpsell">✕</button>
+    <div class="modal-icon">👑</div>
+    <h2 class="modal-title">Unlock Full Academy</h2>
+    <p class="modal-body">You've completed a quiz! Upgrade to Premium to unlock all levels, detailed explanations, progress tracking, and exclusive content.</p>
+    <ul class="modal-features">
+      <li><span class="feat-icon">✦</span> All 10 quiz levels &amp; 750+ questions</li>
+      <li><span class="feat-icon">✦</span> Detailed explanations for every answer</li>
+      <li><span class="feat-icon">✦</span> Downloadable study guides (PDF)</li>
+      <li><span class="feat-icon">✦</span> Leaderboard &amp; competitive rankings</li>
+      <li><span class="feat-icon">✦</span> Unlimited daily hints</li>
+    </ul>
+    <button class="btn btn-primary btn-full" style="margin-bottom:10px;" onclick="window.location.href='index.html#premium'">
+      🚀 Upgrade to Premium
+    </button>
+    <button class="btn btn-ghost btn-full btn-sm" id="closeUpsell2">Maybe Later</button>
+  </div>
+</div>
+
+<!-- ===== FIREBASE CDN (compat v9) ===== -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ============================================================
+//  FIREBASE CONFIG — REPLACE WITH YOUR OWN
+// ============================================================
+const firebaseConfig = { /* REPLACE WITH YOUR CONFIG */ };
+
+// ============================================================
+//  ALL 75 QUESTIONS  (3 parts × 25)
+// ============================================================
+const ALL_QUESTIONS = {
+
+  // ── PART 1: Geography ──────────────────────────────────────
+  1: [
+    {
+      text: "What is the Arabian Peninsula primarily composed of?",
+      options: ["Dense forests","Vast deserts","Fertile plains","Mountain ranges"],
+      correct: 1,
+      difficulty: "easy",
+      explanation: "The Arabian Peninsula is characterized by vast desert landscapes, including the Rub al-Khali (Empty Quarter), one of the world's largest sand deserts."
+    },
+    {
+      text: "Which body of water borders Arabia to the west?",
+      options: ["Persian Gulf","Red Sea","Arabian Sea","Mediterranean Sea"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the name of the most important city in pre-Islamic Arabia?",
+      options: ["Baghdad","Medina","Mecca","Damascus"],
+      correct: 2,
+      difficulty: "easy"
+    },
+    {
+      text: "Which desert covers most of the Arabian Peninsula?",
+      options: ["Sahara","Gobi","Rub al-Khali","Karakum"],
+      correct: 2,
+      difficulty: "easy",
+      explanation: "The Rub al-Khali (Empty Quarter) is one of the world's largest continuous sand deserts, covering about a quarter of the Arabian Peninsula."
+    },
+    {
+      text: "What geographic feature made Mecca important for trade?",
+      options: ["Its location on a river","Its position on trade routes between Yemen and Syria","Its coastal location","Its mountain fortress"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What were the seasonal winds that enabled Indian Ocean trade called?",
+      options: ["Trade winds","Monsoons","Sirocco","Harmattan"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Which mountain range runs along the western coast of Arabia?",
+      options: ["Hijaz Mountains","Atlas Mountains","Zagros Mountains","Taurus Mountains"],
+      correct: 0,
+      difficulty: "medium"
+    },
+    {
+      text: "What was the name of the fertile region in southern Arabia?",
+      options: ["Hejaz","Nejd","Yemen","Najd"],
+      correct: 2,
+      difficulty: "easy"
+    },
+    {
+      text: "Pre-Islamic Arabia was located at the crossroads of which civilizations?",
+      options: ["Roman and Chinese","Byzantine and Sassanid Persian","Greek and Egyptian","Indian and African"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "What natural resource was scarce in most of Arabia?",
+      options: ["Sand","Water","Rock","Camels"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The port city of Aden was important because it controlled access to which waterway?",
+      options: ["Suez Canal","Strait of Hormuz","Bab-el-Mandeb","Strait of Gibraltar"],
+      correct: 2,
+      difficulty: "medium"
+    },
+    {
+      text: "What term describes the water-rich areas that sustained settlements in arid Arabia?",
+      options: ["Wadis","Oases","Steppes","Marshes"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "Which region of Arabia was known as al-Hejaz?",
+      options: ["Eastern coastal region","Western coastal strip","Northern plateau","Southern highlands"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Pre-Islamic trade routes connected Arabia to which distant regions?",
+      options: ["Only to Africa","Only to Persia","India, Persia, Byzantine Empire, and Africa","Only to Rome"],
+      correct: 2,
+      difficulty: "medium"
+    },
+    {
+      text: "What geographic barrier separated Arabia from Africa?",
+      options: ["Mediterranean Sea","Red Sea","Arabian Sea","Persian Gulf"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the approximate population of Mecca before Islam?",
+      options: ["10,000","50,000","100,000","500,000"],
+      correct: 0,
+      difficulty: "medium",
+      explanation: "Historians estimate Mecca had a population of approximately 10,000–20,000 people in the late pre-Islamic period."
+    },
+    {
+      text: "Which direction did most Arabian trade routes run?",
+      options: ["East-West","North-South","Diagonal","Circular"],
+      correct: 1,
+      difficulty: "easy",
+      explanation: "Major caravan routes ran north-south, connecting Yemen's ports to the markets of Syria and the Byzantine Empire."
+    },
+    {
+      text: "What term refers to a dry riverbed that flows only after rain?",
+      options: ["Oasis","Wadi","Khali","Hijaz"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The Arabian Peninsula is approximately how large?",
+      options: ["1 million sq km","2 million sq km","3 million sq km","4 million sq km"],
+      correct: 2,
+      difficulty: "medium",
+      explanation: "At approximately 3.2 million sq km, the Arabian Peninsula is the world's largest peninsula."
+    },
+    {
+      text: "Which city served as a major pilgrimage destination in pre-Islamic Arabia?",
+      options: ["Medina","Baghdad","Mecca","Petra"],
+      correct: 2,
+      difficulty: "easy",
+      explanation: "The Kaaba in Mecca was already a sacred site and pilgrimage destination before the advent of Islam."
+    },
+    {
+      text: "What type of climate dominates most of the Arabian Peninsula?",
+      options: ["Tropical","Arid","Mediterranean","Temperate"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The Nabataean Kingdom, known for Petra, was located in which part of Arabia?",
+      options: ["Southern Arabia","Eastern Arabia","Northwestern Arabia","Central Arabia"],
+      correct: 2,
+      difficulty: "medium",
+      explanation: "The Nabataeans controlled northwestern Arabia and what is now Jordan, mastering water collection in the desert."
+    },
+    {
+      text: "What was the main source of fresh water for many Arabian settlements?",
+      options: ["Rivers","Underground springs and wells","Rain collection","Desalination"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "Pre-Islamic Arabia's strategic location meant it was influenced by which two empires?",
+      options: ["Roman and Parthian","Byzantine and Sassanid","Ottoman and Mughal","Greek and Egyptian"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "What was the traditional Arabian unit for measuring long distances, borrowed from Persia?",
+      options: ["Mile","Farsang","League","Parasang"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "The farsang (from Persian parasang) was widely used across the Middle East and adopted by Arabian traders."
+    }
+  ],
+
+  // ── PART 2: Society & Tribes ────────────────────────────────
+  2: [
+    {
+      text: "What was the basic social unit in pre-Islamic Arabia?",
+      options: ["The city","The tribe","The family","The nation"],
+      correct: 1,
+      difficulty: "easy",
+      explanation: "Arabian society was organized around tribal units which provided identity, protection, and law for their members."
+    },
+    {
+      text: "What term describes the code of honor and generosity in pre-Islamic Arabia?",
+      options: ["Sharia","Muruwwa","Ummah","Qiyas"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Muruwwa (manliness/virtue) was the pre-Islamic Arabian ethical code emphasizing bravery, generosity, and loyalty."
+    },
+    {
+      text: "Pre-Islamic Arabia's period is often called what in Islamic tradition?",
+      options: ["The Dark Ages","Jahiliyyah (Age of Ignorance)","The Golden Age","The Classical Period"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the role of the tribal chief (Sheikh) in pre-Islamic Arabia?",
+      options: ["Military general only","Religious leader only","Mediator, protector, and decision-maker","Tax collector"],
+      correct: 2,
+      difficulty: "easy"
+    },
+    {
+      text: "The Quraysh tribe was dominant in which city?",
+      options: ["Medina","Mecca","Taif","Yathrib"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the Kaaba before Islam?",
+      options: ["A palace","A market","A polytheistic shrine housing multiple idols","A library"],
+      correct: 2,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the practice of raiding (ghazw) primarily motivated by?",
+      options: ["Religious conquest","Acquiring resources and wealth","Political control","Entertainment"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "Women in pre-Islamic Arabia could sometimes:",
+      options: ["Never own property","Own property and run businesses","Vote in tribal councils","Lead armies"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Khadijah bint Khuwaylid, Prophet Muhammad's first wife, was a successful merchant and businesswoman before Islam."
+    },
+    {
+      text: "What system governed relationships between tribes in pre-Islamic Arabia?",
+      options: ["Written laws","Oral traditions and customary law (urf)","Royal decrees","Religious texts"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "The concept of tribal loyalty (asabiyyah) was later analyzed by which scholar?",
+      options: ["Al-Biruni","Ibn Battuta","Ibn Khaldun","Al-Farabi"],
+      correct: 2,
+      difficulty: "medium",
+      explanation: "Ibn Khaldun extensively analyzed asabiyyah (group solidarity) in his landmark work the Muqaddimah."
+    },
+    {
+      text: "How were disputes between tribes traditionally resolved?",
+      options: ["By the strongest tribe winning","Through negotiation, arbiters (hakam), or blood feuds","By the Byzantine Empire","By religious courts"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "What was the 'Year of the Elephant' famous for?",
+      options: ["A great drought","Abraha's failed attack on Mecca (570 CE)","A major trade expedition","A tribal war"],
+      correct: 1,
+      difficulty: "easy",
+      explanation: "Around 570 CE, the Abyssinian general Abraha marched on Mecca with war elephants but was repelled, according to tradition through divine intervention (Surah Al-Fil)."
+    },
+    {
+      text: "Pre-Islamic Arab poetry served what primary social function?",
+      options: ["Entertainment only","Recording tribal history, values, and conflicts","Religious worship","Economic records"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the status of the Hashim clan within the Quraysh tribe?",
+      options: ["The poorest clan","A noble clan responsible for pilgrims (siqaya)","The military clan","The priestly clan"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Slavery in pre-Islamic Arabia was:",
+      options: ["Non-existent","Common and widespread","Illegal","Only for captured enemies"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What annual fair brought tribes together for cultural exchange and poetry competitions?",
+      options: ["The Medina Market","Ukaz Fair","The Mecca Bazaar","The Taif Assembly"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "The Ukaz Fair near Taif was the most famous annual gathering where poets competed and goods were traded."
+    },
+    {
+      text: "The concept of 'jiwaar' (protection) in tribal Arabia meant:",
+      options: ["Military alliance","A tribe guaranteeing safety to outsiders","Trade agreement","Marriage pact"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Pre-Islamic Arabs practiced which forms of religion?",
+      options: ["Monotheism only","Polytheism, animism, and some monotheism","Atheism","Buddhism"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the role of the camel in Arabian society?",
+      options: ["Only a food source","Transport, trade symbol, status, and food","Only for warfare","Only religious sacrifice"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The city of Taif was known for what in pre-Islamic Arabia?",
+      options: ["Its port","Its agriculture and cooler climate","Its military strength","Its scholarly tradition"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "Blood money (diyya) was paid to resolve cases of:",
+      options: ["Theft","Accidental killing or injury between tribes","Religious violations","Tax evasion"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "What characterized the 'Ayyam al-Arab' (Days of the Arabs)?",
+      options: ["Religious festivals","Famous tribal battles commemorated in poetry","Annual trade fairs","Pilgrimages"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "The hanifs were pre-Islamic Arabs who:",
+      options: ["Worshipped multiple gods","Rejected polytheism and sought monotheism","Led tribal armies","Organized trade caravans"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "What position did Muhammad's grandfather Abd al-Muttalib hold?",
+      options: ["King of Arabia","Chief of the Hashim clan and guardian of the Kaaba","Military commander","Merchant leader"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Pre-Islamic Arabs excelled in which form of literature?",
+      options: ["Epic narratives","Oral poetry (qasida)","Historical chronicles","Religious texts"],
+      correct: 1,
+      difficulty: "easy",
+      explanation: "The qasida (ode) was the dominant poetic form; the Mu'allaqat are famous examples of pre-Islamic Arabic poetry."
+    }
+  ],
+
+  // ── PART 3: Pre-Islamic Religion ───────────────────────────
+  3: [
+    {
+      text: "The main form of worship in pre-Islamic Arabia was:",
+      options: ["Monotheism","Polytheism with idols in the Kaaba","Buddhism","Zoroastrianism"],
+      correct: 1,
+      difficulty: "easy",
+      explanation: "Pre-Islamic Arabs worshipped numerous deities through idols; the Kaaba housed around 360 idols representing various tribal gods."
+    },
+    {
+      text: "How many idols were reportedly housed in the Kaaba before Islam?",
+      options: ["10","100","360","1,000"],
+      correct: 2,
+      difficulty: "easy",
+      explanation: "Tradition holds that there were 360 idols in the Kaaba, one corresponding to each day of the Arabic lunar year."
+    },
+    {
+      text: "Al-Lat, Al-Uzza, and Manat were:",
+      options: ["Three prophets","The three daughters of Allah in polytheistic belief","Three angels","Three holy cities"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "These three goddesses were widely venerated across Arabia and are mentioned in Surah An-Najm of the Quran."
+    },
+    {
+      text: "The term 'Allah' in pre-Islamic Arabia referred to:",
+      options: ["A completely new concept","The supreme deity even before Islam","An idol in the Kaaba","A foreign god"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Allah was recognized as the supreme creator deity by pre-Islamic Arabs, though they also worshipped lesser gods alongside Him."
+    },
+    {
+      text: "Jewish communities in pre-Islamic Arabia were primarily located in:",
+      options: ["Mecca","Medina (Yathrib) and surrounding areas","Taif","The Empty Quarter"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Christian communities existed in pre-Islamic Arabia primarily in:",
+      options: ["Mecca","The Empty Quarter","Yemen, Najran, and northern regions","Central Nejd"],
+      correct: 2,
+      difficulty: "medium",
+      explanation: "Najran had a significant Christian community, and Yemen had been under Christian Abyssinian influence."
+    },
+    {
+      text: "What was the 'Haram' zone around Mecca?",
+      options: ["A type of dress","A sacred zone where fighting was prohibited","A prayer ritual","A tribe's territory"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The Hajj pilgrimage existed in some form before Islam as:",
+      options: ["Only after Islam","A polytheistic ritual later reformed by Islam","Invented by the Prophet","Only in Jewish tradition"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Pilgrimage to Mecca and the Kaaba predated Islam; Prophet Ibrahim (Abraham) is credited with originally establishing it."
+    },
+    {
+      text: "Zoroastrianism was the dominant religion of which neighboring empire?",
+      options: ["Byzantine","Sassanid Persian","Ethiopian","Egyptian"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "What were 'jinn' believed to be in pre-Islamic Arabian religion?",
+      options: ["Angels","Spirits that could be good or evil","Demons only","Ancestors' souls"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The practice of 'istisqa' (rain prayer) in pre-Islamic Arabia demonstrates:",
+      options: ["Agricultural knowledge","Belief in divine control over nature","Scientific understanding","Trade customs"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Which pre-Islamic prophet is mentioned in the Quran as having been sent to the people of 'Ad?",
+      options: ["Salih","Hud","Shu'ayb","Idris"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Prophet Hud was sent to the ancient people of 'Ad, a powerful pre-Islamic Arabian civilization, as mentioned in Surah Hud and Surah Al-A'raf."
+    },
+    {
+      text: "The 'Sabi'un' (Sabians) mentioned in the Quran were likely:",
+      options: ["Polytheists","Monotheists with a star-worshipping tradition","Christians","Jews"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Pre-Islamic Arabs believed in 'qadar' (fate/destiny) as:",
+      options: ["A concept they rejected","A force controlling human destiny","A gift from idols","A Jewish concept"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "The Ethiopian (Abyssinian) kingdom that controlled Yemen practiced:",
+      options: ["Islam","Christianity (Ethiopian Orthodox)","Buddhism","Polytheism"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What was the primary purpose of making offerings to idols in pre-Islamic Arabia?",
+      options: ["Entertainment","Seeking blessing, protection, and divine favor","Political power","Economic gain"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "The term 'mushrik' refers to:",
+      options: ["A type of Arabian tent","One who associates partners with God (polytheist)","A tribal leader","A type of weapon"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Quss ibn Sa'ida al-Iyadi was famous as:",
+      options: ["A warrior","A monotheistic preacher and orator","A merchant","A poet"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Quss ibn Sa'ida was a celebrated Christian Arab orator and preacher who spoke at the Ukaz Fair and was known by Prophet Muhammad."
+    },
+    {
+      text: "The 'sacred months' (al-Ashhur al-Hurum) in pre-Islamic Arabia were when:",
+      options: ["All trade stopped","Warfare was prohibited across Arabia","Only religious festivals occurred","Pilgrimages were mandatory"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "Waraqa ibn Nawfal, a relative of Khadijah, followed which religion?",
+      options: ["Judaism","Christianity","Zoroastrianism","Polytheism"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Waraqa was a Christian scholar who recognized Muhammad's first revelation as the same that came to Moses, legitimizing the prophethood."
+    },
+    {
+      text: "Pre-Islamic Arabs practiced divination through:",
+      options: ["Stars and dreams only","Arrows (azlam), birds, and dreams","Sacred texts","Animal sacrifice only"],
+      correct: 1,
+      difficulty: "medium"
+    },
+    {
+      text: "The concept of 'akhira' (afterlife) in Arab pre-Islamic belief was:",
+      options: ["Strongly emphasized","Largely absent or uncertain in polytheistic Arabia","Borrowed from Christianity","Central to worship"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Pre-Islamic Arab poetry often reflects fatalism and focus on this life, with little developed theology about an afterlife."
+    },
+    {
+      text: "Which pre-Islamic prophet is associated with the ancient people of Thamud?",
+      options: ["Hud","Salih","Ibrahim","Ismail"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Prophet Salih was sent to the Thamud, whose remains (Mada'in Salih / al-Hijr) survive in modern Saudi Arabia."
+    },
+    {
+      text: "The religious diversity of pre-Islamic Arabia shows that the region:",
+      options: ["Was completely isolated","Had significant contact with surrounding civilizations","Had no foreign influences","Was entirely polytheistic"],
+      correct: 1,
+      difficulty: "easy"
+    },
+    {
+      text: "What motivated the 'hanifs' to seek monotheism over polytheism?",
+      options: ["Political reasons","Spiritual dissatisfaction with polytheism and influence of monotheistic neighbors","Economic benefits","Fear of neighboring empires"],
+      correct: 1,
+      difficulty: "medium",
+      explanation: "Hanifs like Zayd ibn Amr rejected idol worship independently, representing a monotheistic current in pre-Islamic Arabia that Islam built upon."
+    }
+  ]
+};
+
+// ============================================================
+//  APP STATE
+// ============================================================
+let currentUser   = null;
+let db            = null;
+let selectedPart  = 1;
+let selectedDiff  = localStorage.getItem('hom3_difficulty') || 'easy';
+let sessionQs     = [];        // 10 randomly picked questions
+let currentQIdx   = 0;
+let score         = 0;
+let correctCount  = 0;
+let hintUsedSession = false;
+let answered      = false;
+
+// ============================================================
+//  FIREBASE INIT  (graceful if config missing)
+// ============================================================
+(function initFirebase() {
+  try {
+    if (firebaseConfig && Object.keys(firebaseConfig).length > 0 &&
+        !('/* REPLACE WITH YOUR CONFIG */'.includes(Object.keys(firebaseConfig)[0]))) {
+      // Check if it's still the placeholder
+    }
+    // Only init if config looks filled
+    const cfgStr = JSON.stringify(firebaseConfig);
+    if (cfgStr.includes('REPLACE')) {
+      console.warn('[Quiz] Firebase config is placeholder – running in guest mode.');
+      return;
+    }
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+  } catch(e) {
+    console.warn('[Quiz] Firebase init failed:', e.message);
+  }
+})();
+
+// ============================================================
+//  AUTH CHECK
+// ============================================================
+function setupAuth() {
+  if (!firebase.apps || !firebase.apps.length) {
+    // No firebase — show UI in guest mode
+    hideLoading();
+    updateNavUI({ displayName: 'Guest', email: '' });
+    return;
+  }
+  firebase.auth().onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = 'index.html';
+      return;
+    }
+    currentUser = user;
+    updateNavUI(user);
+    hideLoading();
+  });
+}
+
+function updateNavUI(user) {
+  const name   = user.displayName || user.email || 'Scholar';
+  const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('navName').textContent   = name.split(' ')[0];
+  document.getElementById('navAvatar').textContent = initials || '?';
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.add('hidden');
+}
+
+// ============================================================
+//  SPARKLE PARTICLES
+// ============================================================
+(function spawnSparkles() {
+  const container = document.getElementById('sparkleContainer');
+  const count = 18;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    const size = Math.random() * 3 + 1.5;
+    s.style.cssText = `
+      left: ${Math.random()*100}vw;
+      bottom: ${Math.random()*10 - 5}vh;
+      width: ${size}px;
+      height: ${size}px;
+      animation-duration: ${8 + Math.random()*14}s;
+      animation-delay: ${Math.random()*12}s;
+      opacity: 0;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ============================================================
+//  HINT LOGIC
+// ============================================================
+function getTodayKey() {
+  return new Date().toISOString().slice(0,10); // YYYY-MM-DD
+}
+function isHintAvailable() {
+  const used = localStorage.getItem('hom3_hint_used_today');
+  return used !== getTodayKey();
+}
+function markHintUsed() {
+  localStorage.setItem('hom3_hint_used_today', getTodayKey());
+}
+function updateHintUI() {
+  const avail = isHintAvailable() && !hintUsedSession;
+  const btn   = document.getElementById('btnHint');
+  const status= document.getElementById('hintStatus');
+  if (!avail) {
+    btn.disabled  = true;
+    status.textContent = 'Used Today';
+    status.style.color = 'var(--red)';
+  } else {
+    btn.disabled  = false;
+    status.textContent = 'Available';
+    status.style.color = 'var(--green)';
+  }
+}
+
+// ============================================================
+//  PART SELECTION
+// ============================================================
+document.querySelectorAll('.part-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.part-tab').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedPart = parseInt(btn.dataset.part);
+  });
+});
+
+// ============================================================
+//  DIFFICULTY SELECTION
+// ============================================================
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedDiff = btn.dataset.diff;
+    localStorage.setItem('hom3_difficulty', selectedDiff);
+  });
+});
+// Restore saved difficulty
+(function restoreDiff() {
+  document.querySelectorAll('.diff-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.diff === selectedDiff);
+  });
+})();
+
+// ============================================================
+//  START QUIZ
+// ============================================================
+document.getElementById('btnStartQuiz').addEventListener('click', startQuiz);
+
+function startQuiz() {
+  const pool = ALL_QUESTIONS[selectedPart];
+  // Filter by difficulty (include all if not enough matching)
+  let filtered = pool.filter(q => q.difficulty === selectedDiff);
+  if (filtered.length < 10) filtered = pool; // fallback to all
+
+  // Shuffle & take 10
+  sessionQs = shuffleArray([...filtered]).slice(0, 10);
+  currentQIdx  = 0;
+  score        = 0;
+  correctCount = 0;
+  hintUsedSession = false;
+
+  showScreen('screenQuiz');
+  loadQuestion();
+  updateHintUI();
+}
+
+// ============================================================
+//  QUESTION LOADING
+// ============================================================
+function loadQuestion() {
+  answered = false;
+  const q = sessionQs[currentQIdx];
+  const total = sessionQs.length;
+
+  // Header
+  document.getElementById('qCounter').textContent = `Q ${currentQIdx + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(currentQIdx / total) * 100}%`;
+  document.getElementById('scoreLive').textContent = `${score} pts`;
+
+  // Meta
+  const diffBadge = document.getElementById('qDiffBadge');
+  diffBadge.className = `q-difficulty-badge badge-${q.difficulty}`;
+  diffBadge.textContent = capitalize(q.difficulty);
+  document.getElementById('qPartTag').textContent = `Level 1 · Part ${selectedPart}`;
+
+  // Question text
+  document.getElementById('qText').textContent = q.text;
+
+  // Options
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn anim-fadeup';
+    btn.style.animationDelay = `${idx * 0.07}s`;
+    btn.dataset.idx = idx;
+    btn.innerHTML = `<span class="option-label">${String.fromCharCode(65 + idx)}</span>${opt}`;
+    btn.addEventListener('click', () => handleAnswer(idx));
+    grid.appendChild(btn);
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box';
+  fb.innerHTML = '';
+
+  // Next btn
+  document.getElementById('btnNext').style.display = 'none';
+
+  updateHintUI();
+
+  // Animate card in
+  const card = document.getElementById('questionCard');
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(16px)';
+  requestAnimationFrame(() => {
+    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    card.style.opacity    = '1';
+    card.style.transform  = 'translateY(0)';
+  });
+}
+
+// ============================================================
+//  ANSWER HANDLING
+// ============================================================
+function handleAnswer(selectedIdx) {
+  if (answered) return;
+  answered = true;
+
+  const q = sessionQs[currentQIdx];
+  const isCorrect = selectedIdx === q.correct;
+  const optBtns = document.querySelectorAll('.option-btn');
+
+  // Disable all options
+  optBtns.forEach(btn => btn.disabled = true);
+
+  // Mark correct / wrong
+  optBtns.forEach(btn => {
+    const idx = parseInt(btn.dataset.idx);
+    if (idx === q.correct) {
+      btn.classList.add('correct');
+    } else if (idx === selectedIdx && !isCorrect) {
+      btn.classList.add('selected-wrong', 'wrong');
+    }
+  });
+
+  // Scoring
+  if (isCorrect) {
+    correctCount++;
+    let pts = 10; // base
+    if (q.difficulty === 'easy')   pts += 5;
+    if (q.difficulty === 'medium') pts += 10;
+    if (q.difficulty === 'hard')   pts += 15;
+    score += pts;
+  }
+
+  // Feedback box
+  const fb = document.getElementById('feedbackBox');
+  if (isCorrect) {
+    fb.className = 'feedback-box correct-fb show';
+    fb.innerHTML = `<span class="feedback-icon">✅</span> <strong>Correct!</strong>` +
+      (q.explanation ? `<div class="feedback-explanation">${q.explanation}</div>` : '');
+  } else {
+    fb.className = 'feedback-box wrong-fb show';
+    fb.innerHTML = `<span class="feedback-icon">❌</span> <strong>Incorrect.</strong> The correct answer is <strong style="color:var(--green)">${q.options[q.correct]}</strong>.` +
+      (q.explanation ? `<div class="feedback-explanation">${q.explanation}</div>` : '');
+  }
+
+  // Update live score display
+  document.getElementById('scoreLive').textContent = `${score} pts`;
+
+  // Show next button
+  document.getElementById('btnNext').style.display = 'inline-flex';
+}
+
+// ============================================================
+//  HINT
+// ============================================================
+document.getElementById('btnHint').addEventListener('click', useHint);
+
+function useHint() {
+  if (!isHintAvailable() || hintUsedSession || answered) return;
+
+  const q = sessionQs[currentQIdx];
+  const optBtns = Array.from(document.querySelectorAll('.option-btn'));
+  const wrongIdxs = optBtns
+    .map((_, idx) => idx)
+    .filter(idx => idx !== q.correct);
+
+  // Randomly eliminate 2 wrong answers
+  const toElim = shuffleArray(wrongIdxs).slice(0, 2);
+  toElim.forEach(idx => {
+    optBtns[idx].classList.add('eliminated');
+    optBtns[idx].disabled = true;
+  });
+
+  // Apply penalty
+  score = Math.max(0, score - 2);
+  document.getElementById('scoreLive').textContent = `${score} pts`;
+
+  // Mark used
+  hintUsedSession = true;
+  markHintUsed();
+  updateHintUI();
+}
+
+// ============================================================
+//  NEXT QUESTION
+// ============================================================
+document.getElementById('btnNext').addEventListener('click', () => {
+  currentQIdx++;
+  if (currentQIdx < sessionQs.length) {
+    loadQuestion();
+  } else {
+    finishQuiz();
+  }
+});
+
+// ============================================================
+//  FINISH QUIZ
+// ============================================================
+async function finishQuiz() {
+  const total   = sessionQs.length;
+  const pct     = Math.round((correctCount / total) * 100);
+  const passed  = pct >= 70;
+  const partId  = `level1_part${selectedPart}`;
+
+  // Streak logic
+  let streak = parseInt(localStorage.getItem('hom3_streak') || '0');
+  const lastDate = localStorage.getItem('hom3_last_quiz_date');
+  const today = getTodayKey();
+
+  let streakBonus = 0;
+  if (passed) {
+    if (lastDate === getPreviousDay()) {
+      streak++;
+      streakBonus = 10;
+    } else if (lastDate !== today) {
+      streak = 1;
+    }
+    // else: already quizzed today, maintain streak
+    localStorage.setItem('hom3_streak', streak);
+    localStorage.setItem('hom3_last_quiz_date', today);
+  }
+
+  if (streakBonus > 0) score += streakBonus;
+
+  // Firebase save
+  if (currentUser && db) {
+    try {
+      const uid = currentUser.uid;
+      const batch = db.batch();
+
+      // Quiz score doc
+      const scoreRef = db.collection('users').doc(uid).collection('quizScores').doc(partId);
+      const existingDoc = await scoreRef.get();
+      const attempts = existingDoc.exists ? (existingDoc.data().attempts || 0) + 1 : 1;
+      batch.set(scoreRef, {
+        passed,
+        score,
+        pct,
+        difficulty: selectedDiff,
+        attempts,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      // User stats
+      const statsRef = db.collection('users').doc(uid);
+      batch.set(statsRef, {
+        stats: {
+          totalQuizzesTaken: firebase.firestore.FieldValue.increment(1),
+          totalPointsEarned: firebase.firestore.FieldValue.increment(score)
+        },
+        streak: { current: streak, lastQuizDate: today }
+      }, { merge: true });
+
+      // Leaderboard
+      const lbRef = db.collection('leaderboard').doc(uid);
+      batch.set(lbRef, {
+        displayName: currentUser.displayName || 'Scholar',
+        totalScore:  firebase.firestore.FieldValue.increment(score),
+        quizzesCompleted: firebase.firestore.FieldValue.increment(1),
+        currentStreak: streak
+      }, { merge: true });
+
+      await batch.commit();
+    } catch(e) {
+      console.warn('[Quiz] Firebase save error:', e.message);
+    }
+  }
+
+  // Show results
+  showResults(pct, passed, streak, streakBonus);
+}
+
+function getPreviousDay() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return d.toISOString().slice(0,10);
+}
+
+// ============================================================
+//  SHOW RESULTS
+// ============================================================
+function showResults(pct, passed, streak, streakBonus) {
+  showScreen('screenResults');
+
+  // Subtitle
+  const partNames = {1:'Geography',2:'Society & Tribes',3:'Pre-Islamic Religion'};
+  document.getElementById('resultsSubtitle').textContent =
+    `Level 1 · Part ${selectedPart}: ${partNames[selectedPart]} · ${capitalize(selectedDiff)}`;
+
+  // Score ring animation
+  const ringFill = document.getElementById('scoreRingFill');
+  const circum   = 2 * Math.PI * 80; // ≈ 502.65
+  ringFill.style.strokeDasharray  = circum;
+  ringFill.style.strokeDashoffset = circum;
+  if (!passed) ringFill.classList.add('failed');
+  else         ringFill.classList.remove('failed');
+
+  setTimeout(() => {
+    const offset = circum - (pct / 100) * circum;
+    ringFill.style.strokeDashoffset = offset;
+  }, 100);
+
+  // Animate percentage counter
+  let displayed = 0;
+  const pctEl = document.getElementById('scoreRingPct');
+  const interval = setInterval(() => {
+    displayed = Math.min(displayed + 2, pct);
+    pctEl.textContent = displayed + '%';
+    if (displayed >= pct) clearInterval(interval);
+  }, 20);
+
+  // Pass/fail
+  const banner = document.getElementById('passBanner');
+  banner.className = `pass-banner ${passed ? 'pass' : 'fail'}`;
+
+  let perfMsg = '';
+  if (pct >= 90)      perfMsg = 'Excellent! 🏆';
+  else if (pct >= 70) perfMsg = 'Great Work! 👍';
+  else                perfMsg = 'Keep Practicing 📚';
+
+  document.getElementById('perfMsg').textContent   = perfMsg;
+  document.getElementById('passDetails').textContent =
+    passed
+      ? `You passed! ${correctCount}/${sessionQs.length} correct — ${pct}%`
+      : `Score below 70% — ${correctCount}/${sessionQs.length} correct. Try again!`;
+
+  // Stats
+  document.getElementById('statCorrect').textContent = `${correctCount}/${sessionQs.length}`;
+  document.getElementById('statPoints').textContent  = score;
+  document.getElementById('statStreak').textContent  = streak;
+
+  // Streak badge
+  if (streak > 0) {
+    const badge = document.getElementById('streakBadgeWrap');
+    badge.style.display = 'inline-flex';
+    document.getElementById('streakBadgeText').textContent =
+      streakBonus > 0
+        ? `🔥 ${streak}-Day Streak! +${streakBonus} Bonus Points`
+        : `🔥 ${streak}-Day Streak Active`;
+  }
+
+  // Share setup
+  const shareMsg = encodeURIComponent(
+    `I scored ${pct}% on the Islamic History Quiz! 📚🏛️ Level 1 · Part ${selectedPart} · ${capitalize(selectedDiff)}\nTest your knowledge at History of Muslims Academy!`
+  );
+  const shareUrl = encodeURIComponent(window.location.href);
+
+  document.getElementById('shareTwitter').onclick = () =>
+    window.open(`https://twitter.com/intent/tweet?text=${shareMsg}&url=${shareUrl}`, '_blank');
+  document.getElementById('shareWhatsApp').onclick = () =>
+    window.open(`https://wa.me/?text=${shareMsg}%20${shareUrl}`, '_blank');
+  document.getElementById('shareFacebook').onclick = () =>
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareMsg}`, '_blank');
+  document.getElementById('shareNative').onclick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Islamic History Quiz',
+        text: decodeURIComponent(shareMsg),
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(decodeURIComponent(shareMsg) + ' ' + window.location.href)
+        .then(() => alert('Link copied to clipboard!'));
+    }
+  };
+
+  // Upsell modal (max 1x/week for free users, only if not premium)
+  setTimeout(() => showUpsellIfNeeded(), 2000);
+}
+
+// ============================================================
+//  UPSELL MODAL
+// ============================================================
+function showUpsellIfNeeded() {
+  // Skip if user appears to be premium (you can check Firestore here in prod)
+  const lastUpsell = localStorage.getItem('hom3_last_upsell');
+  const now = Date.now();
+  const oneWeek = 7 * 24 * 60 * 60 * 1000;
+  if (lastUpsell && (now - parseInt(lastUpsell)) < oneWeek) return;
+
+  localStorage.setItem('hom3_last_upsell', now.toString());
+  document.getElementById('upsellModal').classList.add('show');
+}
+
+['closeUpsell','closeUpsell2'].forEach(id => {
+  document.getElementById(id).addEventListener('click', () => {
+    document.getElementById('upsellModal').classList.remove('show');
+  });
+});
+
+// ============================================================
+//  RETRY QUIZ
+// ============================================================
+document.getElementById('btnRetry').addEventListener('click', () => {
+  showScreen('screenStart');
+});
+
+// ============================================================
+//  SCREEN MANAGEMENT
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+//  UTILITIES
+// ============================================================
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+setupAuth();
+</script>
+</body>
+</html>
