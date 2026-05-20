@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson Library — History of Muslims Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:  #080F1E;
+      --navy2: #0D1E35;
+      --gold:  #C9A96E;
+      --gold2: #E8C987;
+      --cream: #F5F0E8;
+      --green: #6FCF97;
+      --red:   #EB5757;
+      --text-light: rgba(245,240,232,0.85);
+      --border-gold: rgba(201,169,110,0.35);
+      --card-bg: rgba(13,30,53,0.85);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--navy);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy2); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== GEO BACKGROUND ===== */
+    .geo-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .geo-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(201,169,110,0.04) 59px, rgba(201,169,110,0.04) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(201,169,110,0.04) 59px, rgba(201,169,110,0.04) 60px);
+    }
+    .geo-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 84px, rgba(201,169,110,0.025) 84px, rgba(201,169,110,0.025) 85px),
+        repeating-linear-gradient(-45deg, transparent, transparent 84px, rgba(201,169,110,0.025) 84px, rgba(201,169,110,0.025) 85px);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 2rem;
+      background: rgba(8,15,30,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-gold);
+    }
+    .navbar-brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.95rem; color: var(--gold);
+      letter-spacing: 0.05em; text-decoration: none;
+    }
+    .navbar-brand span { color: var(--gold2); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-light); text-decoration: none;
+      font-size: 0.88rem; font-weight: 600; letter-spacing: 0.04em;
+      transition: color 0.25s; padding: 0.3rem 0;
+      border-bottom: 1px solid transparent;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--gold2); border-bottom-color: var(--gold2); }
+    .nav-auth { display: flex; align-items: center; gap: 1rem; }
+    .nav-user-info { display: none; align-items: center; gap: 0.75rem; }
+    .nav-user-info.visible { display: flex; }
+    .nav-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
+    .nav-user-name { font-size: 0.82rem; color: var(--cream); font-weight: 600; }
+    .nav-premium-badge {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--navy);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      padding: 0.2rem 0.6rem; border-radius: 20px;
+    }
+    .btn-signout {
+      background: transparent; border: 1px solid var(--border-gold);
+      color: var(--gold); padding: 0.35rem 0.9rem; border-radius: 4px;
+      cursor: pointer; font-size: 0.78rem; font-family: 'Lato', sans-serif;
+      transition: all 0.25s;
+    }
+    .btn-signout:hover { background: rgba(201,169,110,0.15); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .navbar { padding: 0.9rem 1rem; }
+    }
+
+    /* ===== SITE WRAPPER ===== */
+    .site-wrapper { position: relative; z-index: 1; padding-top: 70px; }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+      position: relative;
+    }
+    .page-header-glow {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      color: var(--cream);
+      text-shadow: 0 0 30px rgba(201,169,110,0.25);
+      margin-bottom: 0.5rem;
+    }
+    .page-header h1 span { color: var(--gold2); }
+    .page-header p {
+      color: var(--text-light); font-size: 1rem; max-width: 560px;
+      margin: 0 auto; line-height: 1.6;
+    }
+    .geo-divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.5rem auto; max-width: 300px;
+    }
+    .geo-divider-line { flex: 1; height: 1px; background: var(--border-gold); }
+    .geo-divider-star { color: var(--gold); font-size: 1rem; }
+
+    /* ===== CONTINUE BANNER ===== */
+    .continue-banner {
+      display: none;
+      margin: 0 1.5rem 1.5rem;
+      max-width: 1100px;
+      margin-left: auto; margin-right: auto;
+      background: linear-gradient(135deg, rgba(201,169,110,0.12), rgba(232,201,135,0.06));
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      align-items: center; gap: 1rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .continue-banner.visible { display: flex; }
+    .continue-banner-left { display: flex; align-items: center; gap: 0.75rem; }
+    .continue-icon { font-size: 1.5rem; }
+    .continue-text strong { display: block; color: var(--gold2); font-size: 0.95rem; margin-bottom: 0.15rem; }
+    .continue-text span { color: var(--text-light); font-size: 0.82rem; }
+    .btn-continue {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy); font-weight: 700; font-size: 0.85rem;
+      padding: 0.55rem 1.3rem; border: none; border-radius: 8px;
+      cursor: pointer; transition: all 0.25s; white-space: nowrap;
+      font-family: 'Lato', sans-serif;
+    }
+    .btn-continue:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,169,110,0.4); }
+
+    /* ===== CATEGORY TABS ===== */
+    .tabs-wrapper {
+      max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 1.5rem;
+      overflow-x: auto;
+    }
+    .tabs {
+      display: flex; gap: 0.6rem;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 0;
+      min-width: max-content;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none; border-bottom: 3px solid transparent;
+      color: var(--text-light);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 0.75rem 1rem 0.85rem;
+      cursor: pointer; transition: all 0.25s;
+      display: flex; align-items: center; gap: 0.4rem;
+      white-space: nowrap; letter-spacing: 0.03em;
+    }
+    .tab-btn:hover { color: var(--gold2); }
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+    .tab-count {
+      background: rgba(201,169,110,0.15);
+      color: var(--gold); font-size: 0.7rem; font-weight: 700;
+      padding: 0.1rem 0.45rem; border-radius: 20px;
+    }
+    .tab-btn.active .tab-count { background: rgba(201,169,110,0.3); }
+
+    /* ===== MAIN CONTENT AREA ===== */
+    .main-content { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+    /* ===== CATEGORY PANEL ===== */
+    .category-panel { display: none; }
+    .category-panel.active { display: block; }
+
+    /* ===== CATEGORY PROGRESS BAR ===== */
+    .cat-progress-wrap {
+      background: rgba(13,30,53,0.7);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .cat-progress-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .cat-progress-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.85rem; color: var(--gold); letter-spacing: 0.06em;
+    }
+    .cat-progress-pct { font-size: 0.82rem; color: var(--gold2); font-weight: 700; }
+    .progress-bar-bg {
+      width: 100%; height: 8px;
+      background: rgba(201,169,110,0.12);
+      border-radius: 4px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .cat-progress-sub {
+      margin-top: 0.6rem; font-size: 0.78rem;
+      color: rgba(245,240,232,0.5);
+    }
+
+    /* ===== LESSONS GRID ===== */
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ===== LESSON CARD ===== */
+    .lesson-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .lesson-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      border-color: rgba(201,169,110,0.6);
+    }
+    .lesson-card.is-free { border-color: rgba(111,207,151,0.3); }
+    .lesson-card.is-free:hover { border-color: rgba(111,207,151,0.6); }
+    .lesson-card.is-open {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(201,169,110,0.2);
+    }
+    .lesson-card.is-completed { border-color: rgba(111,207,151,0.5); }
+
+    /* Card header (always visible) */
+    .card-header {
+      padding: 1.1rem 1.2rem 0.9rem;
+      cursor: pointer;
+      position: relative;
+    }
+    .card-top-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 0.5rem; margin-bottom: 0.65rem;
+    }
+    .part-number {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold);
+      background: rgba(201,169,110,0.1);
+      padding: 0.2rem 0.6rem; border-radius: 4px;
+    }
+    .card-badges { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+    /* Difficulty badge */
+    .badge-difficulty {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 20px;
+    }
+    .badge-beginner { background: rgba(111,207,151,0.15); color: var(--green); border: 1px solid rgba(111,207,151,0.3); }
+    .badge-intermediate { background: rgba(201,169,110,0.15); color: var(--gold2); border: 1px solid rgba(201,169,110,0.3); }
+    .badge-advanced { background: rgba(235,87,87,0.12); color: var(--red); border: 1px solid rgba(235,87,87,0.25); }
+
+    /* Free/lock badge */
+    .badge-free {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(111,207,151,0.15); color: var(--green);
+      border: 1px solid rgba(111,207,151,0.3);
+      padding: 0.2rem 0.55rem; border-radius: 20px;
+    }
+    .badge-premium {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(201,169,110,0.12); color: var(--gold);
+      border: 1px solid var(--border-gold);
+      padding: 0.2rem 0.55rem; border-radius: 20px;
+    }
+    .badge-completed {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em;
+      background: rgba(111,207,151,0.2); color: var(--green);
+      border: 1px solid rgba(111,207,151,0.4);
+      padding: 0.2rem 0.55rem; border-radius: 20px;
+    }
+
+    .card-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.88rem; color: var(--cream);
+      line-height: 1.45; margin-bottom: 0.55rem;
+    }
+    .card-meta {
+      display: flex; gap: 1rem; align-items: center;
+      font-size: 0.78rem; color: rgba(245,240,232,0.55);
+    }
+    .card-meta .reading-time { display: flex; align-items: center; gap: 0.3rem; }
+    .card-toggle-icon {
+      position: absolute; right: 1.2rem; bottom: 1rem;
+      width: 22px; height: 22px;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid var(--border-gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: var(--gold);
+      transition: transform 0.3s;
+    }
+    .lesson-card.is-open .card-toggle-icon { transform: rotate(180deg); }
+
+    /* Locked overlay on header */
+    .lock-overlay {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      background: rgba(201,169,110,0.06);
+      border: 1px dashed rgba(201,169,110,0.25);
+      border-radius: 8px;
+      font-size: 0.8rem; color: rgba(245,240,232,0.6);
+    }
+    .lock-overlay .lock-icon { font-size: 1rem; }
+
+    /* ===== LESSON CONTENT (expanded) ===== */
+    .lesson-body {
+      display: none;
+      border-top: 1px solid rgba(201,169,110,0.2);
+    }
+    .lesson-card.is-open .lesson-body { display: block; }
+
+    /* Free content area */
+    .lesson-content-area { padding: 1.5rem 1.4rem; }
+
+    /* Lesson prose */
+    .lesson-prose h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem; color: var(--gold);
+      margin: 1.5rem 0 0.6rem; letter-spacing: 0.04em;
+    }
+    .lesson-prose h2:first-child { margin-top: 0; }
+    .lesson-prose h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: var(--gold2);
+      margin: 1.1rem 0 0.4rem; letter-spacing: 0.03em;
+    }
+    .lesson-prose p {
+      font-size: 0.9rem; color: var(--text-light);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+    .lesson-prose ul {
+      padding-left: 1.3rem; margin-bottom: 0.75rem;
+    }
+    .lesson-prose ul li {
+      font-size: 0.88rem; color: var(--text-light);
+      line-height: 1.7; margin-bottom: 0.35rem;
+    }
+    .lesson-prose ul li strong { color: var(--gold2); }
+
+    /* Timeline */
+    .timeline {
+      position: relative; margin: 1rem 0;
+      padding-left: 1.5rem;
+      border-left: 2px solid rgba(201,169,110,0.3);
+    }
+    .timeline-item {
+      position: relative; margin-bottom: 1rem;
+      padding-left: 0.75rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -1.15rem; top: 0.35rem;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(201,169,110,0.5);
+    }
+    .timeline-year {
+      font-size: 0.72rem; font-weight: 700; color: var(--gold);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.15rem;
+    }
+    .timeline-event {
+      font-size: 0.85rem; color: var(--text-light); line-height: 1.6;
+    }
+
+    /* Caliph card */
+    .caliph-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .caliph-card {
+      background: rgba(8,15,30,0.6);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 10px; padding: 1rem;
+    }
+    .caliph-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.78rem; color: var(--gold2); margin-bottom: 0.3rem;
+    }
+    .caliph-years {
+      font-size: 0.7rem; color: var(--gold); opacity: 0.8;
+      letter-spacing: 0.06em; margin-bottom: 0.5rem;
+    }
+    .caliph-desc { font-size: 0.82rem; color: var(--text-light); line-height: 1.6; }
+
+    /* Takeaway box */
+    .takeaway-box {
+      background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(232,201,135,0.05));
+      border: 1px solid rgba(201,169,110,0.4);
+      border-left: 4px solid var(--gold);
+      border-radius: 10px; padding: 1.1rem 1.3rem;
+      margin: 1.2rem 0;
+    }
+    .takeaway-box .takeaway-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .takeaway-box p {
+      font-size: 0.88rem; color: var(--text-light);
+      line-height: 1.75; margin: 0;
+    }
+
+    /* Quiz link */
+    .quiz-link-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 0.75rem;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid var(--border-gold);
+      color: var(--gold2); font-size: 0.85rem; font-weight: 600;
+      padding: 0.6rem 1.2rem; border-radius: 8px;
+      text-decoration: none; transition: all 0.25s; cursor: pointer;
+      font-family: 'Lato', sans-serif;
+    }
+    .quiz-link-btn:hover { background: rgba(201,169,110,0.2); transform: translateY(-1px); }
+
+    /* Mark complete + actions */
+    .lesson-actions {
+      display: flex; gap: 0.75rem; align-items: center;
+      padding: 0.9rem 1.4rem;
+      border-top: 1px solid rgba(201,169,110,0.15);
+      flex-wrap: wrap;
+    }
+    .btn-complete {
+      display: flex; align-items: center; gap: 0.45rem;
+      background: linear-gradient(135deg, rgba(111,207,151,0.15), rgba(111,207,151,0.08));
+      border: 1px solid rgba(111,207,151,0.4);
+      color: var(--green); font-family: 'Lato', sans-serif;
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em;
+      padding: 0.5rem 1.1rem; border-radius: 8px;
+      cursor: pointer; transition: all 0.25s;
+    }
+    .btn-complete:hover { background: rgba(111,207,151,0.25); }
+    .btn-complete.completed {
+      background: rgba(111,207,151,0.2);
+      border-color: rgba(111,207,151,0.6);
+      cursor: default;
+    }
+
+    /* ===== PREMIUM LOCKED BODY ===== */
+    .premium-cta {
+      padding: 1.5rem 1.4rem;
+      text-align: center;
+    }
+    .premium-lock-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .premium-cta h3 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1rem; color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .premium-cta p {
+      font-size: 0.85rem; color: var(--text-light);
+      line-height: 1.6; margin-bottom: 1.2rem; max-width: 340px;
+      margin-left: auto; margin-right: auto;
+    }
+    .premium-cta-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .btn-upgrade {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy); font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 0.85rem;
+      padding: 0.6rem 1.4rem; border: none; border-radius: 8px;
+      cursor: pointer; transition: all 0.25s;
+    }
+    .btn-upgrade:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,169,110,0.4); }
+    .btn-share-unlock {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: transparent;
+      border: 1px solid var(--border-gold);
+      color: var(--gold2); font-family: 'Lato', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      padding: 0.6rem 1.1rem; border-radius: 8px;
+      cursor: pointer; transition: all 0.25s;
+    }
+    .btn-share-unlock:hover { background: rgba(201,169,110,0.1); }
+    .btn-share-unlock:disabled {
+      opacity: 0.45; cursor: not-allowed;
+    }
+    .unlock-cooldown {
+      font-size: 0.75rem; color: rgba(245,240,232,0.45);
+      margin-top: 0.5rem;
+    }
+
+    /* Early access notice */
+    .early-access-notice {
+      margin-top: 0.9rem;
+      padding: 0.7rem 1rem;
+      background: rgba(201,169,110,0.07);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 8px;
+      font-size: 0.8rem; color: rgba(245,240,232,0.6);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    /* ===== SHARE MODAL ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #0D1E35;
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 2rem 1.8rem;
+      max-width: 480px; width: 100%;
+      position: relative;
+      animation: modal-in 0.3s ease;
+    }
+    @keyframes modal-in {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: transparent; border: none;
+      color: rgba(245,240,232,0.5); font-size: 1.3rem;
+      cursor: pointer; transition: color 0.2s; line-height: 1;
+    }
+    .modal-close:hover { color: var(--cream); }
+    .modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.1rem; color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .modal-subtitle { font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6; }
+    .share-code-box {
+      background: rgba(8,15,30,0.8);
+      border: 1px dashed rgba(201,169,110,0.4);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; margin-bottom: 1.2rem;
+    }
+    .share-code {
+      font-family: monospace; font-size: 0.82rem;
+      color: var(--gold2); letter-spacing: 0.05em;
+      word-break: break-all;
+    }
+    .btn-copy {
+      flex-shrink: 0;
+      background: rgba(201,169,110,0.15);
+      border: 1px solid var(--border-gold);
+      color: var(--gold); font-size: 0.78rem; font-weight: 700;
+      padding: 0.35rem 0.75rem; border-radius: 6px;
+      cursor: pointer; font-family: 'Lato', sans-serif;
+      transition: all 0.2s;
+    }
+    .btn-copy:hover { background: rgba(201,169,110,0.25); }
+    .btn-copy.copied { color: var(--green); border-color: rgba(111,207,151,0.4); }
+    .share-platforms { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .share-platform-btn {
+      flex: 1; min-width: 120px;
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.65rem 0.8rem; border-radius: 8px;
+      font-size: 0.82rem; font-weight: 600; font-family: 'Lato', sans-serif;
+      cursor: pointer; border: 1px solid transparent; transition: all 0.25s;
+      text-decoration: none;
+    }
+    .share-twitter { background: rgba(29,161,242,0.12); border-color: rgba(29,161,242,0.3); color: #1DA1F2; }
+    .share-twitter:hover { background: rgba(29,161,242,0.22); }
+    .share-whatsapp { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.3); color: #25D366; }
+    .share-whatsapp:hover { background: rgba(37,211,102,0.2); }
+    .share-instagram { background: rgba(225,48,108,0.1); border-color: rgba(225,48,108,0.25); color: #E1306C; }
+    .share-instagram:hover { background: rgba(225,48,108,0.18); }
+    .modal-note { font-size: 0.75rem; color: rgba(245,240,232,0.45); line-height: 1.5; }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed; bottom: 2rem; right: 1.5rem; z-index: 999;
+      background: var(--navy2);
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      padding: 0.75rem 1.2rem;
+      font-size: 0.85rem; color: var(--cream);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      display: flex; align-items: center; gap: 0.5rem;
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.35s ease;
+      max-width: 320px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
+    .toast.info .toast-icon { color: var(--gold); }
+
+    /* ===== EMPTY / COMING SOON ===== */
+    .coming-soon-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: rgba(13,30,53,0.5);
+      border: 1px dashed rgba(201,169,110,0.2);
+      border-radius: 10px; padding: 0.9rem 1.1rem;
+      margin-bottom: 0.6rem;
+    }
+    .coming-soon-num { font-size: 0.7rem; color: rgba(201,169,110,0.5); font-weight: 700; min-width: 32px; }
+    .coming-soon-title { font-size: 0.85rem; color: rgba(245,240,232,0.35); flex: 1; }
+    .coming-soon-badge {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: rgba(201,169,110,0.5);
+      background: rgba(201,169,110,0.06);
+      border: 1px solid rgba(201,169,110,0.15);
+      padding: 0.18rem 0.5rem; border-radius: 4px;
+    }
+    .coming-soon-grid { display: flex; flex-direction: column; gap: 0; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .lessons-grid { grid-template-columns: 1fr; }
+      .caliph-cards { grid-template-columns: 1fr 1fr; }
+      .premium-cta-btns { flex-direction: column; }
+      .modal-box { padding: 1.5rem 1.2rem; }
+      .share-platforms { flex-direction: column; }
+      .share-platform-btn { min-width: unset; }
+    }
+    @media (max-width: 400px) {
+      .caliph-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ===== UTILITY ===== */
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; clip: rect(0,0,0,0); overflow: hidden; }
+  </style>
+</head>
+<body>
+
+<!-- Geometric background -->
+<div class="geo-bg"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">HOM<span>s</span>Academy</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="lessons.html" class="active">Lessons</a></li>
+  </ul>
+  <div class="nav-auth">
+    <div class="nav-user-info" id="navUserInfo">
+      <img src="" alt="Avatar" class="nav-avatar" id="navAvatar" />
+      <span class="nav-user-name" id="navUserName"></span>
+      <span class="nav-premium-badge hidden" id="navPremiumBadge">Premium</span>
+      <button class="btn-signout" id="btnSignOut">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== SITE WRAPPER ===== -->
+<div class="site-wrapper">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header-glow"></div>
+    <h1>Lesson <span>Library</span></h1>
+    <div class="geo-divider">
+      <div class="geo-divider-line"></div>
+      <div class="geo-divider-star">✦</div>
+      <div class="geo-divider-line"></div>
+    </div>
+    <p>Explore 1,400 years of Islamic civilization across five curated categories.</p>
+  </header>
+
+  <!-- Continue Banner -->
+  <div class="continue-banner" id="continueBanner">
+    <div class="continue-banner-left">
+      <div class="continue-icon">📖</div>
+      <div class="continue-text">
+        <strong>Continue Where You Left Off</strong>
+        <span id="continueDesc">Loading last position...</span>
+      </div>
+    </div>
+    <button class="btn-continue" id="btnContinue">Resume Lesson</button>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="tabs-wrapper">
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" role="tab" data-cat="0" aria-selected="true">
+        🏛️ The Start of Empires <span class="tab-count">30</span>
+      </button>
+      <button class="tab-btn" role="tab" data-cat="1" aria-selected="false">
+        👑 Rulers &amp; Leaders <span class="tab-count">30</span>
+      </button>
+      <button class="tab-btn" role="tab" data-cat="2" aria-selected="false">
+        ✨ Islamic Golden Age <span class="tab-count">30</span>
+      </button>
+      <button class="tab-btn" role="tab" data-cat="3" aria-selected="false">
+        🌍 The Modern Age <span class="tab-count">30</span>
+      </button>
+      <button class="tab-btn" role="tab" data-cat="4" aria-selected="false">
+        🎭 Society &amp; Culture <span class="tab-count">30</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ========== CATEGORY 0: The Start of Empires ========== -->
+    <div class="category-panel active" id="cat-panel-0" role="tabpanel">
+
+      <!-- Progress bar -->
+      <div class="cat-progress-wrap">
+        <div class="cat-progress-header">
+          <span class="cat-progress-title">🏛️ The Start of Empires</span>
+          <span class="cat-progress-pct" id="prog-pct-0">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="prog-bar-0" style="width:0%"></div>
+        </div>
+        <div class="cat-progress-sub" id="prog-sub-0">0 of 30 parts completed</div>
+      </div>
+
+      <!-- Lessons Grid -->
+      <div class="lessons-grid">
+
+        <!-- ---- Part 1: FREE ---- -->
+        <div class="lesson-card is-free" id="card-0-1" data-cat="0" data-part="1" data-free="true">
+          <div class="card-header" onclick="toggleLesson(0,1)">
+            <div class="card-top-row">
+              <span class="part-number">Part 1</span>
+              <div class="card-badges">
+                <span class="badge-difficulty badge-beginner">Beginner</span>
+                <span class="badge-free">Free</span>
+                <span class="badge-completed hidden" id="badge-completed-0-1">✓ Done</span>
+              </div>
+            </div>
+            <div class="card-title">The Foundation: Birth of Islamic Statehood</div>
+            <div class="card-meta">
+              <span class="reading-time">⏱️ 15 min read</span>
+              <span>622 CE</span>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="lesson-body" id="body-0-1">
+            <div class="lesson-content-area">
+              <div class="lesson-prose">
+
+                <h2>The Birth of Islamic Statehood (622 CE)</h2>
+                <p>The year 622 CE marks one of history's most consequential turning points. When the Prophet Muhammad and his followers emigrated from Mecca to Medina — an event known as the <strong>Hijra</strong> — they did not merely change location. They inaugurated the world's first Islamic state, laying legal, social, and political foundations that would echo across centuries.</p>
+
+                <h3>The City of the Prophet</h3>
+                <p>Medina (then called Yathrib) welcomed the Muslims after years of persecution in Mecca. The city was home to Arab tribes and three main Jewish tribes — the Banu Qaynuqa, Banu Nadir, and Banu Qurayza — as well as pagan and monotheist communities. This diversity demanded a formal framework for coexistence.</p>
+
+                <h2>The Medina Constitution</h2>
+                <p>Shortly after arriving, the Prophet Muhammad established the <strong>Sahifat al-Madinah</strong> — the Charter or Constitution of Medina. Scholars regard it as one of the earliest written constitutions in human history. It created a unified political community (umma) from diverse groups, and set out rights, duties, and mechanisms for resolving disputes.</p>
+
+                <p>Key provisions included:</p>
+                <ul>
+                  <li><strong>Collective identity:</strong> Muslims of different tribal backgrounds formed a single umma distinct from all other peoples.</li>
+                  <li><strong>Religious coexistence:</strong> Jewish tribes were recognised as a community alongside the Muslims, each retaining their own religion and legal customs.</li>
+                  <li><strong>Mutual defence:</strong> All parties were obligated to defend Medina against external attack.</li>
+                  <li><strong>Conflict resolution:</strong> Disputes were to be referred to the Prophet Muhammad for arbitration.</li>
+                  <li><strong>Blood money (diya):</strong> Each group was responsible for ransoming its own captives and paying blood money according to customary law.</li>
+                </ul>
+
+                <h2>Structure of the First Islamic State</h2>
+                <p>The Prophet served simultaneously as prophet, head of state, judge, and military commander. Administrative tasks were distributed among trusted companions (Sahabah), establishing early precedents for Islamic governance:</p>
+                <ul>
+                  <li><strong>Shura (consultation):</strong> Major decisions involved consultation with senior companions.</li>
+                  <li><strong>Bayt al-Mal (public treasury):</strong> Revenue from zakat, jizyah, and war spoils funded communal needs.</li>
+                  <li><strong>Qadi (judge):</strong> The Prophet appointed representatives to settle disputes in outlying areas.</li>
+                  <li><strong>Military organisation:</strong> Expeditions were organised with specific commanders appointed by the Prophet.</li>
+                </ul>
+
+                <h2>Key Figures</h2>
+                <ul>
+                  <li><strong>Muhammad ibn Abdullah (570–632 CE):</strong> The Prophet of Islam and founder of the first Islamic state.</li>
+                  <li><strong>Abu Bakr al-Siddiq:</strong> The Prophet's closest companion and first Caliph; pivotal in the Hijra.</li>
+                  <li><strong>Umar ibn al-Khattab:</strong> Early convert whose strength gave the Muslim community courage.</li>
+                  <li><strong>Ali ibn Abi Talib:</strong> The Prophet's cousin and son-in-law; stayed in Mecca during the Hijra to return trusts.</li>
+                  <li><strong>Abdullah ibn Ubayy:</strong> Leading Medinan figure whose initial rivalry eventually gave way to formal inclusion under the Constitution.</li>
+                </ul>
+
+                <h2>Timeline: 570 – 632 CE</h2>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-year">570 CE</div>
+                    <div class="timeline-event">Birth of the Prophet Muhammad in Mecca, Year of the Elephant.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">610 CE</div>
+                    <div class="timeline-event">First revelation received in the cave of Hira; beginning of prophetic mission.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">613 CE</div>
+                    <div class="timeline-event">Public proclamation of Islam; persecution of early Muslims intensifies in Mecca.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">615 CE</div>
+                    <div class="timeline-event">First Hijra: a group of Muslims emigrate to Abyssinia for protection.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">619 CE</div>
+                    <div class="timeline-event">Year of Sorrow — deaths of Khadijah (wife) and Abu Talib (uncle/protector).</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">622 CE</div>
+                    <div class="timeline-event">The Hijra to Medina; Constitution of Medina drafted; Islamic calendar begins.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">624 CE</div>
+                    <div class="timeline-event">Battle of Badr — first major military victory of the nascent Islamic state.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">628 CE</div>
+                    <div class="timeline-event">Treaty of Hudaybiyyah: a 10-year truce with Mecca; strategic breakthrough.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">630 CE</div>
+                    <div class="timeline-event">Conquest of Mecca: largely peaceful; general amnesty declared.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-year">632 CE</div>
+                    <div class="timeline-event">Farewell Pilgrimage and passing of the Prophet Muhammad; Abu Bakr becomes first Caliph.</div>
+                  </div>
+                </div>
+
+                <h2>The Treaty of Medina — A Living Document</h2>
+                <p>Modern scholars across political science, law, and Islamic studies continue to study the Constitution of Medina as an early example of pluralism and constitutional governance. It recognised communal rights while forging a supratribal political identity — something genuinely novel in 7th-century Arabia.</p>
+
+                <div class="takeaway-box">
+                  <div class="takeaway-label">⭐ Key Takeaway</div>
+                  <p>The Hijra of 622 CE was far more than a physical migration — it was the founding moment of Islamic statecraft. The Constitution of Medina established that governance could be based on shared principles rather than tribal kinship alone, creating a blueprint that influenced Islamic political thought for centuries. Understanding this moment is essential to understanding everything that follows in Muslim history.</p>
+                </div>
+
+                <div style="margin-top:1rem;">
+                  <button class="quiz-link-btn" onclick="showToast('Quiz feature coming soon!','info')">
+                    🧠 Test Your Knowledge — Take the Quiz
+                  </button>
+                </div>
+
+              </div>
+            </div>
+            <div class="lesson-actions" id="actions-0-1">
+              <button class="btn-complete" id="btnComplete-0-1" onclick="markComplete(0,1)">
+                ✓ Mark as Complete
+              </button>
+            </div>
+          </div>
+        </div><!-- /Part 1 -->
+
+        <!-- ---- Part 2: FREE ---- -->
+        <div class="lesson-card is-free" id="card-0-2" data-cat="0" data-part="2" data-free="true">
+          <div class="card-header" onclick="toggleLesson(0,2)">
+            <div class="card-top-row">
+              <span class="part-number">Part 2</span>
+              <div class="card-badges">
+                <span class="badge-difficulty badge-beginner">Beginner</span>
+                <span class="badge-free">Free</span>
+                <span class="badge-completed hidden" id="badge-completed-0-2">✓ Done</span>
+              </div>
+            </div>
+            <div class="card-title">The Rightly Guided Caliphs</div>
+            <div class="card-meta">
+              <span class="reading-time">⏱️ 18 min read</span>
+              <span>632–661 CE</span>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="lesson-body" id="body-0-2">
+            <div class="lesson-content-area">
+              <div class="lesson-prose">
+
+                <h2>The Rashidun Caliphate (632–661 CE)</h2>
+                <p>Following the death of the Prophet Muhammad in 632 CE, the Muslim community faced its first leadership crisis. Who would guide the umma? The solution — the institution of the Caliphate — would shape Islamic civilization for over a millennium. The first four caliphs, known as the <strong>Khulafa al-Rashidun</strong> (Rightly Guided Caliphs), are revered in Sunni tradition as exemplary rulers who governed by Quranic principles and prophetic guidance.</p>
+
+                <div class="caliph-cards">
+                  <div class="caliph-card">
+                    <div class="caliph-name">Abu Bakr al-Siddiq</div>
+                    <div class="caliph-years">632 – 634 CE (2 years)</div>
+                    <div class="caliph-desc">The Prophet's closest companion and father-in-law. Managed the crisis of apostasy through the Ridda Wars and began compiling the Quran. His brief caliphate was marked by decisive leadership under immense pressure.</div>
+                  </div>
+                  <div class="caliph-card">
+                    <div class="caliph-name">Umar ibn al-Khattab</div>
+                    <div class="caliph-years">634 – 644 CE (10 years)</div>
+                    <div class="caliph-desc">Known as Al-Faruq (The Distinguisher). Oversaw the great conquests of Syria, Egypt, and Persia. Established the Diwan system (administrative register), created the Islamic calendar, and built key institutions of governance.</div>
+                  </div>
+                  <div class="caliph-card">
+                    <div class="caliph-name">Uthman ibn Affan</div>
+                    <div class="caliph-years">644 – 656 CE (12 years)</div>
+                    <div class="caliph-desc">Wealthy Meccan merchant and twice son-in-law to the Prophet. Commissioned the standardisation of the Quran into the Uthmanic codex. Later years troubled by accusations of nepotism, culminating in his assassination.</div>
+                  </div>
+                  <div class="caliph-card">
+                    <div class="caliph-name">Ali ibn Abi Talib</div>
+                    <div class="caliph-years">656 – 661 CE (5 years)</div>
+                    <div class="caliph-desc">The Prophet's cousin and son-in-law, father of Hassan and Hussain. His caliphate was overshadowed by the First Fitna (civil war), including the Battle of the Camel and Battle of Siffin. Revered by Shia Muslims as the rightful first Imam.</div>
+                  </div>
+                </div>
+
+                <h2>The Ridda Wars (632–633 CE)</h2>
+                <p>Upon the Prophet's death, several Arabian tribes renounced Islam or refused to pay zakat, viewing their loyalty as personal to Muhammad rather than to the religion. Abu Bakr declared these acts apostasy and rebellion, launching military campaigns to reunify the Arabian Peninsula. Within a year, the peninsula was consolidated, and the Muslim state was ready to expand beyond Arabia.</p>
+
+                <h2>Islamic Expansion Under the Rashidun</h2>
+                <p>The speed of Islamic expansion under the Rashidun Caliphate astonished contemporaries and historians alike. Within three decades, the Muslim forces had conquered:</p>
+                <ul>
+                  <li><strong>The Byzantine Levant</strong> — Palestine, Syria, Jordan (636 CE, Battle of Yarmouk)</li>
+                  <li><strong>Sassanid Persia</strong> — Iraq, Iran, partially (636–651 CE)</li>
+                  <li><strong>Egypt</strong> — under Amr ibn al-As (641 CE)</li>
+                  <li><strong>Armenia and Azerbaijan</strong> — northeastern expansion under Umar</li>
+                </ul>
+                <p>These victories are attributed to a combination of military genius, the exhaustion of the Byzantine and Sassanid empires after decades of war with each other, and the appeal of Islamic egalitarianism to conquered peoples.</p>
+
+                <h2>Administrative Innovations</h2>
+                <h3>Under Abu Bakr</h3>
+                <ul>
+                  <li>Maintained the prophetic administrative structure.</li>
+                  <li>Initiated the collection of the Quran's scattered writings.</li>
+                  <li>Appointed trusted military commanders: Khalid ibn al-Walid, Amr ibn al-As.</li>
+                </ul>
+                <h3>Under Umar</h3>
+                <ul>
+                  <li><strong>Diwan system:</strong> Registered soldiers and state pensioners, ensuring systematic pay.</li>
+                  <li><strong>Provincial governors (Wali):</strong> Appointed to administer conquered territories with clear accountability.</li>
+                  <li><strong>Bayt al-Mal:</strong> Formalised the state treasury.</li>
+                  <li><strong>Hijri calendar:</strong> Adopted the year of the Hijra as year 1 of the Islamic calendar.</li>
+                  <li><strong>Military garrison cities (Amsar):</strong> Founded Basra and Kufa as strategic centres.</li>
+                </ul>
+                <h3>Under Uthman</h3>
+                <ul>
+                  <li>Standardised the Quran into a single authoritative text (Uthmanic codex), copies sent to major cities.</li>
+                  <li>Naval fleet established — first Muslim navy, enabling expansion to Cyprus.</li>
+                </ul>
+
+                <h2>Challenges and the First Fitna</h2>
+                <p>The assassination of Uthman in 656 CE triggered the <strong>First Fitna</strong> (civil war), the most consequential internal crisis of early Islam. Ali ibn Abi Talib's caliphate was contested by:</p>
+                <ul>
+                  <li><strong>Aisha, Talha, and Zubayr</strong> — demanding retribution for Uthman's murder (Battle of the Camel, 656 CE)</li>
+                  <li><strong>Muawiyah ibn Abi Sufyan</strong> — governor of Syria, also demanding justice (Battle of Siffin, 657 CE)</li>
+                </ul>
+                <p>The arbitration at Adhruh (658 CE) failed to resolve the dispute. Ali was assassinated in 661 CE, and Muawiyah established the Umayyad Caliphate, moving the capital from Kufa to Damascus.</p>
+
+                <div class="takeaway-box">
+                  <div class="takeaway-label">⭐ Key Takeaway</div>
+                  <p>The Rashidun Caliphate compressed centuries of institutional development into 29 years. It transformed a regional religious movement into a world empire, established fundamental precedents for Islamic governance, and produced the theological and political fault lines — particularly over succession and authority — that continue to define Muslim communities today. The First Fitna remains the foundational moment from which Sunni-Shia differences emerged.</p>
+                </div>
+
+              </div>
+            </div>
+            <div class="lesson-actions" id="actions-0-2">
+              <button class="btn-complete" id="btnComplete-0-2" onclick="markComplete(0,2)">
+                ✓ Mark as Complete
+              </button>
+            </div>
+          </div>
+        </div><!-- /Part 2 -->
+
+        <!-- ---- Part 3: FREE ---- -->
+        <div class="lesson-card is-free" id="card-0-3" data-cat="0" data-part="3" data-free="true">
+          <div class="card-header" onclick="toggleLesson(0,3)">
+            <div class="card-top-row">
+              <span class="part-number">Part 3</span>
+              <div class="card-badges">
+                <span class="badge-difficulty badge-intermediate">Intermediate</span>
+                <span class="badge-free">Free</span>
+                <span class="badge-completed hidden" id="badge-completed-0-3">✓ Done</span>
+              </div>
+            </div>
+            <div class="card-title">Expansion and Consolidation: Building the Umayyad Legacy</div>
+            <div class="card-meta">
+              <span class="reading-time">⏱️ 20 min read</span>
+              <span>661 CE</span>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="lesson-body" id="body-0-3">
+            <div class="lesson-content-area">
+              <div class="lesson-prose">
+
+                <h2>The Umayyad Caliphate (661–750 CE)</h2>
+                <p>When Muawiyah ibn Abi Sufyan declared himself Caliph in 661 CE, he did not merely win a civil war — he permanently transformed the nature of Islamic political authority. The Umayyad era produced the largest empire the world had seen since Rome, stretching from the Atlantic coast of Spain and Morocco in the west to the Indus Valley in the east.</p>
+
+                <h2>Muawiyah I: Founding the Dynasty</h2>
+                <p>Muawiyah was a formidable political operator. As governor of Syria for 20 years under both Umar and Uthman, he had built a loyal, well-administered province and a powerful military. His governance philosophy combined Islamic legitimacy with pre-Islamic Arabian and Byzantine administrative practices:</p>
+                <ul>
+                  <li><strong>Conversion of the Caliphate:</strong> Transformed leadership selection from community consultation (shura) to hereditary succession, naming his son Yazid as heir — a break that Shia and many Sunni scholars condemned.</li>
+                  <li><strong>Byzantine influence:</strong> Retained Greek-speaking civil servants and administrative structures in Syria; minted coins initially modelled on Byzantine types.</li>
+                  <li><strong>Strategic patience:</strong> Known for preferring diplomacy and negotiation over unnecessary warfare, famously saying he used "a hair" to keep connection with people — if they pulled, he let go; if they let go, he pulled.</li>
+                </ul>
+
+                <h2>Damascus as Capital</h2>
+                <p>Moving the capital from Kufa (in modern Iraq) to Damascus (in modern Syria) was a geopolitically significant decision. Damascus sat at the crossroads of Byzantine trade routes, had sophisticated urban infrastructure, and was more defensible. The shift also signalled that the Umayyad state was looking westward and northward — toward the Mediterranean world — as the next arena of expansion.</p>
+
+                <h2>Military Innovations and Expansion</h2>
+                <p>The Umayyad military machine was the most formidable of its era. Key features included:</p>
+                <ul>
+                  <li><strong>Professional standing army:</strong> The Syrian jund (army) formed a reliable professional core, paid through the Diwan system established under Umar.</li>
+                  <li><strong>Naval power:</strong> Expanded the Muslim fleet to dominate the eastern Mediterranean; sieged Constantinople twice (674–678 CE, 717–718 CE), though both failed.</li>
+                  <li><strong>Cavalry emphasis:</strong> Heavy reliance on Arab cavalry for rapid conquest and mobility.</li>
+                </ul>
+
+                <h3>North Africa and the Maghreb</h3>
+                <p>The conquest of North Africa (647–709 CE) required persistent campaigning against both Byzantine forces and Berber resistance. The legendary Berber queen <strong>Dihya al-Kahina</strong> led fierce resistance before the Arab forces under Hassan ibn al-Numan eventually prevailed. Uqba ibn Nafi founded the garrison city of Kairouan (670 CE) in modern Tunisia, which became a major centre of Islamic scholarship in Africa.</p>
+
+                <h3>The Conquest of Spain (711 CE)</h3>
+                <p>In 711 CE, the Berber general <strong>Tariq ibn Ziyad</strong> crossed the strait now bearing his name (Gibraltar — Jabal Tariq, "Mountain of Tariq") with approximately 7,000 troops. The Visigothic Kingdom of Spain collapsed with remarkable speed after the Battle of Guadalete. Within seven years, most of the Iberian Peninsula was under Muslim rule — a stunning geopolitical transformation. The Muslim presence in Spain (Al-Andalus) would last nearly 800 years.</p>
+
+                <h3>The East: Persia, Central Asia, and Sindh</h3>
+                <p>Under Hajjaj ibn Yusuf (the powerful governor of the East), Umayyad forces pushed into Central Asia and the Indian subcontinent:</p>
+                <ul>
+                  <li><strong>Qutayba ibn Muslim</strong> conquered Transoxiana (modern Uzbekistan, Tajikistan) — reaching as far as Kashgar on the Silk Road.</li>
+                  <li><strong>Muhammad ibn Qasim</strong> conquered Sindh (modern Pakistan) in 711–712 CE, bringing Islam permanently to the subcontinent.</li>
+                </ul>
+
+                <h2>Administrative System</h2>
+                <p>The Umayyad state developed increasingly sophisticated administration:</p>
+                <ul>
+                  <li><strong>Arabisation:</strong> Under Abd al-Malik (685–705 CE), Arabic replaced Greek and Persian as the official administrative language; new Islamic coinage was minted.</li>
+                  <li><strong>Postal system (Barid):</strong> A relay horse-messenger network connecting the empire for administrative and military communications.</li>
+                  <li><strong>Provincial structure:</strong> The empire was divided into provinces (wilayat) each governed by a wali appointed by the Caliph.</li>
+                  <li><strong>Taxation:</strong> Jizya (poll tax on non-Muslims), kharaj (land tax), and zakat formed the revenue base. Controversially, converted Muslims (mawali) often continued to pay jizya — a source of resentment that contributed to the Umayyad's eventual fall.</li>
+                </ul>
+
+                <h2>Arab Identity Policies</h2>
+                <p>A defining and ultimately destabilising feature of Umayyad rule was its Arab-centric identity policy. The Umayyads promoted Arab tribal identity as a marker of social prestige, which created deep resentment among non-Arab Muslims (mawali) — particularly Persians, Berbers, and Egyptians — who had converted to Islam but remained second-class citizens in practice.</p>
+                <p>This discrimination is captured in the concept of <em>shu'ubiyya</em> — the non-Arab cultural resistance movement that gained momentum in the late Umayyad period and accelerated the dynasty's collapse.</p>
+
+                <h2>Decline Factors</h2>
+                <ul>
+                  <li><strong>Internal dissent:</strong> Mawali resentment over unequal treatment; Kharijite revolts; Shia opposition centred on the legacy of Karbala (680 CE).</li>
+                  <li><strong>Karbala and its aftermath:</strong> The massacre of Hussain ibn Ali and his companions (680 CE) permanently delegitimised the Umayyads in the eyes of Shia Muslims.</li>
+                  <li><strong>Military overextension:</strong> Failed sieges of Constantinople, the defeat at the Battle of Tours/Poitiers (732 CE) in France halting westward expansion, and costly campaigns in Central Asia.</li>
+                  <li><strong>Abbasid Revolution (747–750 CE):</strong> Led by Abu Muslim from Khorasan, drawing support from mawali, Shia sympathisers, and dissatisfied Arabs, the Abbasid movement swept aside the Umayyads. The last Umayyad Caliph, Marwan II, was killed in Egypt in 750 CE.</li>
+                </ul>
+
+                <div class="takeaway-box">
+                  <div class="takeaway-label">⭐ Key Takeaway</div>
+                  <p>The Umayyad Caliphate transformed Islam from a regional Arabian religion into a truly global civilisational force. Its conquests from Spain to Sindh created the geographic canvas on which Islamic culture, scholarship, and spirituality would flourish for centuries. Yet its reliance on Arab ethnic privilege planted the seeds of its own destruction — teaching posterity that an empire cannot long outlast the principles it claims to embody. The Abbasid Revolution that followed would dramatically reorient the Islamic world's center of gravity.</p>
+                </div>
+
+              </div>
+            </div>
+            <div class="lesson-actions" id="actions-0-3">
+              <button class="btn-complete" id="btnComplete-0-3" onclick="markComplete(0,3)">
+                ✓ Mark as Complete
+              </button>
+            </div>
+          </div>
+        </div><!-- /Part 3 -->
+
+        <!-- ---- Parts 4–30: PREMIUM ---- -->
+        <!-- Generated dynamically below via JS -->
+
+      </div><!-- /lessons-grid -->
+
+      <!-- Coming soon placeholder container for parts 4–30 in cat 0 -->
+      <div id="locked-grid-0" style="margin-top:1rem;"></div>
+
+    </div><!-- /cat-panel-0 -->
+
+    <!-- Categories 1–4: fully premium, rendered by JS -->
+    <div class="category-panel" id="cat-panel-1" role="tabpanel"></div>
+    <div class="category-panel" id="cat-panel-2" role="tabpanel"></div>
+    <div class="category-panel" id="cat-panel-3" role="tabpanel"></div>
+    <div class="category-panel" id="cat-panel-4" role="tabpanel"></div>
+
+  </main>
+</div><!-- /site-wrapper -->
+
+<!-- ===== SHARE MODAL ===== -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeShareModal()">✕</button>
+    <div class="modal-title">🔓 Unlock via Share</div>
+    <div class="modal-subtitle">Share History of Muslims Academy on social media to unlock this lesson for 24 hours. Copy your personal unlock code and include it in your post.</div>
+    <div class="share-code-box">
+      <span class="share-code" id="modalUnlockCode">HOM_UNLOCK_...</span>
+      <button class="btn-copy" id="btnCopyCode" onclick="copyUnlockCode()">Copy</button>
+    </div>
+    <div class="share-platforms">
+      <a href="#" class="share-platform-btn share-twitter" id="shareTwitter" target="_blank" rel="noopener">
+        𝕏 Twitter / X
+      </a>
+      <a href="#" class="share-platform-btn share-whatsapp" id="shareWhatsApp" target="_blank" rel="noopener">
+        💬 WhatsApp
+      </a>
+      <button class="share-platform-btn share-instagram" onclick="copyForInstagram()">
+        📸 Copy for Instagram
+      </button>
+    </div>
+    <div class="modal-note">
+      After sharing, your lesson will be unlocked automatically. Unlock lasts 24 hours. You may unlock one lesson every 5 hours.
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">ℹ️</span>
+  <span id="toastMsg">Message here</span>
+</div>
+
+<!-- ===== FIREBASE CDN (compat v9) ===== -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ============================================================
+   FIREBASE INIT
+   ============================================================ */
+const firebaseConfig = { /* REPLACE WITH YOUR CONFIG */ };
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+/* ============================================================
+   DATA — CATEGORIES & LESSON METADATA
+   ============================================================ */
+const CATEGORIES = [
+  { id: 0, emoji: '🏛️', name: 'The Start of Empires' },
+  { id: 1, emoji: '👑', name: 'Rulers & Leaders' },
+  { id: 2, emoji: '✨', name: 'Islamic Golden Age' },
+  { id: 3, emoji: '🌍', name: 'The Modern Age' },
+  { id: 4, emoji: '🎭', name: 'Society & Culture' },
+];
+
+// Titles and metadata for premium parts (cat 0 parts 4-30, and all of cats 1-4)
+const PREMIUM_PART_TITLES = {
+  0: [
+    null, null, null, null, // parts 0-3 handled above (0=unused, 1-3=free)
+    'The Abbasid Revolution: Dawn of a New Caliphate',
+    'Baghdad — The City of Peace and Knowledge',
+    'The House of Wisdom: Islam\'s Intellectual Revolution',
+    'The Fatimid Caliphate: Ismaili Power in Egypt',
+    'The Crusades Begin: Islam\'s Response to Christian Europe',
+    'Saladin and the Reconquest of Jerusalem',
+    'The Mongol Storm: Hulagu Khan and the Fall of Baghdad',
+    'The Mamluks: Slave Soldiers Who Saved Islam',
+    'The Ottoman Rise: From Tribe to Empire',
+    'Mehmed II and the Fall of Constantinople',
+    'Suleiman the Magnificent: Law, Power, and Glory',
+    'The Safavid Empire: Persia\'s Shia Transformation',
+    'The Mughal Empire: From Babur to Akbar',
+    'The Decline of Ottoman Power (17th–18th Centuries)',
+    'The Tanzimat Reforms: Islam and Modernity',
+    'The Wahhabi Movement and Saudi Arabia\'s First State',
+    'Napoleon in Egypt: Islam Confronts the West',
+    'Pan-Islamism and the Caliphate Debate',
+    'World War I and the Arab Revolt',
+    'The Abolition of the Caliphate (1924)',
+    'Partition of Palestine and the Muslim World\'s Response',
+    'The Iranian Revolution (1979)',
+    'The Gulf Wars and their Impact on Islamic States',
+    'The Arab Spring: Upheaval and Aftermath',
+    'Contemporary Islamic Statehood: Challenges and Futures',
+  ],
+  1: [
+    null,
+    'Khalid ibn al-Walid — The Sword of Allah',
+    'Umar ibn al-Khattab — The Just Caliph',
+    'Muawiyah I — Architect of the Umayyad Dynasty',
+    'Abd al-Malik — Builder of the Dome of the Rock',
+    'Harun al-Rashid — Caliph of the Arabian Nights',
+    'al-Mamun — The Caliph Who Loved Science',
+    'Mahmud of Ghazni — Warrior, Patron, Conqueror',
+    'Saladin (Salah al-Din) — Hero of the Third Crusade',
+    'Genghis Khan\'s Effect on the Islamic World',
+    'Baybars — The Mamluk Who Defeated the Mongols',
+    'Osman I — Founding the Ottoman Dream',
+    'Timur (Tamerlane) — The Last Great Nomadic Conqueror',
+    'Mehmed II — Conqueror of Constantinople',
+    'Sultan Selim I — The Expansion into Arabia and Egypt',
+    'Suleiman the Magnificent — Lawgiver and Emperor',
+    'Babur — The Poet Who Founded the Mughal Empire',
+    'Akbar the Great — The Syncretic Emperor',
+    'Shah Abbas I — Safavid Persia at Its Peak',
+    'Aurangzeb — Faith, Empire, and Fragmentation',
+    'Muhammad Ali Pasha — Moderniser of Egypt',
+    'Abdulhamid II — The Last Great Ottoman Sultan',
+    'Muhammad Ahmad al-Mahdi — Sudan\'s Messianic Leader',
+    'Ataturk — Creator of Modern Turkey',
+    'Ibn Saud — Founder of Saudi Arabia',
+    'Nasser — Arab Nationalism\'s Champion',
+    'Khomeini — The Islamic Revolutionary',
+    'Erdogan — Islam and Democracy in Tension',
+    'Contemporary Muslim Leaders: A Survey',
+    'Leadership Lessons from Islamic History',
+  ],
+  2: [
+    null,
+    'What Was the Islamic Golden Age?',
+    'Al-Kindi — The First Arab Philosopher',
+    'Al-Khwarizmi — Father of Algebra',
+    'Ibn Sina (Avicenna) — The Prince of Physicians',
+    'Al-Biruni — Master of Science and Anthropology',
+    'Al-Ghazali — Reconciling Faith and Reason',
+    'Omar Khayyam — Mathematician, Astronomer, Poet',
+    'Ibn Rushd (Averroes) — Aristotle\'s Greatest Commentator',
+    'Al-Idrisi — Mapping the Medieval World',
+    'Ibn al-Haytham — Father of Optics',
+    'The House of Wisdom — Baghdad\'s Grand Library',
+    'Islamic Medicine — Hospitals and the Canon',
+    'Islamic Architecture — Domes, Minarets, Geometry',
+    'Calligraphy — The Sacred Art of the Word',
+    'Islamic Mathematics and Numerals',
+    'Astronomy in the Islamic World',
+    'The Translation Movement — Saving Greek Knowledge',
+    'Sufism — The Mystical Dimension of Islam',
+    'Rumi — The Poet of Divine Love',
+    'Ibn Khaldun — Founder of Sociology and Historiography',
+    'Al-Andalus — Europe\'s Islamic Civilisation',
+    'The Cordoba Caliphate — A Multicultural Golden Age',
+    'The Decline of the Golden Age — Causes and Debates',
+    'Islamic Science\'s Transmission to Europe',
+    'Medieval Islamic Literature and Poetry',
+    'Music in the Islamic World',
+    'Philosophy and Theology — Kalam and Falsafa',
+    'The Legacy of the Golden Age Today',
+    'Quiz & Review: Islamic Golden Age',
+  ],
+  3: [
+    null,
+    'Colonialism and the Muslim World',
+    'The Scramble for Africa — Muslim Resistance',
+    'The Ottoman Reforms and Tanzimat',
+    'World War I and the Sykes-Picot Agreement',
+    'The Balfour Declaration and Palestine',
+    'The Turkish War of Independence',
+    'The Creation of Modern Arab States',
+    'The Muslim Brotherhood — Origins and Ideology',
+    'Partition of India — Birth of Pakistan',
+    'The Arab-Israeli Conflict — A Historical Overview',
+    'The 1952 Egyptian Revolution',
+    'The Algerian War of Independence',
+    'Nasser, Arab Nationalism, and the UAR',
+    'The Six-Day War (1967)',
+    'The PLO and Palestinian National Movement',
+    'The Iranian Revolution (1979) — In Depth',
+    'The Soviet-Afghan War and the Mujahideen',
+    'The Gulf War (1990–91) and Its Aftermath',
+    'The Oslo Accords and the Peace Process',
+    '9/11 and the Global War on Terror',
+    'The Iraq War (2003) — Causes and Consequences',
+    'The Arab Spring — Country by Country',
+    'ISIS: Rise, Fall, and Legacy',
+    'The Syrian Civil War',
+    'Yemen: Conflict and Humanitarian Crisis',
+    'Muslim Communities in the West',
+    'Political Islam in the 21st Century',
+    'Climate Change and the Muslim World',
+    'The Future of the Muslim World',
+  ],
+  4: [
+    null,
+    'Family and Community in Islamic Society',
+    'The Role of Women in Early Islam',
+    'Islamic Marriage, Divorce, and Family Law',
+    'Education in the Islamic World — Madrasas',
+    'Trade Routes and Islamic Commerce',
+    'Food Culture — Halal, Feasting, and Fasting',
+    'Islamic Art — From Arabesque to Mosaic',
+    'Islamic Fashion — Dress Codes and Identity',
+    'Ramadan — The Month of Fasting and Reflection',
+    'Hajj — The Great Pilgrimage',
+    'Zakat — Charity as Pillar of Society',
+    'Mosque Architecture and Community Life',
+    'Islamic Music — Nasheed, Maqam, and Devotion',
+    'Sufi Orders and Spiritual Practice',
+    'Islamic Law (Sharia) — Principles and Application',
+    'Slavery in the Islamic World — A Nuanced History',
+    'Non-Muslims under Islamic Rule — Dhimmi System',
+    'Islamic Hospitality — A Cultural Cornerstone',
+    'Sport and Leisure in Medieval Islamic Society',
+    'Death, Burial, and Afterlife in Islamic Belief',
+    'Islamic Calendar and Festivals',
+    'Poetry as Social Commentary in Islam',
+    'Storytelling — Arabian Nights and Oral Tradition',
+    'Gender and Islamic Scholarship',
+    'Converts to Islam — Stories of Transformation',
+    'Diaspora Muslims — Identity and Belonging',
+    'Social Media and the Muslim World',
+    'Muslim Youth Culture Today',
+    'Quiz & Review: Society and Culture',
+  ],
+};
+
+const DIFFICULTIES = ['Beginner', 'Intermediate', 'Advanced'];
+const READING_TIMES = [10, 12, 14, 15, 16, 18, 20, 22, 24, 25];
+const FREE_UNLOCK_HOURS = 5;      // hours between share unlocks
+const UNLOCK_DURATION_HOURS = 24; // how long a share-unlock lasts
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let currentUser  = null;
+let isPremium    = false;
+let shareUnlocks = {}; // { "catId_partId": timestamp }
+let openCard     = null; // { catId, partId }
+let shareTarget  = null; // { catId, partId } for pending share unlock
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let _toastTimer;
+function showToast(msg, type = 'info') {
+  const el   = document.getElementById('toast');
+  const icon = document.getElementById('toastIcon');
+  const txt  = document.getElementById('toastMsg');
+  const icons = { success: '✅', error: '❌', info: '✨' };
+  el.className = `toast ${type}`;
+  icon.textContent = icons[type] || 'ℹ️';
+  txt.textContent  = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+/* ============================================================
+   FIREBASE AUTH
+   ============================================================ */
+auth.onAuthStateChanged(async (user) => {
+  if (!user) {
+    window.location.href = 'index.html';
+    return;
+  }
+  currentUser = user;
+  updateNavUI(user);
+  await loadUserData(user);
+  loadContinueBanner();
+  buildDynamicPanels();
+  renderProgressBars();
+});
+
+function updateNavUI(user) {
+  const info = document.getElementById('navUserInfo');
+  info.classList.add('visible');
+  const avatar = document.getElementById('navAvatar');
+  if (user.photoURL) avatar.src = user.photoURL;
+  else { avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||user.email||'U')}&background=0D1E35&color=C9A96E&size=72`; }
+  document.getElementById('navUserName').textContent = user.displayName || user.email?.split('@')[0] || 'Student';
+}
+
+document.getElementById('btnSignOut').addEventListener('click', () => {
+  auth.signOut().then(() => { window.location.href = 'index.html'; });
+});
+
+/* ============================================================
+   LOAD USER DATA FROM FIREBASE
+   ============================================================ */
+async function loadUserData(user) {
+  try {
+    const snap = await db.collection('users').doc(user.uid).get();
+    if (snap.exists) {
+      const data = snap.data();
+      isPremium    = data.premium === true;
+      shareUnlocks = data.shareUnlocks || {};
+    }
+  } catch (e) {
+    console.warn('Could not load user data:', e);
+  }
+  if (isPremium) {
+    document.getElementById('navPremiumBadge').classList.remove('hidden');
+  }
+}
+
+/* ============================================================
+   CATEGORY TABS
+   ============================================================ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const catId = parseInt(btn.dataset.cat);
+    switchCategory(catId);
+  });
+});
+
+function switchCategory(catId) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.cat) === catId);
+    b.setAttribute('aria-selected', parseInt(b.dataset.cat) === catId ? 'true' : 'false');
+  });
+  document.querySelectorAll('.category-panel').forEach(p => {
+    p.classList.toggle('active', p.id === `cat-panel-${catId}`);
+  });
+}
+
+/* ============================================================
+   BUILD DYNAMIC PANELS (cats 1-4 fully, cat 0 parts 4-30)
+   ============================================================ */
+function buildDynamicPanels() {
+  // Cat 0: locked parts 4–30
+  buildLockedGrid(0, 4, 30, document.getElementById('locked-grid-0'));
+
+  // Cats 1–4: full panels
+  for (let catId = 1; catId <= 4; catId++) {
+    const panel = document.getElementById(`cat-panel-${catId}`);
+    panel.innerHTML = ''; // clear
+
+    // Progress bar
+    const cat = CATEGORIES[catId];
+    panel.innerHTML += `
+      <div class="cat-progress-wrap">
+        <div class="cat-progress-header">
+          <span class="cat-progress-title">${cat.emoji} ${cat.name}</span>
+          <span class="cat-progress-pct" id="prog-pct-${catId}">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="prog-bar-${catId}" style="width:0%"></div>
+        </div>
+        <div class="cat-progress-sub" id="prog-sub-${catId}">0 of 30 parts completed</div>
+      </div>
+    `;
+
+    // All 30 parts are premium for cats 1-4
+    const gridEl = document.createElement('div');
+    gridEl.className = 'lessons-grid';
+
+    for (let partId = 1; partId <= 30; partId++) {
+      const title = (PREMIUM_PART_TITLES[catId] && PREMIUM_PART_TITLES[catId][partId]) || `Part ${partId}`;
+      const diff  = DIFFICULTIES[Math.min(Math.floor((partId - 1) / 10), 2)];
+      const rt    = READING_TIMES[(partId - 1) % READING_TIMES.length];
+      gridEl.appendChild(buildPremiumCard(catId, partId, title, diff, rt));
+    }
+    panel.appendChild(gridEl);
+  }
+
+  renderProgressBars();
+}
+
+function buildLockedGrid(catId, fromPart, toPart, container) {
+  const gridEl = document.createElement('div');
+  gridEl.className = 'lessons-grid';
+  for (let partId = fromPart; partId <= toPart; partId++) {
+    const title = (PREMIUM_PART_TITLES[catId] && PREMIUM_PART_TITLES[catId][partId]) || `Part ${partId}`;
+    const diff  = DIFFICULTIES[Math.min(Math.floor((partId - 1) / 10), 2)];
+    const rt    = READING_TIMES[(partId - 1) % READING_TIMES.length];
+    gridEl.appendChild(buildPremiumCard(catId, partId, title, diff, rt));
+  }
+  container.appendChild(gridEl);
+}
+
+function buildPremiumCard(catId, partId, title, difficulty, readingTime) {
+  const isUnlocked = checkShareUnlocked(catId, partId) || isPremium;
+  const key        = `${catId}_${partId}`;
+  const diffClass  = { Beginner: 'beginner', Intermediate: 'intermediate', Advanced: 'advanced' }[difficulty] || 'beginner';
+
+  // Early access check (simulated release dates)
+  const baseDate          = new Date('2025-01-01');
+  const freeDaysOffset    = partId * 3 + catId * 90;
+  const releaseDate       = new Date(baseDate.getTime() + freeDaysOffset * 86400000);
+  const premiumRelDate    = new Date(releaseDate.getTime() - 7 * 86400000);
+  const now               = new Date();
+  const isAvailableFree   = releaseDate <= now;
+  const isAvailablePrem   = premiumRelDate <= now;
+  const daysToFree        = Math.ceil((releaseDate - now) / 86400000);
+  const daysToPrem        = Math.ceil((premiumRelDate - now) / 86400000);
+
+  let earlyAccessHtml = '';
+  if (!isAvailableFree) {
+    if (isPremium && !isAvailablePrem) {
+      earlyAccessHtml = `<div class="early-access-notice">⏰ Available in ${daysToPrem} day${daysToPrem!==1?'s':''} (premium early access)</div>`;
+    } else if (!isPremium) {
+      earlyAccessHtml = `<div class="early-access-notice">🔒 Available in ${daysToFree} day${daysToFree!==1?'s':''} — <strong style="color:var(--gold2)">Upgrade for ${daysToFree - daysToPrem} days early access</strong></div>`;
+    }
+  }
+
+  // Cooldown check
+  const cooldownHtml = buildCooldownHtml(catId, partId);
+
+  const card = document.createElement('div');
+  card.className = 'lesson-card' + (isUnlocked ? ' is-free' : '');
+  card.id = `card-${catId}-${partId}`;
+  card.dataset.cat  = catId;
+  card.dataset.part = partId;
+  card.dataset.free = isUnlocked ? 'true' : 'false';
+
+  card.innerHTML = `
+    <div class="card-header" onclick="toggleLesson(${catId},${partId})">
+      <div class="card-top-row">
+        <span class="part-number">Part ${partId}</span>
+        <div class="card-badges">
+          <span class="badge-difficulty badge-${diffClass}">${difficulty}</span>
+          ${isUnlocked
+            ? `<span class="badge-free">Unlocked</span>`
+            : `<span class="badge-premium">🔒 Premium</span>`}
+          <span class="badge-completed hidden" id="badge-completed-${catId}-${partId}">✓ Done</span>
+        </div>
+      </div>
+      <div class="card-title">${title}</div>
+      <div class="card-meta">
+        <span class="reading-time">⏱️ ${readingTime} min read</span>
+      </div>
+      ${!isUnlocked ? `
+      <div class="lock-overlay">
+        <span class="lock-icon">🔒</span>
+        <span>Premium lesson — upgrade to access full content</span>
+      </div>` : ''}
+      <div class="card-toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body-${catId}-${partId}">
+      ${isUnlocked ? `
+        <div class="lesson-content-area">
+          <div class="lesson-prose">
+            <h2>${title}</h2>
+            <p>This lesson is unlocked. Full premium content will be displayed here. Continue exploring the depth of Islamic history through our comprehensive curriculum.</p>
+          </div>
+        </div>
+        <div class="lesson-actions" id="actions-${catId}-${partId}">
+          <button class="btn-complete" id="btnComplete-${catId}-${partId}" onclick="markComplete(${catId},${partId})">✓ Mark as Complete</button>
+        </div>
+      ` : `
+        <div class="premium-cta">
+          <div class="premium-lock-icon">🔐</div>
+          <h3>Premium Content</h3>
+          <p>Unlock the full lesson on <em>${title}</em> with a premium subscription, or share the academy to unlock for 24 hours.</p>
+          ${earlyAccessHtml}
+          <div class="premium-cta-btns">
+            <button class="btn-upgrade" onclick="showToast('Premium upgrade coming soon!','info')">⭐ Upgrade to Premium</button>
+            <button class="btn-share-unlock" id="share-btn-${catId}-${partId}" onclick="openShareModal(${catId},${partId})" ${cooldownHtml.disabled}>🔓 Unlock via Share</button>
+          </div>
+          ${cooldownHtml.text}
+        </div>
+      `}
+    </div>
+  `;
+
+  // Restore completed state
+  const progKey = `hom3_prog_${catId}`;
+  const progData = JSON.parse(localStorage.getItem(progKey) || '{}');
+  if (progData[partId]) {
+    setTimeout(() => applyCompletedState(catId, partId), 0);
+  }
+
+  return card;
+}
+
+function buildCooldownHtml(catId, partId) {
+  const lastShare = parseInt(localStorage.getItem('hom3_last_share_unlock') || '0');
+  const now       = Date.now();
+  const cooldownMs = FREE_UNLOCK_HOURS * 3600 * 1000;
+  const elapsed    = now - lastShare;
+  const remaining  = cooldownMs - elapsed;
+
+  if (lastShare && remaining > 0) {
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.ceil((remaining % 3600000) / 60000);
+    return {
+      disabled: 'disabled',
+      text: `<div class="unlock-cooldown">⏳ Next share unlock available in ${h}h ${m}m</div>`
+    };
+  }
+  return { disabled: '', text: '' };
+}
+
+function checkShareUnlocked(catId, partId) {
+  const key = `${catId}_${partId}`;
+  const ts  = shareUnlocks[key];
+  if (!ts) return false;
+  const unlockMs = UNLOCK_DURATION_HOURS * 3600 * 1000;
+  return (Date.now() - ts) < unlockMs;
+}
+
+/* ============================================================
+   TOGGLE LESSON (accordion)
+   ============================================================ */
+function toggleLesson(catId, partId) {
+  const card = document.getElementById(`card-${catId}-${partId}`);
+  if (!card) return;
+  const isFree = card.dataset.free === 'true';
+
+  // If premium-locked, just toggle to show CTA
+  const isOpen = card.classList.contains('is-open');
+
+  // Close previously open card if different
+  if (openCard && !(openCard.catId === catId && openCard.partId === partId)) {
+    const prev = document.getElementById(`card-${openCard.catId}-${openCard.partId}`);
+    if (prev) prev.classList.remove('is-open');
+  }
+
+  if (isOpen) {
+    card.classList.remove('is-open');
+    openCard = null;
+  } else {
+    card.classList.add('is-open');
+    openCard = { catId, partId };
+
+    // Save last position
+    if (isFree) {
+      const pos = { catId, partId, title: card.querySelector('.card-title')?.textContent };
+      localStorage.setItem('hom3_last_position', JSON.stringify(pos));
+      if (currentUser) {
+        db.collection('users').doc(currentUser.uid).set({ lastPosition: pos }, { merge: true }).catch(() => {});
+      }
+    }
+
+    // Scroll card into view
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+}
+
+/* ============================================================
+   MARK AS COMPLETE
+   ============================================================ */
+function markComplete(catId, partId) {
+  const progKey = `hom3_prog_${catId}`;
+  const progData = JSON.parse(localStorage.getItem(progKey) || '{}');
+  progData[partId] = Date.now();
+  localStorage.setItem(progKey, JSON.stringify(progData));
+  applyCompletedState(catId, partId);
+  renderProgressBars();
+  showToast('Lesson marked as complete! Great work.', 'success');
+
+  // Save to Firebase
+  if (currentUser) {
+    db.collection('users').doc(currentUser.uid).set({
+      progress: { [catId]: { [partId]: true } }
+    }, { merge: true }).catch(() => {});
+  }
+}
+
+function applyCompletedState(catId, partId) {
+  const card   = document.getElementById(`card-${catId}-${partId}`);
+  const badge  = document.getElementById(`badge-completed-${catId}-${partId}`);
+  const btn    = document.getElementById(`btnComplete-${catId}-${partId}`);
+  if (card)  card.classList.add('is-completed');
+  if (badge) badge.classList.remove('hidden');
+  if (btn) {
+    btn.textContent = '✓ Completed';
+    btn.classList.add('completed');
+    btn.disabled = true;
+  }
+}
+
+/* ============================================================
+   PROGRESS BARS
+   ============================================================ */
+function renderProgressBars() {
+  CATEGORIES.forEach(cat => {
+    const catId   = cat.id;
+    const progKey = `hom3_prog_${catId}`;
+    const progData = JSON.parse(localStorage.getItem(progKey) || '{}');
+    const completed = Object.keys(progData).length;
+    const total     = 30;
+    const pct       = Math.round((completed / total) * 100);
+
+    const barEl = document.getElementById(`prog-bar-${catId}`);
+    const pctEl = document.getElementById(`prog-pct-${catId}`);
+    const subEl = document.getElementById(`prog-sub-${catId}`);
+    if (barEl) barEl.style.width = `${pct}%`;
+    if (pctEl) pctEl.textContent = `${pct}%`;
+    if (subEl) subEl.textContent = `${completed} of ${total} parts completed`;
+  });
+}
+
+/* ============================================================
+   CONTINUE BANNER (Feature 11)
+   ============================================================ */
+function loadContinueBanner() {
+  const raw = localStorage.getItem('hom3_last_position');
+  if (!raw) return;
+  try {
+    const pos = JSON.parse(raw);
+    const banner = document.getElementById('continueBanner');
+    const desc   = document.getElementById('continueDesc');
+    const cat    = CATEGORIES[pos.catId];
+    desc.textContent = `${cat?.emoji || ''} ${cat?.name || 'Category'} — Part ${pos.partId}: ${pos.title || ''}`;
+    banner.classList.add('visible');
+    document.getElementById('btnContinue').addEventListener('click', () => {
+      switchCategory(pos.catId);
+      setTimeout(() => toggleLesson(pos.catId, pos.partId), 200);
+    });
+  } catch (e) {}
+}
+
+/* ============================================================
+   SHARE-TO-UNLOCK (Feature 12)
+   ============================================================ */
+function openShareModal(catId, partId) {
+  shareTarget = { catId, partId };
+  const ts   = Date.now();
+  const code = `HOM_UNLOCK_${catId}_${partId}_${ts}`;
+  document.getElementById('modalUnlockCode').textContent = code;
+
+  const shareText = `I'm learning Islamic history at History of Muslims Academy! Join me 🌙 #HOMsAcademy\nUnlock code: ${code}`;
+  const shareUrl  = encodeURIComponent('https://homsacademy.com');
+  const shareEncoded = encodeURIComponent(shareText);
+
+  document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?text=${shareEncoded}&url=${shareUrl}`;
+  document.getElementById('shareWhatsApp').href = `https://wa.me/?text=${shareEncoded}`;
+
+  document.getElementById('btnCopyCode').textContent = 'Copy';
+  document.getElementById('btnCopyCode').classList.remove('copied');
+  document.getElementById('shareModal').classList.add('open');
+
+  // Trigger the actual unlock after modal opens (user is "sharing")
+  processShareUnlock(catId, partId, code, ts);
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').classList.remove('open');
+  shareTarget = null;
+}
+
+function copyUnlockCode() {
+  const code = document.getElementById('modalUnlockCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('btnCopyCode');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    showToast('Unlock code copied to clipboard!', 'success');
+  }).catch(() => showToast('Could not copy — please copy manually.', 'error'));
+}
+
+function copyForInstagram() {
+  const code = document.getElementById('modalUnlockCode').textContent;
+  const text = `I'm learning Islamic history at History of Muslims Academy! 🌙 #HOMsAcademy\nUnlock code: ${code}`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copied for Instagram! Paste into your story or post.', 'success');
+  }).catch(() => showToast('Could not copy — please copy manually.', 'error'));
+}
+
+async function processShareUnlock(catId, partId, code, ts) {
+  // Set cooldown in localStorage
+  localStorage.setItem('hom3_last_share_unlock', ts.toString());
+
+  // Save unlock to Firebase
+  const key = `${catId}_${partId}`;
+  shareUnlocks[key] = ts;
+
+  if (currentUser) {
+    try {
+      await db.collection('users').doc(currentUser.uid).set({
+        shareUnlocks: { [key]: ts }
+      }, { merge: true });
+    } catch (e) {
+      console.warn('Could not save share unlock:', e);
+    }
+  }
+
+  // Close modal and refresh card
+  setTimeout(() => {
+    closeShareModal();
+    refreshPremiumCard(catId, partId);
+    showToast('Lesson unlocked for 24 hours! Enjoy learning.', 'success');
+  }, 600);
+}
+
+function refreshPremiumCard(catId, partId) {
+  // For dynamically generated premium cards, rebuild them
+  const title      = (PREMIUM_PART_TITLES[catId] && PREMIUM_PART_TITLES[catId][partId]) || `Part ${partId}`;
+  const difficulty = DIFFICULTIES[Math.min(Math.floor((partId - 1) / 10), 2)];
+  const rt         = READING_TIMES[(partId - 1) % READING_TIMES.length];
+  const newCard    = buildPremiumCard(catId, partId, title, difficulty, rt);
+  const oldCard    = document.getElementById(`card-${catId}-${partId}`);
+  if (oldCard && oldCard.parentNode) {
+    oldCard.parentNode.replaceChild(newCard, oldCard);
+  }
+}
+
+/* ============================================================
+   RESTORE COMPLETED STATES ON LOAD (for free lessons)
+   ============================================================ */
+function restoreFreeCompleted() {
+  [0].forEach(catId => {
+    [1, 2, 3].forEach(partId => {
+      const progKey  = `hom3_prog_${catId}`;
+      const progData = JSON.parse(localStorage.getItem(progKey) || '{}');
+      if (progData[partId]) applyCompletedState(catId, partId);
+    });
+  });
+}
+
+/* ============================================================
+   CLOSE MODAL ON OVERLAY CLICK
+   ============================================================ */
+document.getElementById('shareModal').addEventListener('click', function(e) {
+  if (e.target === this) closeShareModal();
+});
+
+/* ============================================================
+   INIT (non-auth parts)
+   ============================================================ */
+restoreFreeCompleted();
+</script>
+</body>
+</html>

@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — History of Muslims Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:  #080F1E;
+      --navy2: #0D1E35;
+      --gold:  #C9A96E;
+      --gold2: #E8C987;
+      --cream: #F5F0E8;
+      --green: #6FCF97;
+      --red:   #EB5757;
+      --text:  #D6CBBA;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(0,0,0,.45);
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ────────────────────────────────────────────── */
+    .top-bar {
+      background: var(--navy2);
+      border-bottom: 2px solid var(--gold);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.6);
+    }
+    .top-bar .brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.75rem, 2vw, 1rem);
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .top-bar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn-link {
+      background: none;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-link:hover { background: var(--gold); color: var(--navy); }
+    .btn-signout {
+      background: var(--red);
+      border: none;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-signout:hover { opacity: .8; }
+
+    /* ── LAYOUT ────────────────────────────────────────────── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    /* ── CARDS ─────────────────────────────────────────────── */
+    .card {
+      background: var(--navy2);
+      border: 1px solid rgba(201,169,110,.25);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 18px;
+      letter-spacing: .5px;
+    }
+
+    /* ── HERO PROFILE ──────────────────────────────────────── */
+    .hero-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .avatar-wrap { position: relative; flex-shrink: 0; }
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      border: 3px solid var(--gold);
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .level-badge {
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: .65rem;
+      font-weight: 900;
+      padding: 3px 7px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .hero-info { flex: 1; min-width: 200px; }
+    .hero-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      color: var(--gold2);
+      margin-bottom: 4px;
+    }
+    .hero-email { font-size: .85rem; color: #8899aa; margin-bottom: 10px; }
+    .hero-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+    .stat-box {
+      text-align: center;
+      background: rgba(201,169,110,.08);
+      border: 1px solid rgba(201,169,110,.2);
+      border-radius: 10px;
+      padding: 10px 16px;
+    }
+    .stat-val {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.4rem;
+      color: var(--gold2);
+      display: block;
+    }
+    .stat-lbl { font-size: .72rem; color: #8899aa; text-transform: uppercase; letter-spacing: .5px; }
+    .streak-badge {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: #fff;
+      font-weight: 900;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 2px 12px rgba(255,100,0,.45);
+      white-space: nowrap;
+    }
+
+    /* ── PROGRESS RINGS ────────────────────────────────────── */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+    }
+    .prog-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .ring-wrap { position: relative; width: 100px; height: 100px; }
+    .ring-wrap svg { transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: rgba(201,169,110,.15); stroke-width: 8; }
+    .ring-fill {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);
+    }
+    .ring-pct {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .9rem;
+      color: var(--gold2);
+    }
+    .prog-emoji { font-size: 1.4rem; }
+    .prog-label { font-size: .75rem; color: #8899aa; text-align: center; max-width: 110px; line-height: 1.3; }
+
+    /* ── NUDGES ────────────────────────────────────────────── */
+    .nudge-list { display: flex; flex-direction: column; gap: 12px; }
+    .nudge-card {
+      background: rgba(201,169,110,.06);
+      border: 1px solid rgba(201,169,110,.2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color .2s;
+    }
+    .nudge-card.urgent { border-color: var(--red); background: rgba(235,87,87,.07); }
+    .nudge-bar-wrap { flex: 1; }
+    .nudge-title { font-size: .88rem; font-weight: 700; color: var(--cream); margin-bottom: 6px; }
+    .nudge-bar-bg {
+      height: 8px;
+      background: rgba(255,255,255,.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .nudge-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      transition: width 1s ease;
+    }
+    .nudge-bar-fill.urgent { background: linear-gradient(90deg, var(--red), #ff8a8a); }
+    .nudge-pct { font-size: .78rem; color: #8899aa; margin-top: 4px; }
+    .nudge-emoji { font-size: 1.6rem; }
+
+    /* ── REVIEW LESSONS ────────────────────────────────────── */
+    .review-list { display: flex; flex-direction: column; gap: 10px; }
+    .review-item {
+      background: rgba(111,207,151,.06);
+      border: 1px solid rgba(111,207,151,.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .review-meta { font-size: .82rem; color: #8899aa; }
+    .review-title { font-size: .9rem; font-weight: 700; color: var(--cream); margin-bottom: 3px; }
+    .btn-review {
+      background: var(--green);
+      border: none;
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .btn-review:hover { opacity: .85; }
+    .no-data { color: #8899aa; font-size: .88rem; text-align: center; padding: 20px 0; }
+
+    /* ── CERTIFICATES ──────────────────────────────────────── */
+    .cert-list { display: flex; flex-direction: column; gap: 14px; }
+    .cert-item {
+      background: linear-gradient(135deg, rgba(201,169,110,.08), rgba(232,201,135,.04));
+      border: 1px solid rgba(201,169,110,.35);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .cert-icon { font-size: 2rem; }
+    .cert-info { flex: 1; }
+    .cert-name { font-family: 'Cinzel Decorative', serif; font-size: .9rem; color: var(--gold2); margin-bottom: 4px; }
+    .cert-sub { font-size: .78rem; color: #8899aa; }
+    .btn-cert {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border: none;
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-cert:hover { opacity: .85; }
+
+    /* Hidden certificate template */
+    #cert-template {
+      display: none;
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 794px;
+      padding: 60px;
+      background: #fff;
+      font-family: 'Lato', sans-serif;
+    }
+    .cert-page { text-align: center; }
+    .cert-page h1 { font-family: 'Cinzel Decorative', serif; font-size: 2rem; color: #080F1E; margin-bottom: 8px; }
+    .cert-page .cert-sub-heading { font-size: 1rem; color: #555; margin-bottom: 30px; }
+    .cert-page .cert-recipient { font-size: 1.5rem; font-weight: 700; color: #C9A96E; border-bottom: 2px solid #C9A96E; display: inline-block; padding: 0 40px 8px; margin-bottom: 18px; }
+    .cert-page .cert-body { font-size: 1rem; color: #333; margin-bottom: 14px; }
+    .cert-page .cert-details { font-size: .85rem; color: #777; margin-top: 30px; }
+
+    /* ── REFERRAL ──────────────────────────────────────────── */
+    .referral-code-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .referral-code {
+      background: rgba(201,169,110,.1);
+      border: 1px dashed var(--gold);
+      color: var(--gold2);
+      font-family: 'Lato', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      letter-spacing: 1px;
+      flex: 1;
+      word-break: break-all;
+    }
+    .btn-copy {
+      background: var(--gold);
+      border: none;
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 9px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .btn-copy:hover { opacity: .85; }
+    .referral-link-row { font-size: .82rem; color: #8899aa; margin-bottom: 14px; word-break: break-all; }
+    .referral-link-row a { color: var(--gold); text-decoration: none; }
+    .referral-progress { font-size: .9rem; color: var(--cream); }
+    .referral-progress span { color: var(--gold2); font-weight: 700; }
+
+    /* ── NOTIFICATIONS ─────────────────────────────────────── */
+    .notif-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .toggle-label { font-size: .95rem; color: var(--cream); }
+    .toggle-wrap { position: relative; display: inline-block; width: 52px; height: 28px; }
+    .toggle-wrap input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.15);
+      border-radius: 28px;
+      cursor: pointer;
+      transition: background .3s;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 4px;
+      top: 4px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .3s;
+    }
+    .toggle-wrap input:checked + .toggle-slider { background: var(--green); }
+    .toggle-wrap input:checked + .toggle-slider::before { transform: translateX(24px); }
+    .time-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .time-selector label { font-size: .88rem; color: #8899aa; }
+    .time-selector input[type="time"] {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(201,169,110,.3);
+      color: var(--cream);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .9rem;
+    }
+    .btn-save-notif {
+      background: var(--green);
+      border: none;
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: opacity .2s;
+    }
+    .btn-save-notif:hover { opacity: .85; }
+
+    /* ── WHATSAPP ──────────────────────────────────────────── */
+    .wa-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .country-select {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(201,169,110,.3);
+      color: var(--cream);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .88rem;
+      min-width: 90px;
+    }
+    .phone-input {
+      flex: 1;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(201,169,110,.3);
+      color: var(--cream);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: .9rem;
+      min-width: 140px;
+    }
+    .phone-input::placeholder { color: #556677; }
+    .btn-send-code {
+      background: #25D366;
+      border: none;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-send-code:hover { opacity: .85; }
+    .code-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+    .code-input {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(201,169,110,.3);
+      color: var(--cream);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: 'Lato', monospace;
+      font-size: 1rem;
+      width: 140px;
+      letter-spacing: 4px;
+      text-align: center;
+    }
+    .btn-verify {
+      background: var(--gold);
+      border: none;
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-verify:hover { opacity: .85; }
+    .wa-prefs { display: none; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .wa-prefs.show { display: flex; }
+    .pref-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .88rem;
+      color: var(--cream);
+      cursor: pointer;
+    }
+    .pref-label input[type="checkbox"] { accent-color: var(--green); width: 16px; height: 16px; }
+    .wa-status { font-size: .82rem; margin-top: 8px; padding: 7px 12px; border-radius: 8px; }
+    .wa-status.verified { background: rgba(111,207,151,.12); color: var(--green); }
+    .wa-status.error { background: rgba(235,87,87,.12); color: var(--red); }
+
+    /* ── TOAST ─────────────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy2);
+      border: 1px solid var(--gold);
+      color: var(--cream);
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: .88rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+    @media (min-width: 760px) {
+      .page-wrap {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero-card, .progress-card, .nudge-card-wrap, .review-card { grid-column: 1 / -1; }
+    }
+    @media (min-width: 1100px) {
+      .page-wrap { grid-template-columns: repeat(3, 1fr); }
+      .hero-card { grid-column: 1 / -1; }
+      .progress-card { grid-column: 1 / -1; }
+      .nudge-card-wrap { grid-column: 1 / -1; }
+      .review-card { grid-column: 1 / -1; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: rgba(201,169,110,.4); border-radius: 3px; }
+
+    /* Loading overlay */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #loading.hidden { display: none; }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(201,169,110,.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading p {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .85rem;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="spinner"></div>
+  <p>Loading your dashboard…</p>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Hidden certificate template -->
+<div id="cert-template">
+  <div class="cert-page" id="cert-content">
+    <h1>History of Muslims Academy</h1>
+    <div class="cert-sub-heading">Certificate of Achievement</div>
+    <p style="font-size:1rem;color:#555;margin-bottom:20px;">This certifies that</p>
+    <div class="cert-recipient" id="cert-recipient-name">Student Name</div>
+    <p class="cert-body" id="cert-body-text">has successfully completed the <strong id="cert-level">Level</strong> with a pass rate of <strong id="cert-pass-rate">0%</strong>.</p>
+    <p class="cert-details">
+      Issued: <span id="cert-date"></span> &nbsp;|&nbsp; Certificate ID: <span id="cert-id"></span>
+    </p>
+  </div>
+</div>
+
+<!-- Top Bar -->
+<header class="top-bar">
+  <span class="brand">HOM Academy</span>
+  <div class="top-bar-actions">
+    <a href="leaderboard.html" class="btn-link">🏆 Leaderboard</a>
+    <a href="email-digest.html" class="btn-link">📧 Digest</a>
+    <button class="btn-signout" id="btn-signout">Sign Out</button>
+  </div>
+</header>
+
+<!-- Page -->
+<main class="page-wrap" id="page-wrap">
+
+  <!-- HERO -->
+  <div class="card hero-card" id="hero-card">
+    <div class="avatar-wrap">
+      <div class="avatar" id="user-avatar">👤</div>
+      <span class="level-badge" id="level-badge">Lv 1</span>
+    </div>
+    <div class="hero-info">
+      <div class="hero-name" id="user-name">Loading…</div>
+      <div class="hero-email" id="user-email"></div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-val" id="stat-points">0</span>
+          <span class="stat-lbl">Points</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" id="stat-quizzes">0</span>
+          <span class="stat-lbl">Quizzes</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" id="stat-longest">0</span>
+          <span class="stat-lbl">Best Streak</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" id="stat-level-name" style="font-size:.85rem;">Beginner</span>
+          <span class="stat-lbl">Account Level</span>
+        </div>
+      </div>
+    </div>
+    <div class="streak-badge" id="streak-badge">🔥 0 day streak!</div>
+  </div>
+
+  <!-- PROGRESS RINGS -->
+  <div class="card progress-card">
+    <div class="card-title">📊 Category Progress</div>
+    <div class="progress-grid" id="progress-grid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <!-- NUDGES -->
+  <div class="card nudge-card-wrap">
+    <div class="card-title">🎯 Progress Nudges</div>
+    <div class="nudge-list" id="nudge-list">
+      <div class="no-data">Calculating your milestones…</div>
+    </div>
+  </div>
+
+  <!-- REVIEW LESSONS -->
+  <div class="card review-card">
+    <div class="card-title">📚 Time to Review</div>
+    <div class="review-list" id="review-list">
+      <div class="no-data">Loading reviews…</div>
+    </div>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <div class="card">
+    <div class="card-title">🎓 My Certificates</div>
+    <div class="cert-list" id="cert-list">
+      <div class="no-data">No certificates yet. Keep learning!</div>
+    </div>
+  </div>
+
+  <!-- REFERRAL -->
+  <div class="card">
+    <div class="card-title">🔗 Referral Program</div>
+    <div class="referral-code-row">
+      <div class="referral-code" id="referral-code">HOM_XXXXXXXX_REF</div>
+      <button class="btn-copy" id="btn-copy-code">Copy Code</button>
+    </div>
+    <div class="referral-link-row" id="referral-link-row">Share link: <a id="referral-link-a" href="#">–</a></div>
+    <button class="btn-copy" id="btn-copy-link" style="margin-bottom:12px;">Copy Link</button>
+    <div class="referral-progress" id="referral-progress">0/3 referrals to unlock premium</div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="card">
+    <div class="card-title">🔔 Daily Notifications</div>
+    <div class="notif-row">
+      <span class="toggle-label">Enable push notifications</span>
+      <label class="toggle-wrap">
+        <input type="checkbox" id="notif-toggle" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="time-selector">
+      <label for="notif-time">Daily reminder at:</label>
+      <input type="time" id="notif-time" value="08:00" />
+    </div>
+    <br />
+    <button class="btn-save-notif" id="btn-save-notif">Save Preferences</button>
+  </div>
+
+  <!-- WHATSAPP -->
+  <div class="card">
+    <div class="card-title">💬 WhatsApp Integration</div>
+    <div class="wa-row">
+      <select class="country-select" id="wa-country">
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+44">🇬🇧 +44</option>
+        <option value="+92">🇵🇰 +92</option>
+        <option value="+966">🇸🇦 +966</option>
+        <option value="+971">🇦🇪 +971</option>
+        <option value="+62">🇮🇩 +62</option>
+        <option value="+880">🇧🇩 +880</option>
+        <option value="+20">🇪🇬 +20</option>
+        <option value="+90">🇹🇷 +90</option>
+        <option value="+49">🇩🇪 +49</option>
+        <option value="+33">🇫🇷 +33</option>
+        <option value="+91">🇮🇳 +91</option>
+        <option value="+60">🇲🇾 +60</option>
+        <option value="+234">🇳🇬 +234</option>
+        <option value="+27">🇿🇦 +27</option>
+      </select>
+      <input type="tel" class="phone-input" id="wa-phone" placeholder="Phone number" />
+      <button class="btn-send-code" id="btn-send-wa">Send Code</button>
+    </div>
+    <div class="code-row" id="wa-code-row" style="display:none;">
+      <input type="text" class="code-input" id="wa-code" placeholder="000000" maxlength="6" inputmode="numeric" />
+      <button class="btn-verify" id="btn-verify-wa">Verify</button>
+    </div>
+    <div class="wa-status" id="wa-status"></div>
+    <div class="wa-prefs" id="wa-prefs">
+      <strong style="color:var(--gold);font-size:.85rem;">WhatsApp Preferences</strong>
+      <label class="pref-label"><input type="checkbox" id="wa-pref-daily" /> Daily streak reminders</label>
+      <label class="pref-label"><input type="checkbox" id="wa-pref-quiz" /> New quiz available alerts</label>
+      <label class="pref-label"><input type="checkbox" id="wa-pref-review" /> Spaced repetition reminders</label>
+      <label class="pref-label"><input type="checkbox" id="wa-pref-milestone" /> Milestone achievements</label>
+      <button class="btn-save-notif" id="btn-save-wa" style="margin-top:6px;">Save WhatsApp Preferences</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- Firebase v9 compat CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  FIREBASE CONFIGURATION  — replace with your project config
+// ══════════════════════════════════════════════════════════════
+const firebaseConfig = { /* REPLACE WITH YOUR CONFIG */ };
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// ══════════════════════════════════════════════════════════════
+//  CONSTANTS
+// ══════════════════════════════════════════════════════════════
+const CATEGORIES = [
+  { id: 1, emoji: '🏛️', name: 'Start of Empires',      lsKey: 'hom3_prog_1' },
+  { id: 2, emoji: '👑', name: 'Rulers & Leaders',       lsKey: 'hom3_prog_2' },
+  { id: 3, emoji: '✨', name: 'Islamic Golden Age',      lsKey: 'hom3_prog_3' },
+  { id: 4, emoji: '🌍', name: 'Modern Age',              lsKey: 'hom3_prog_4' },
+  { id: 5, emoji: '🎭', name: 'Society & Culture',       lsKey: 'hom3_prog_5' },
+];
+
+const LEVEL_NAMES = [
+  'Beginner', 'Novice', 'Apprentice', 'Student', 'Scholar Aspirant',
+  'Junior Scholar', 'Scholar', 'Senior Scholar', 'Learned',
+  'Distinguished', 'Expert', 'Master', 'Grand Master',
+  'Islamic Historian', 'Legendary Scholar',
+];
+
+const REVIEW_INTERVALS_DAYS = [1, 3, 7, 14, 30];
+
+// ══════════════════════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════════════════════
+function toast(msg, duration = 2800) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), duration);
+}
+
+function fmtDate(d) {
+  return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function copyText(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => toast('✅ Copied to clipboard!'));
+  } else {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    toast('✅ Copied to clipboard!');
+  }
+}
+
+function lsGet(key, fallback = null) {
+  try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  LEVEL CALCULATION
+// ══════════════════════════════════════════════════════════════
+function calcLevel(totalPoints) {
+  // Every 500 points = 1 level, capped at 15
+  const lv = Math.min(15, Math.floor(totalPoints / 500) + 1);
+  return { level: lv, name: LEVEL_NAMES[lv - 1] };
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PROGRESS RINGS
+// ══════════════════════════════════════════════════════════════
+function renderProgressRings(progData) {
+  const grid = document.getElementById('progress-grid');
+  grid.innerHTML = '';
+  const R = 42, C = 2 * Math.PI * R;
+
+  CATEGORIES.forEach((cat, i) => {
+    const completed = parseInt(lsGet(cat.lsKey, '0'), 10) || 0;
+    const pct = Math.min(100, Math.round((completed / 30) * 100));
+    const dash = C - (pct / 100) * C;
+
+    const item = document.createElement('div');
+    item.className = 'prog-item';
+    item.innerHTML = `
+      <div class="ring-wrap">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="${R}" />
+          <circle class="ring-fill" id="ring-${i}"
+            cx="50" cy="50" r="${R}"
+            stroke-dasharray="${C}"
+            stroke-dashoffset="${C}"
+          />
+        </svg>
+        <div class="ring-pct">${pct}%</div>
+      </div>
+      <div class="prog-emoji">${cat.emoji}</div>
+      <div class="prog-label">${cat.name}</div>
+    `;
+    grid.appendChild(item);
+
+    // Animate after DOM paint
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const ring = document.getElementById(`ring-${i}`);
+        if (ring) ring.style.strokeDashoffset = dash;
+      }, 200 + i * 120);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PROGRESS NUDGES
+// ══════════════════════════════════════════════════════════════
+function renderNudges() {
+  const list = document.getElementById('nudge-list');
+  list.innerHTML = '';
+  const nudges = [];
+
+  CATEGORIES.forEach(cat => {
+    const completed = parseInt(lsGet(cat.lsKey, '0'), 10) || 0;
+    const pct = Math.min(100, Math.round((completed / 30) * 100));
+    const remaining = 100 - pct;
+
+    // Unlock next difficulty at 80%
+    if (pct < 80) {
+      const toUnlock = 80 - pct;
+      nudges.push({
+        emoji: cat.emoji,
+        title: `${cat.name}: Unlock Advanced Difficulty`,
+        pct,
+        threshold: 80,
+        msg: `${toUnlock}% away from unlocking advanced difficulty`,
+        urgent: toUnlock < 10,
+      });
+    }
+
+    // Category completion
+    if (pct < 100) {
+      nudges.push({
+        emoji: cat.emoji,
+        title: `${cat.name}: Complete Category`,
+        pct,
+        threshold: 100,
+        msg: `${remaining}% away from completing ${cat.name}`,
+        urgent: remaining < 10,
+      });
+    }
+  });
+
+  if (!nudges.length) {
+    list.innerHTML = '<div class="no-data">🎉 Amazing! You\'ve hit all milestones!</div>';
+    return;
+  }
+
+  // Sort: urgent first, then by smallest remaining
+  nudges.sort((a, b) => {
+    if (a.urgent !== b.urgent) return b.urgent - a.urgent;
+    return (a.threshold - a.pct) - (b.threshold - b.pct);
+  });
+
+  nudges.slice(0, 6).forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'nudge-card' + (n.urgent ? ' urgent' : '');
+    el.innerHTML = `
+      <div class="nudge-emoji">${n.emoji}</div>
+      <div class="nudge-bar-wrap">
+        <div class="nudge-title">${n.title}</div>
+        <div class="nudge-bar-bg">
+          <div class="nudge-bar-fill${n.urgent ? ' urgent' : ''}" style="width:${n.pct}%"></div>
+        </div>
+        <div class="nudge-pct">${n.msg}</div>
+      </div>
+    `;
+    list.appendChild(el);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SPACED REPETITION REVIEW SCHEDULE
+// ══════════════════════════════════════════════════════════════
+function renderReviews() {
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  const now = Date.now();
+  const due = [];
+
+  // Scan localStorage for accessed lessons
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      // key format: hom3_lesson_{catId}_{partId}_accessed
+      const m = key && key.match(/^hom3_lesson_(\d+)_(\d+)_accessed$/);
+      if (!m) continue;
+      const catId  = parseInt(m[1], 10);
+      const partId = parseInt(m[2], 10);
+      const lastAccessed = parseInt(localStorage.getItem(key), 10);
+      if (!lastAccessed) continue;
+
+      const daysSince = (now - lastAccessed) / 86400000;
+      const cat = CATEGORIES.find(c => c.id === catId);
+
+      // Find next review interval due
+      const nextInterval = REVIEW_INTERVALS_DAYS.find(d => daysSince >= d);
+      if (nextInterval !== undefined) {
+        const overdue = daysSince >= REVIEW_INTERVALS_DAYS[REVIEW_INTERVALS_DAYS.length - 1]
+          ? '30+ days overdue'
+          : `${nextInterval}d interval due`;
+        due.push({ catId, partId, catName: cat ? cat.name : `Category ${catId}`, overdue, catEmoji: cat ? cat.emoji : '📖', daysSince });
+      }
+    }
+  } catch (e) {}
+
+  if (!due.length) {
+    list.innerHTML = '<div class="no-data">✅ No lessons due for review right now. Keep it up!</div>';
+    return;
+  }
+
+  // Sort most overdue first
+  due.sort((a, b) => b.daysSince - a.daysSince);
+
+  due.slice(0, 8).forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'review-item';
+    el.innerHTML = `
+      <div>
+        <div class="review-title">${item.catEmoji} ${item.catName} — Part ${item.partId}</div>
+        <div class="review-meta">${item.overdue}</div>
+      </div>
+      <button class="btn-review" onclick="reviewLesson(${item.catId}, ${item.partId})">Review Now</button>
+    `;
+    list.appendChild(el);
+  });
+}
+
+function reviewLesson(catId, partId) {
+  // Update last accessed timestamp
+  try { localStorage.setItem(`hom3_lesson_${catId}_${partId}_accessed`, Date.now()); } catch {}
+  window.location.href = `lesson.html?cat=${catId}&part=${partId}`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  CERTIFICATES
+// ══════════════════════════════════════════════════════════════
+function renderCerts(userData, uid) {
+  const list = document.getElementById('cert-list');
+  list.innerHTML = '';
+  const certs = userData.certificatesDownloaded || [];
+
+  if (!certs.length) {
+    list.innerHTML = '<div class="no-data">No certificates yet. Complete a category to earn one!</div>';
+    return;
+  }
+
+  certs.forEach((cert, idx) => {
+    const el = document.createElement('div');
+    el.className = 'cert-item';
+    el.innerHTML = `
+      <div class="cert-icon">🎓</div>
+      <div class="cert-info">
+        <div class="cert-name">${cert.levelName || 'Achievement'}</div>
+        <div class="cert-sub">Pass Rate: ${cert.passRate || 0}% &nbsp;|&nbsp; Issued: ${fmtDate(cert.issueDate || Date.now())}</div>
+        <div class="cert-sub" style="font-size:.72rem;margin-top:3px;">ID: ${cert.certId || 'N/A'}</div>
+      </div>
+      <button class="btn-cert" onclick="downloadCert(${idx})">⬇ Download PDF</button>
+    `;
+    list.appendChild(el);
+  });
+
+  // Store certs on window for download
+  window._certs = certs;
+  window._userData = userData;
+}
+
+function downloadCert(idx) {
+  const cert = window._certs[idx];
+  const user = window._userData;
+
+  document.getElementById('cert-recipient-name').textContent = user.displayName || 'Scholar';
+  document.getElementById('cert-level').textContent = cert.levelName || 'Achievement';
+  document.getElementById('cert-pass-rate').textContent = (cert.passRate || 0) + '%';
+  document.getElementById('cert-date').textContent = fmtDate(cert.issueDate || Date.now());
+  document.getElementById('cert-id').textContent = cert.certId || 'HOM-' + Math.random().toString(36).slice(2, 10).toUpperCase();
+
+  const el = document.getElementById('cert-content');
+  el.style.display = 'block';
+
+  html2pdf().set({
+    margin: 20,
+    filename: `HOM_Certificate_${cert.levelName || idx}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+  }).from(el).save().then(() => {
+    toast('🎓 Certificate downloaded!');
+    // Mark as downloaded in Firestore
+    const uid = firebase.auth().currentUser?.uid;
+    if (uid) {
+      db.collection('users').doc(uid).update({
+        [`certificatesDownloaded.${idx}.downloadedAt`]: firebase.firestore.FieldValue.serverTimestamp(),
+      }).catch(() => {});
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  REFERRAL
+// ══════════════════════════════════════════════════════════════
+function setupReferral(uid, userData) {
+  const code = `HOM_${uid.substring(0, 8).toUpperCase()}_REF`;
+  const domain = window.location.hostname || 'homsacademy.com';
+  const link = `https://${domain}/?ref=${code}`;
+
+  document.getElementById('referral-code').textContent = code;
+  const linkEl = document.getElementById('referral-link-a');
+  linkEl.textContent = link;
+  linkEl.href = link;
+
+  const count = userData.referralCount || 0;
+  const status = count >= 3 ? '✅ Premium unlocked!' : `${count}/3 referrals to unlock premium`;
+  document.getElementById('referral-progress').innerHTML = `<span>${count}</span>/3 referrals — ${count >= 3 ? '✅ <strong>Premium Unlocked!</strong>' : `${3 - count} more to go`}`;
+
+  document.getElementById('btn-copy-code').onclick = () => copyText(code);
+  document.getElementById('btn-copy-link').onclick = () => copyText(link);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  NOTIFICATIONS
+// ══════════════════════════════════════════════════════════════
+function setupNotifications(uid, userData) {
+  const toggle = document.getElementById('notif-toggle');
+  const timeInput = document.getElementById('notif-time');
+
+  toggle.checked = userData.notificationsEnabled || false;
+  if (userData.notificationTime) timeInput.value = userData.notificationTime;
+
+  document.getElementById('btn-save-notif').onclick = async () => {
+    if (toggle.checked) {
+      const perm = await Notification.requestPermission().catch(() => 'denied');
+      if (perm !== 'granted') {
+        toast('⚠️ Notification permission denied by browser.');
+        toggle.checked = false;
+        return;
+      }
+    }
+    await db.collection('users').doc(uid).update({
+      notificationsEnabled: toggle.checked,
+      notificationTime: timeInput.value,
+    }).catch(() => {});
+    toast(toggle.checked ? '🔔 Notifications enabled!' : '🔕 Notifications disabled.');
+  };
+}
+
+// ══════════════════════════════════════════════════════════════
+//  WHATSAPP
+// ══════════════════════════════════════════════════════════════
+function setupWhatsApp(uid, userData) {
+  let generatedCode = null;
+  const statusEl = document.getElementById('wa-status');
+  const prefsEl  = document.getElementById('wa-prefs');
+
+  // Restore verified state
+  if (userData.whatsappVerified) {
+    statusEl.className = 'wa-status verified';
+    statusEl.textContent = '✅ WhatsApp verified: ' + (userData.whatsappNumber || '');
+    prefsEl.classList.add('show');
+    restoreWaPrefs(userData);
+  }
+
+  document.getElementById('btn-send-wa').onclick = () => {
+    const country = document.getElementById('wa-country').value;
+    const phone   = document.getElementById('wa-phone').value.replace(/\D/g, '');
+    if (!phone || phone.length < 7) { toast('⚠️ Please enter a valid phone number.'); return; }
+
+    // Generate a random 6-digit verification code (in production, send via WhatsApp API)
+    generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+    console.info(`[DEV] WhatsApp verification code for ${country}${phone}: ${generatedCode}`);
+
+    document.getElementById('wa-code-row').style.display = 'flex';
+    statusEl.className = 'wa-status';
+    statusEl.textContent = `📱 Code sent to ${country} ${phone} (check console in dev mode)`;
+    toast('📱 Verification code generated!');
+  };
+
+  document.getElementById('btn-verify-wa').onclick = async () => {
+    const entered = document.getElementById('wa-code').value.trim();
+    if (!generatedCode) { toast('⚠️ Please request a code first.'); return; }
+    if (entered !== generatedCode) {
+      statusEl.className = 'wa-status error';
+      statusEl.textContent = '❌ Incorrect code. Please try again.';
+      return;
+    }
+    const country = document.getElementById('wa-country').value;
+    const phone   = document.getElementById('wa-phone').value.replace(/\D/g, '');
+    const full    = country + phone;
+
+    await db.collection('users').doc(uid).update({
+      whatsappVerified: true,
+      whatsappNumber: full,
+    }).catch(() => {});
+
+    statusEl.className = 'wa-status verified';
+    statusEl.textContent = `✅ WhatsApp verified: ${full}`;
+    prefsEl.classList.add('show');
+    document.getElementById('wa-code-row').style.display = 'none';
+    toast('✅ WhatsApp number verified!');
+  };
+
+  document.getElementById('btn-save-wa').onclick = async () => {
+    const prefs = {
+      waDaily:     document.getElementById('wa-pref-daily').checked,
+      waQuiz:      document.getElementById('wa-pref-quiz').checked,
+      waReview:    document.getElementById('wa-pref-review').checked,
+      waMilestone: document.getElementById('wa-pref-milestone').checked,
+    };
+    await db.collection('users').doc(uid).update(prefs).catch(() => {});
+    toast('✅ WhatsApp preferences saved!');
+  };
+}
+
+function restoreWaPrefs(d) {
+  if (d.waDaily     !== undefined) document.getElementById('wa-pref-daily').checked     = d.waDaily;
+  if (d.waQuiz      !== undefined) document.getElementById('wa-pref-quiz').checked      = d.waQuiz;
+  if (d.waReview    !== undefined) document.getElementById('wa-pref-review').checked    = d.waReview;
+  if (d.waMilestone !== undefined) document.getElementById('wa-pref-milestone').checked = d.waMilestone;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  POPULATE HERO
+// ══════════════════════════════════════════════════════════════
+function populateHero(user, userData) {
+  const displayName = userData.displayName || user.displayName || 'Scholar';
+  const email       = user.email || '';
+  const points      = userData.totalPoints   || 0;
+  const quizzes     = userData.quizzesTaken  || 0;
+  const longest     = userData.longestStreak || 0;
+  const streak      = parseInt(lsGet('hom3_streak', '0'), 10) || userData.currentStreak || 0;
+  const { level, name: levelName } = calcLevel(points);
+
+  document.getElementById('user-name').textContent   = displayName;
+  document.getElementById('user-email').textContent  = email;
+  document.getElementById('stat-points').textContent = points.toLocaleString();
+  document.getElementById('stat-quizzes').textContent = quizzes;
+  document.getElementById('stat-longest').textContent = longest;
+  document.getElementById('stat-level-name').textContent = levelName;
+  document.getElementById('level-badge').textContent  = `Lv ${level}`;
+  document.getElementById('streak-badge').textContent = `🔥 ${streak} day streak!`;
+
+  // Avatar
+  if (user.photoURL) {
+    document.getElementById('user-avatar').innerHTML = `<img src="${user.photoURL}" alt="avatar" />`;
+  } else {
+    const initials = displayName.split(' ').map(w => w[0]).join('').toUpperCase().substring(0, 2);
+    document.getElementById('user-avatar').textContent = initials || '👤';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SIGN OUT
+// ══════════════════════════════════════════════════════════════
+document.getElementById('btn-signout').onclick = () => {
+  auth.signOut().then(() => { window.location.href = 'index.html'; });
+};
+
+// ══════════════════════════════════════════════════════════════
+//  AUTH LISTENER & MAIN BOOT
+// ══════════════════════════════════════════════════════════════
+auth.onAuthStateChanged(async (user) => {
+  if (!user) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // Fetch Firestore user document
+  let userData = {};
+  try {
+    const snap = await db.collection('users').doc(user.uid).get();
+    if (snap.exists) userData = snap.data();
+  } catch (e) {
+    console.warn('Firestore read failed, using localStorage fallbacks.', e);
+  }
+
+  // Render all sections
+  populateHero(user, userData);
+  renderProgressRings(userData);
+  renderNudges();
+  renderReviews();
+  renderCerts(userData, user.uid);
+  setupReferral(user.uid, userData);
+  setupNotifications(user.uid, userData);
+  setupWhatsApp(user.uid, userData);
+
+  // Hide loader
+  document.getElementById('loading').classList.add('hidden');
+});
+</script>
+</body>
+</html>

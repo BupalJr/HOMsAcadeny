@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History of Muslims Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:  #080F1E;
+      --navy2: #0D1E35;
+      --gold:  #C9A96E;
+      --gold2: #E8C987;
+      --cream: #F5F0E8;
+      --green: #6FCF97;
+      --red:   #EB5757;
+      --text-light: rgba(245,240,232,0.85);
+      --border-gold: rgba(201,169,110,0.35);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--navy);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy2); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== GEOMETRIC BACKGROUND PATTERN ===== */
+    .geo-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .geo-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 59px,
+          rgba(201,169,110,0.04) 59px,
+          rgba(201,169,110,0.04) 60px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 59px,
+          rgba(201,169,110,0.04) 59px,
+          rgba(201,169,110,0.04) 60px
+        );
+    }
+    .geo-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 84px,
+          rgba(201,169,110,0.025) 84px,
+          rgba(201,169,110,0.025) 85px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 84px,
+          rgba(201,169,110,0.025) 84px,
+          rgba(201,169,110,0.025) 85px
+        );
+    }
+
+    /* Islamic 8-pointed star ornaments */
+    .star-ornament {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      opacity: 0.07;
+    }
+    .star-ornament::before,
+    .star-ornament::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .star-ornament::after {
+      transform: rotate(36deg);
+      opacity: 0.5;
+    }
+
+    /* ===== SPARKLE / STAR ANIMATIONS ===== */
+    .sparkle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .sparkle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--gold2);
+      animation: sparkle-float linear infinite;
+    }
+    @keyframes sparkle-float {
+      0%   { transform: translateY(0) scale(1); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+    }
+    .sparkle-star {
+      position: absolute;
+      color: var(--gold);
+      font-size: 12px;
+      animation: star-twinkle ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes star-twinkle {
+      0%, 100% { opacity: 0.1; transform: scale(0.7) rotate(0deg); }
+      50%       { opacity: 0.8; transform: scale(1.2) rotate(180deg); }
+    }
+
+    /* ===== SITE WRAPPER ===== */
+    .site-wrapper { position: relative; z-index: 1; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 2rem;
+      background: rgba(8,15,30,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-gold);
+    }
+    .navbar-brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .navbar-brand span { color: var(--gold2); }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      transition: color 0.25s;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid transparent;
+    }
+    .nav-links a:hover { color: var(--gold2); border-bottom-color: var(--gold2); }
+    .nav-auth { display: flex; align-items: center; gap: 1rem; }
+    .nav-user-info { display: none; align-items: center; gap: 0.75rem; }
+    .nav-user-info.visible { display: flex; }
+    .nav-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+    }
+    .nav-user-name { font-size: 0.85rem; color: var(--cream); font-weight: 600; }
+    .btn-signout {
+      background: transparent;
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
+      padding: 0.35rem 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: 'Lato', sans-serif;
+      transition: all 0.25s;
+    }
+    .btn-signout:hover { background: rgba(201,169,110,0.15); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 2px; background: var(--gold); border-radius: 2px; transition: all 0.3s; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid var(--border-gold);
+      color: var(--gold2);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 2rem;
+      animation: badge-glow 3s ease-in-out infinite;
+    }
+    @keyframes badge-glow {
+      0%, 100% { box-shadow: 0 0 8px rgba(201,169,110,0.2); }
+      50%       { box-shadow: 0 0 20px rgba(201,169,110,0.4); }
+    }
+    .hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 6vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--cream);
+      margin-bottom: 1rem;
+      text-shadow: 0 0 40px rgba(201,169,110,0.3);
+    }
+    .hero-title .accent { color: var(--gold2); }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-weight: 300;
+      color: var(--text-light);
+      max-width: 600px;
+      margin: 0 auto 0.75rem;
+      line-height: 1.7;
+    }
+    .hero-tagline {
+      font-size: 0.95rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+
+    /* Geometric divider */
+    .geo-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .geo-divider-line {
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .geo-divider-line.right { background: linear-gradient(90deg, var(--gold), transparent); }
+    .geo-divider-star {
+      width: 28px;
+      height: 28px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .geo-divider-star::before,
+    .geo-divider-star::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .geo-divider-star::after { transform: rotate(36deg); opacity: 0.6; }
+
+    /* CTA buttons */
+    .hero-cta { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .btn-google {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      padding: 1rem 2.2rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 24px rgba(201,169,110,0.4);
+      text-decoration: none;
+    }
+    .btn-google:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201,169,110,0.55);
+    }
+    .btn-google:active { transform: translateY(0); }
+    .btn-google svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    .btn-continue {
+      display: none;
+      align-items: center;
+      gap: 0.7rem;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid var(--gold);
+      color: var(--gold2);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .btn-continue.visible { display: inline-flex; }
+    .btn-continue:hover { background: rgba(201,169,110,0.2); transform: translateY(-1px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.8rem;
+      color: var(--gold2);
+      display: block;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-light); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0.5;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .scroll-indicator span { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+    .scroll-arrow { width: 20px; height: 20px; border-right: 2px solid var(--gold); border-bottom: 2px solid var(--gold); transform: rotate(45deg); }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    /* ===== SECTIONS SHARED ===== */
+    section { position: relative; z-index: 1; }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.85rem;
+    }
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      color: var(--cream);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    .section-desc {
+      font-size: 1rem;
+      color: var(--text-light);
+      max-width: 580px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* ===== FEATURES SECTION ===== */
+    .features-section {
+      padding: 6rem 1.5rem;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 50%, var(--navy) 100%);
+    }
+
+    .tier-block { margin-bottom: 4rem; }
+    .tier-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
+    }
+    .tier-badge {
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+    }
+    .tier-1 .tier-badge { background: rgba(201,169,110,0.15); color: var(--gold2); border: 1px solid rgba(201,169,110,0.4); }
+    .tier-2 .tier-badge { background: rgba(111,207,151,0.15); color: var(--green); border: 1px solid rgba(111,207,151,0.4); }
+    .tier-3 .tier-badge { background: rgba(232,201,135,0.12); color: var(--gold2); border: 1px solid rgba(232,201,135,0.5); }
+    .tier-line { flex: 1; height: 1px; background: var(--border-gold); }
+    .tier-name { font-size: 1rem; font-weight: 700; color: var(--cream); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: rgba(13,30,53,0.7);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s;
+      cursor: default;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201,169,110,0.6);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 20px rgba(201,169,110,0.1);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.1rem;
+      position: relative;
+    }
+    .feature-icon.gold  { background: rgba(201,169,110,0.15); }
+    .feature-icon.green { background: rgba(111,207,151,0.15); }
+    .feature-icon.red   { background: rgba(235,87,87,0.15); }
+    .feature-num {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.65rem;
+      font-weight: 900;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-title {
+      font-family: 'Lato', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 900;
+      color: var(--cream);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.02em;
+    }
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+    .feature-tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border-gold);
+      border-radius: 50px;
+    }
+
+    /* Geometric corner ornament on cards */
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 60px;
+      height: 60px;
+      background: rgba(201,169,110,0.04);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      transform: rotate(15deg);
+    }
+
+    /* ===== DASHBOARD (shown when logged in) ===== */
+    .dashboard-section {
+      display: none;
+      padding: 5rem 1.5rem 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .dashboard-section.visible { display: block; }
+    .dashboard-welcome {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.3rem;
+      color: var(--gold2);
+      margin-bottom: 0.5rem;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .dash-card {
+      background: rgba(13,30,53,0.8);
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      padding: 1.4rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .dash-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .dash-card-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+    .dash-card-label { font-size: 0.8rem; color: var(--text-light); }
+    .dash-card-value { font-size: 1.4rem; font-weight: 900; color: var(--gold2); }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-section {
+      padding: 6rem 1.5rem;
+      background: var(--navy2);
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .step-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+    .step-number {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      box-shadow: 0 4px 16px rgba(201,169,110,0.4);
+    }
+    .step-title { font-size: 1rem; font-weight: 700; color: var(--cream); margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.875rem; color: var(--text-light); line-height: 1.65; }
+
+    /* ===== TESTIMONIAL PLACEHOLDER ===== */
+    .quote-section {
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
+    .quote-text {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      color: var(--cream);
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.75;
+      position: relative;
+    }
+    .quote-text::before {
+      content: '\201C';
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: -2rem;
+      left: -1rem;
+      line-height: 1;
+    }
+    .quote-source { font-size: 0.9rem; color: var(--gold); font-weight: 700; letter-spacing: 0.08em; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: rgba(5,10,20,0.95);
+      border-top: 1px solid var(--border-gold);
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      list-style: none;
+    }
+    .footer-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.25s;
+    }
+    .footer-links a:hover { color: var(--gold2); }
+    .footer-divider { width: 60px; height: 1px; background: var(--border-gold); margin: 1.5rem auto; }
+    .footer-copy { font-size: 0.78rem; color: rgba(245,240,232,0.4); line-height: 1.8; }
+
+    /* Islamic geometric ornament in footer */
+    .footer-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .footer-ornament-star {
+      width: 24px; height: 24px;
+      position: relative;
+      opacity: 0.5;
+    }
+    .footer-ornament-star::before,
+    .footer-ornament-star::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .footer-ornament-star::after { transform: rotate(36deg); opacity: 0.6; }
+    .footer-ornament-line { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+    .footer-ornament-line.right { background: linear-gradient(90deg, var(--gold), transparent); }
+
+    /* ===== MODALS ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,10,20,0.85);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: var(--navy2);
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(201,169,110,0.1);
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.35s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 1;
+      transition: color 0.25s;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+    .modal-close:hover { color: var(--gold2); background: rgba(201,169,110,0.1); }
+    .modal-star {
+      width: 50px; height: 50px;
+      margin: 0 auto 1.2rem;
+      position: relative;
+    }
+    .modal-star::before, .modal-star::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .modal-star::after { transform: rotate(36deg); opacity: 0.7; }
+    .modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.4rem;
+      color: var(--gold2);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .modal-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+    .modal-subtitle strong { color: var(--gold2); }
+    .modal-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-input {
+      background: rgba(8,15,30,0.7);
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      color: var(--cream);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.1rem;
+      width: 100%;
+      transition: border-color 0.25s;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.12); }
+    .form-input::placeholder { color: rgba(245,240,232,0.35); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      padding: 0.9rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(201,169,110,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,169,110,0.45); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-skip {
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-align: center;
+    }
+    .btn-skip:hover { color: var(--cream); }
+    .form-pdf-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(111,207,151,0.1);
+      border: 1px solid rgba(111,207,151,0.3);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: var(--green);
+    }
+    .modal-success { display: none; text-align: center; }
+    .modal-success.visible { display: block; }
+    .modal-success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .modal-success-title { font-family: 'Cinzel Decorative', serif; font-size: 1.2rem; color: var(--green); margin-bottom: 0.6rem; }
+    .modal-success-text { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
+
+    /* ===== TOAST ===== */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.5rem;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .toast {
+      background: var(--navy2);
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      padding: 0.9rem 1.4rem;
+      color: var(--cream);
+      font-size: 0.875rem;
+      max-width: 300px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: toast-in 0.35s ease, toast-out 0.35s ease 3.65s forwards;
+    }
+    .toast.success { border-color: rgba(111,207,151,0.5); }
+    .toast.error { border-color: rgba(235,87,87,0.5); }
+    @keyframes toast-in  { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes toast-out { from { opacity: 1; } to { opacity: 0; } }
+
+    /* ===== LOADING OVERLAY ===== */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      transition: opacity 0.6s, visibility 0.6s;
+    }
+    .loading-overlay.hidden { opacity: 0; visibility: hidden; }
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--border-gold);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.9rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+
+    /* ===== MOBILE NAV MENU ===== */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(8,15,30,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-gold);
+      z-index: 99;
+      flex-direction: column;
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border-gold);
+    }
+    .mobile-menu a:hover { color: var(--gold2); }
+
+    /* ===== REFERRAL BANNER ===== */
+    .ref-banner {
+      display: none;
+      background: linear-gradient(135deg, rgba(201,169,110,0.15), rgba(232,201,135,0.08));
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      margin: 1rem auto;
+      max-width: 600px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--cream);
+    }
+    .ref-banner.visible { display: block; }
+    .ref-banner strong { color: var(--gold2); }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 1200px; margin: 0 auto; }
+    .hidden { display: none !important; }
+    .text-gold { color: var(--gold); }
+    .text-gold2 { color: var(--gold2); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .hero-stats { gap: 1.5rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .navbar-brand { font-size: 0.8rem; }
+    }
+    @media (max-width: 400px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOADING OVERLAY ===== -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">History of Muslims Academy</div>
+</div>
+
+<!-- ===== GEOMETRIC BACKGROUND ===== -->
+<div class="geo-bg" id="geoBg"></div>
+
+<!-- ===== SPARKLE CANVAS ===== -->
+<div class="sparkle-canvas" id="sparkleCanvas"></div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ===== EMAIL CAPTURE MODAL (Feature 2) ===== -->
+<div class="modal-overlay" id="emailModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEmailModal()" aria-label="Close">&times;</button>
+    <div id="emailFormSection">
+      <div class="modal-star"></div>
+      <h2 class="modal-title">Claim Your Free Gift</h2>
+      <p class="modal-subtitle">
+        Welcome to the Academy! Enter your email to receive our
+        <strong>Free PDF Study Guide: The Essentials of Islamic History</strong>
+        — a 50-page curated reference delivered instantly.
+      </p>
+      <div class="form-pdf-hint">
+        <span>📄</span>
+        <span>50-page PDF · Instant Download · No spam, ever</span>
+      </div>
+      <form class="modal-form" id="emailForm" onsubmit="submitEmailCapture(event)">
+        <input
+          type="email"
+          id="emailInput"
+          class="form-input"
+          placeholder="your@email.com"
+          required
+          autocomplete="email"
+        />
+        <button type="submit" class="btn-primary" id="emailSubmitBtn">
+          Send Me the Free Guide →
+        </button>
+        <button type="button" class="btn-skip" onclick="closeEmailModal()">
+          Skip for now
+        </button>
+      </form>
+    </div>
+    <div class="modal-success" id="emailSuccess">
+      <div class="modal-success-icon">✅</div>
+      <div class="modal-success-title">Guide is on its way!</div>
+      <p class="modal-success-text">
+        Check your inbox for the PDF Study Guide. Meanwhile, explore your personalized learning journey below.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">HOM<span>s</span> Academy</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="lessons.html">Lessons</a></li>
+    <li><a href="islamic-history-quiz.html">Quiz</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-auth">
+    <div class="nav-user-info" id="navUserInfo">
+      <img src="" alt="Avatar" class="nav-avatar" id="navAvatar" />
+      <span class="nav-user-name" id="navUserName"></span>
+      <button class="btn-signout" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="lessons.html">📚 Lessons</a>
+  <a href="islamic-history-quiz.html">🎯 Quiz</a>
+  <a href="profile.html">👤 Profile</a>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="site-wrapper">
+
+  <!-- Referral Banner -->
+  <div class="ref-banner" id="refBanner">
+    🎁 You were invited! <strong>Welcome bonus:</strong> your first week is unlocked. Sign in to claim it.
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge">✦ Est. 1400 Years of Legacy ✦</div>
+    <h1 class="hero-title">
+      History of<br /><span class="accent">Muslims</span> Academy
+    </h1>
+    <p class="hero-subtitle">
+      Master 1,400 years of Islamic civilization through structured lessons,
+      adaptive quizzes, and immersive storytelling — all in one place.
+    </p>
+    <p class="hero-tagline">اقرأ باسم ربك — Read in the name of your Lord</p>
+    <div class="geo-divider">
+      <div class="geo-divider-line"></div>
+      <div class="geo-divider-star"></div>
+      <div class="geo-divider-line right"></div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn-google" id="signInBtn" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+      <a class="btn-continue" id="continueBtn" href="lessons.html">
+        ▶ Continue Where You Left Off
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">20+</span><span class="stat-label">Premium Features</span></div>
+      <div class="stat-item"><span class="stat-num">1400</span><span class="stat-label">Years of History</span></div>
+      <div class="stat-item"><span class="stat-num">∞</span><span class="stat-label">Knowledge Await</span></div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ===== DASHBOARD (logged-in users) ===== -->
+  <div class="dashboard-section" id="dashboardSection">
+    <div class="section-header">
+      <div class="section-label">Your Journey</div>
+      <h2 class="section-title dashboard-welcome" id="dashboardWelcome">Welcome back!</h2>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-icon">📚</div>
+        <div class="dash-card-label">Lessons Completed</div>
+        <div class="dash-card-value" id="dashLessons">0</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-icon">🔥</div>
+        <div class="dash-card-label">Day Streak</div>
+        <div class="dash-card-value" id="dashStreak">0</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-icon">⭐</div>
+        <div class="dash-card-label">XP Points</div>
+        <div class="dash-card-value" id="dashXP">0</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-icon">🏅</div>
+        <div class="dash-card-label">Badges Earned</div>
+        <div class="dash-card-value" id="dashBadges">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURES SECTION ===== -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">✦ Complete Platform ✦</div>
+        <h2 class="section-title">Everything You Need to Master Islamic History</h2>
+        <p class="section-desc">
+          Twenty powerful features designed to make your learning journey engaging, effective, and deeply rewarding.
+        </p>
+      </div>
+
+      <!-- TIER 1: CORE LEARNING -->
+      <div class="tier-block tier-1">
+        <div class="tier-header">
+          <span class="tier-badge">Tier 1</span>
+          <span class="tier-name">Core Learning Engine</span>
+          <div class="tier-line"></div>
+        </div>
+        <div class="features-grid">
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>📖</span>
+              <span class="feature-num">1</span>
+            </div>
+            <h3 class="feature-title">Structured Lesson Library</h3>
+            <p class="feature-desc">Curated lessons spanning from the birth of Islam through the modern era, organized by era and topic for progressive mastery.</p>
+            <span class="feature-tag">Core</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🎁</span>
+              <span class="feature-num">2</span>
+            </div>
+            <h3 class="feature-title">Email Lead Capture & PDF Guide</h3>
+            <p class="feature-desc">On first sign-in, collect email addresses and instantly deliver a free 50-page Islamic History Study Guide to new students.</p>
+            <span class="feature-tag">Growth</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🧠</span>
+              <span class="feature-num">3</span>
+            </div>
+            <h3 class="feature-title">Adaptive Quiz Engine</h3>
+            <p class="feature-desc">AI-powered quizzes that adjust difficulty based on your performance, reinforcing weak areas with spaced repetition algorithms.</p>
+            <span class="feature-tag">Intelligence</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🏆</span>
+              <span class="feature-num">4</span>
+            </div>
+            <h3 class="feature-title">XP & Gamification System</h3>
+            <p class="feature-desc">Earn experience points, level up your Scholar rank, and unlock special titles from Student to Grand Historian.</p>
+            <span class="feature-tag">Engagement</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🔥</span>
+              <span class="feature-num">5</span>
+            </div>
+            <h3 class="feature-title">Daily Streak Tracker</h3>
+            <p class="feature-desc">Build powerful learning habits by tracking your daily study streak. Miss a day and your flame resets — consistency is rewarded.</p>
+            <span class="feature-tag">Habits</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🗺️</span>
+              <span class="feature-num">6</span>
+            </div>
+            <h3 class="feature-title">Interactive Timeline</h3>
+            <p class="feature-desc">A stunning visual timeline of 14 centuries of Islamic history — click any event to dive deep into context, figures, and impact.</p>
+            <span class="feature-tag">Visual</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🏅</span>
+              <span class="feature-num">7</span>
+            </div>
+            <h3 class="feature-title">Badges & Achievements</h3>
+            <p class="feature-desc">Unlock over 50 achievement badges for milestones — completing eras, quiz scores, streaks, and community contributions.</p>
+            <span class="feature-tag">Achievement</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TIER 2: ADVANCED ENGAGEMENT -->
+      <div class="tier-block tier-2">
+        <div class="tier-header">
+          <span class="tier-badge">Tier 2</span>
+          <span class="tier-name">Advanced Engagement & Social</span>
+          <div class="tier-line"></div>
+        </div>
+        <div class="features-grid">
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>🌍</span>
+              <span class="feature-num">8</span>
+            </div>
+            <h3 class="feature-title">Global Leaderboard</h3>
+            <p class="feature-desc">Compete with students worldwide on weekly and all-time leaderboards. Rise through the ranks and claim Scholar of the Month.</p>
+            <span class="feature-tag">Community</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>👥</span>
+              <span class="feature-num">9</span>
+            </div>
+            <h3 class="feature-title">Study Groups & Circles</h3>
+            <p class="feature-desc">Form private study circles with friends, family, or classmates. Share progress, discuss lessons, and learn together.</p>
+            <span class="feature-tag">Social</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>🔔</span>
+              <span class="feature-num">10</span>
+            </div>
+            <h3 class="feature-title">Smart Push Notifications</h3>
+            <p class="feature-desc">Personalized reminders based on your study pattern — never miss a daily review session or upcoming quiz deadline.</p>
+            <span class="feature-tag">Retention</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>▶️</span>
+              <span class="feature-num">11</span>
+            </div>
+            <h3 class="feature-title">Continue Where You Left Off</h3>
+            <p class="feature-desc">Your last position is saved locally and in the cloud — pick up exactly where you stopped, across any device, any time.</p>
+            <span class="feature-tag">Continuity</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>📊</span>
+              <span class="feature-num">12</span>
+            </div>
+            <h3 class="feature-title">Learning Analytics Dashboard</h3>
+            <p class="feature-desc">Detailed charts of your progress — time spent, topics mastered, quiz accuracy by era, and weekly performance trends.</p>
+            <span class="feature-tag">Insights</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>🔗</span>
+              <span class="feature-num">13</span>
+            </div>
+            <h3 class="feature-title">Referral Reward System</h3>
+            <p class="feature-desc">Invite friends with a unique referral link. Both you and your friend earn bonus XP and unlock exclusive content on sign-up.</p>
+            <span class="feature-tag">Viral Growth</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <span>🎙️</span>
+              <span class="feature-num">14</span>
+            </div>
+            <h3 class="feature-title">Audio Lesson Narration</h3>
+            <p class="feature-desc">Listen to professionally narrated lessons in Arabic and English — perfect for commutes, workouts, or eyes-free learning.</p>
+            <span class="feature-tag">Accessibility</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TIER 3: PREMIUM & ADVANCED -->
+      <div class="tier-block tier-3">
+        <div class="tier-header">
+          <span class="tier-badge">Tier 3</span>
+          <span class="tier-name">Premium Scholar Tools</span>
+          <div class="tier-line"></div>
+        </div>
+        <div class="features-grid">
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>📜</span>
+              <span class="feature-num">15</span>
+            </div>
+            <h3 class="feature-title">Completion Certificates</h3>
+            <p class="feature-desc">Earn verifiable digital certificates upon completing full courses and eras — shareable on LinkedIn and social media.</p>
+            <span class="feature-tag">Credential</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🌙</span>
+              <span class="feature-num">16</span>
+            </div>
+            <h3 class="feature-title">Ramadan Learning Sprint</h3>
+            <p class="feature-desc">Special 30-day Ramadan challenges with themed content, extra XP multipliers, and exclusive badges for consistent learners.</p>
+            <span class="feature-tag">Seasonal</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🤖</span>
+              <span class="feature-num">17</span>
+            </div>
+            <h3 class="feature-title">AI Study Assistant</h3>
+            <p class="feature-desc">Ask questions about any lesson, request summaries, or get personalized study recommendations from your AI tutor.</p>
+            <span class="feature-tag">AI-Powered</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>📱</span>
+              <span class="feature-num">18</span>
+            </div>
+            <h3 class="feature-title">Offline Mode</h3>
+            <p class="feature-desc">Download lessons and quizzes for offline study. Perfect for travel or areas with limited connectivity — never pause your learning.</p>
+            <span class="feature-tag">Offline</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🎨</span>
+              <span class="feature-num">19</span>
+            </div>
+            <h3 class="feature-title">Custom Study Planner</h3>
+            <p class="feature-desc">Set personal goals, pick your topics, and get a AI-generated weekly study plan tailored to your schedule and pace.</p>
+            <span class="feature-tag">Personalized</span>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">
+              <span>🕌</span>
+              <span class="feature-num">20</span>
+            </div>
+            <h3 class="feature-title">Scholar Mentorship Program</h3>
+            <p class="feature-desc">Connect with verified Islamic historians and scholars for live Q&A sessions, essay reviews, and personalized guidance.</p>
+            <span class="feature-tag">Mentorship</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">✦ Simple Start ✦</div>
+        <h2 class="section-title">Your Journey Begins Here</h2>
+        <p class="section-desc">Four steps to mastering 1,400 years of Islamic civilization.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Sign In Securely</h3>
+          <p class="step-desc">One click with Google. Your progress is instantly synced across all your devices.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Choose Your Era</h3>
+          <p class="step-desc">Start from the Prophet's time, the Caliphates, the Golden Age, or the modern period.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Learn & Quiz</h3>
+          <p class="step-desc">Complete structured lessons and test knowledge with our adaptive quiz system.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Earn & Share</h3>
+          <p class="step-desc">Collect badges, climb leaderboards, and earn certificates to showcase your scholarship.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE ===== -->
+  <section class="quote-section">
+    <div class="container">
+      <p class="quote-text">
+        Seek knowledge from the cradle to the grave. The ink of the scholar is more sacred than the blood of the martyr.
+      </p>
+      <p class="quote-source">— Islamic Tradition</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <span class="footer-brand">History of Muslims Academy</span>
+    <div class="footer-ornament">
+      <div class="footer-ornament-line"></div>
+      <div class="footer-ornament-star"></div>
+      <div class="footer-ornament-line right"></div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="lessons.html">Lessons</a></li>
+      <li><a href="islamic-history-quiz.html">Quiz</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Terms of Service</a></li>
+    </ul>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">
+      &copy; 2026 History of Muslims Academy. All rights reserved.<br />
+      Designed to illuminate the legacy of Islamic civilization.
+    </p>
+  </footer>
+
+</div><!-- /.site-wrapper -->
+
+<!-- ===== FIREBASE SDK (compat v9) ===== -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ========================================================
+   FIREBASE CONFIG — REPLACE WITH YOUR CONFIG
+   ======================================================== */
+const firebaseConfig = { /* REPLACE WITH YOUR CONFIG */ };
+
+/* ========================================================
+   FIREBASE INIT
+   ======================================================== */
+let app, auth, db;
+let firebaseReady = false;
+
+try {
+  if (firebaseConfig && firebaseConfig.apiKey) {
+    app  = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db   = firebase.firestore();
+    firebaseReady = true;
+  } else {
+    console.warn('Firebase config not provided — running in demo mode.');
+  }
+} catch (e) {
+  console.warn('Firebase init error:', e.message);
+}
+
+/* ========================================================
+   APP STATE
+   ======================================================== */
+let currentUser = null;
+let isFirstLogin = false;
+
+/* ========================================================
+   UTILITY: SHOW TOAST
+   ======================================================== */
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.remove(); }, 4000);
+}
+
+/* ========================================================
+   SPARKLE ANIMATIONS
+   ======================================================== */
+function initSparkles() {
+  const canvas = document.getElementById('sparkleCanvas');
+  const COUNT  = 35;
+
+  for (let i = 0; i < COUNT; i++) {
+    const el = document.createElement('div');
+    const isCircle = Math.random() > 0.4;
+    el.className = isCircle ? 'sparkle' : 'sparkle-star';
+
+    const size  = isCircle ? (Math.random() * 4 + 1.5) : 12;
+    const delay = Math.random() * 12;
+    const dur   = Math.random() * 15 + 10;
+    const left  = Math.random() * 100;
+    const top   = Math.random() * 100;
+
+    if (isCircle) {
+      el.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${left}%;
+        bottom:${-size}px;
+        animation-delay:${delay}s;
+        animation-duration:${dur}s;
+        opacity:0;
+      `;
+    } else {
+      el.textContent = ['✦','✧','★','☆','✨','◆'][Math.floor(Math.random()*6)];
+      el.style.cssText = `
+        left:${left}%;
+        top:${top}%;
+        animation-delay:${delay}s;
+        animation-duration:${dur / 2}s;
+        opacity:0.1;
+      `;
+    }
+    canvas.appendChild(el);
+  }
+}
+
+/* ========================================================
+   REFERRAL HANDLING — Feature 13
+   ======================================================== */
+function handleReferral() {
+  const params = new URLSearchParams(window.location.search);
+  const ref    = params.get('ref');
+  if (ref) {
+    localStorage.setItem('hom3_referral_from', ref);
+    const banner = document.getElementById('refBanner');
+    if (banner) banner.classList.add('visible');
+    console.log('Referral saved:', ref);
+  }
+}
+
+/* ========================================================
+   CONTINUE WHERE YOU LEFT OFF — Feature 11
+   ======================================================== */
+function checkLastPosition() {
+  const lastPos = localStorage.getItem('hom3_last_position');
+  const btn     = document.getElementById('continueBtn');
+  if (lastPos && btn) {
+    btn.href = lastPos;
+    btn.classList.add('visible');
+  }
+}
+
+/* ========================================================
+   MOBILE MENU
+   ======================================================== */
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) menu.classList.toggle('open');
+}
+
+/* ========================================================
+   EMAIL MODAL — Feature 2
+   ======================================================== */
+function openEmailModal() {
+  const modal = document.getElementById('emailModal');
+  if (modal) {
+    document.getElementById('emailFormSection').style.display = '';
+    document.getElementById('emailSuccess').classList.remove('visible');
+    modal.classList.add('open');
+  }
+}
+
+function closeEmailModal() {
+  const modal = document.getElementById('emailModal');
+  if (modal) modal.classList.remove('open');
+  // Mark that user has seen the modal
+  localStorage.setItem('hom3_email_modal_seen', '1');
+}
+
+async function submitEmailCapture(e) {
+  e.preventDefault();
+  const email = document.getElementById('emailInput').value.trim();
+  const btn   = document.getElementById('emailSubmitBtn');
+  if (!email) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    // Save email to Firestore if available and user is logged in
+    if (firebaseReady && currentUser && db) {
+      await db.collection('emailCaptures').add({
+        uid:       currentUser.uid,
+        email:     email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        source:    'landing_modal'
+      });
+      // Also update user doc
+      await db.collection('users').doc(currentUser.uid).update({
+        capturedEmail: email,
+        emailCapturedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    // Mark as captured locally
+    localStorage.setItem('hom3_email_captured', email);
+
+    // Show success state
+    document.getElementById('emailFormSection').style.display = 'none';
+    document.getElementById('emailSuccess').classList.add('visible');
+    showToast('Study guide is on its way! Check your inbox.', 'success');
+
+    setTimeout(closeEmailModal, 3500);
+  } catch (err) {
+    console.error('Email capture error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Send Me the Free Guide →';
+    showToast('Something went wrong. Please try again.', 'error');
+  }
+}
+
+/* ========================================================
+   SIGN IN WITH GOOGLE
+   ======================================================== */
+async function signInWithGoogle() {
+  if (!firebaseReady) {
+    showToast('Firebase not configured. Please add your Firebase config.', 'error');
+    return;
+  }
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    const result = await auth.signInWithPopup(provider);
+    // Auth state change handler takes over
+  } catch (err) {
+    if (err.code !== 'auth/popup-closed-by-user') {
+      console.error('Sign-in error:', err);
+      showToast('Sign-in failed. Please try again.', 'error');
+    }
+  }
+}
+
+/* ========================================================
+   SIGN OUT
+   ======================================================== */
+async function signOut() {
+  if (!firebaseReady) return;
+  try {
+    await auth.signOut();
+    showToast('You have been signed out.', 'info');
+  } catch (err) {
+    console.error('Sign-out error:', err);
+  }
+}
+
+/* ========================================================
+   CREATE / UPDATE USER DOCUMENT IN FIRESTORE
+   ======================================================== */
+async function ensureUserDocument(user) {
+  if (!firebaseReady || !db) return;
+  const ref = db.collection('users').doc(user.uid);
+  const snap = await ref.get();
+
+  if (!snap.exists) {
+    // First login — create document with ALL default fields
+    isFirstLogin = true;
+    const referralFrom = localStorage.getItem('hom3_referral_from') || null;
+    const newUserData = {
+      uid:              user.uid,
+      displayName:      user.displayName || '',
+      email:            user.email || '',
+      photoURL:         user.photoURL || '',
+      createdAt:        firebase.firestore.FieldValue.serverTimestamp(),
+      lastLoginAt:      firebase.firestore.FieldValue.serverTimestamp(),
+      // Progress & Gamification
+      xp:               0,
+      level:            1,
+      rank:             'Student',
+      streak:           0,
+      lastStudyDate:    null,
+      lessonsCompleted: 0,
+      quizzesCompleted: 0,
+      totalTimeSpent:   0,    // minutes
+      // Badges & Achievements
+      badges:           [],
+      achievements:     [],
+      certificates:     [],
+      // Social
+      studyGroupIds:    [],
+      referralCode:     generateReferralCode(user.uid),
+      referralCount:    0,
+      referredBy:       referralFrom,
+      // Preferences
+      notificationsEnabled: false,
+      preferredLanguage:    'en',
+      theme:                'dark',
+      studyReminderTime:    '18:00',
+      // Email
+      capturedEmail:    null,
+      emailCapturedAt:  null,
+      // Subscription
+      plan:             'free',
+      planExpiry:       null,
+      // Offline
+      offlineDownloads: [],
+      // Last position (Feature 11)
+      lastPosition:     null,
+      lastPositionLabel: null
+    };
+    await ref.set(newUserData);
+
+    // Handle referral — increment referrer's count
+    if (referralFrom) {
+      try {
+        const referrerQuery = await db.collection('users')
+          .where('referralCode', '==', referralFrom)
+          .limit(1)
+          .get();
+        if (!referrerQuery.empty) {
+          const referrerId = referrerQuery.docs[0].id;
+          await db.collection('users').doc(referrerId).update({
+            referralCount: firebase.firestore.FieldValue.increment(1),
+            xp: firebase.firestore.FieldValue.increment(100) // Referral bonus XP
+          });
+        }
+      } catch (refErr) {
+        console.warn('Referral update error:', refErr);
+      }
+    }
+    return { isNew: true, data: newUserData };
+
+  } else {
+    // Returning user — update last login
+    await ref.update({
+      lastLoginAt:  firebase.firestore.FieldValue.serverTimestamp(),
+      displayName:  user.displayName || snap.data().displayName || '',
+      photoURL:     user.photoURL    || snap.data().photoURL    || ''
+    });
+    return { isNew: false, data: snap.data() };
+  }
+}
+
+function generateReferralCode(uid) {
+  return 'HOM' + uid.substring(0, 6).toUpperCase() + Math.floor(1000 + Math.random() * 9000);
+}
+
+/* ========================================================
+   UPDATE UI FOR LOGGED-IN STATE
+   ======================================================== */
+function updateUILoggedIn(user, userData) {
+  // Show/hide sign-in button
+  const signInBtn = document.getElementById('signInBtn');
+  if (signInBtn) signInBtn.style.display = 'none';
+
+  // Show nav user info
+  const navUserInfo  = document.getElementById('navUserInfo');
+  const navAvatar    = document.getElementById('navAvatar');
+  const navUserName  = document.getElementById('navUserName');
+  if (navUserInfo) navUserInfo.classList.add('visible');
+  if (navAvatar && user.photoURL)  navAvatar.src = user.photoURL;
+  if (navUserName) navUserName.textContent = user.displayName?.split(' ')[0] || 'Scholar';
+
+  // Dashboard
+  const dash = document.getElementById('dashboardSection');
+  const welcome = document.getElementById('dashboardWelcome');
+  if (dash) dash.classList.add('visible');
+  if (welcome) welcome.textContent = `Welcome back, ${user.displayName?.split(' ')[0] || 'Scholar'}!`;
+
+  // Populate stats if available
+  if (userData) {
+    const el = (id) => document.getElementById(id);
+    if (el('dashLessons')) el('dashLessons').textContent = userData.lessonsCompleted || 0;
+    if (el('dashStreak'))  el('dashStreak').textContent  = userData.streak || 0;
+    if (el('dashXP'))      el('dashXP').textContent      = userData.xp || 0;
+    if (el('dashBadges'))  el('dashBadges').textContent  = (userData.badges || []).length;
+  }
+
+  // Continue button (Feature 11) — check both localStorage and user data
+  const lastPos = localStorage.getItem('hom3_last_position') || userData?.lastPosition;
+  const btn = document.getElementById('continueBtn');
+  if (lastPos && btn) {
+    btn.href = lastPos;
+    btn.classList.add('visible');
+  }
+}
+
+/* ========================================================
+   UPDATE UI FOR LOGGED-OUT STATE
+   ======================================================== */
+function updateUILoggedOut() {
+  const signInBtn = document.getElementById('signInBtn');
+  if (signInBtn) signInBtn.style.display = '';
+
+  const navUserInfo = document.getElementById('navUserInfo');
+  if (navUserInfo) navUserInfo.classList.remove('visible');
+
+  const dash = document.getElementById('dashboardSection');
+  if (dash) dash.classList.remove('visible');
+}
+
+/* ========================================================
+   AUTH STATE CHANGE HANDLER
+   ======================================================== */
+function initAuth() {
+  if (!firebaseReady) {
+    // Demo mode — hide loading overlay
+    hideLoading();
+    checkLastPosition();
+    return;
+  }
+
+  auth.onAuthStateChanged(async (user) => {
+    currentUser = user;
+    if (user) {
+      try {
+        const result = await ensureUserDocument(user);
+        updateUILoggedIn(user, result.data);
+
+        // Show email modal on first login if email not captured
+        const emailSeen     = localStorage.getItem('hom3_email_modal_seen');
+        const emailCaptured = localStorage.getItem('hom3_email_captured');
+        if (result.isNew && !emailSeen && !emailCaptured) {
+          setTimeout(openEmailModal, 1200);
+        }
+
+        showToast(`Welcome${result.isNew ? '' : ' back'}, ${user.displayName?.split(' ')[0] || 'Scholar'}! ✦`, 'success');
+      } catch (err) {
+        console.error('Auth state error:', err);
+        updateUILoggedIn(user, null);
+      }
+    } else {
+      updateUILoggedOut();
+    }
+    hideLoading();
+  });
+}
+
+function hideLoading() {
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) {
+    setTimeout(() => overlay.classList.add('hidden'), 400);
+  }
+}
+
+/* ========================================================
+   STAR ORNAMENTS IN GEO BG
+   ======================================================== */
+function initGeoOrnaments() {
+  const bg = document.getElementById('geoBg');
+  const positions = [
+    { top: '8%',  left: '5%',  size: 100 },
+    { top: '15%', right: '8%', size: 80  },
+    { top: '45%', left: '2%',  size: 60  },
+    { top: '55%', right: '3%', size: 90  },
+    { top: '80%', left: '7%',  size: 70  },
+    { top: '85%', right: '6%', size: 55  },
+    { top: '30%', left: '50%', size: 40  },
+    { top: '70%', left: '40%', size: 50  }
+  ];
+  positions.forEach(pos => {
+    const star = document.createElement('div');
+    star.className = 'star-ornament';
+    Object.assign(star.style, {
+      width:  pos.size + 'px',
+      height: pos.size + 'px',
+      top:    pos.top  || 'auto',
+      left:   pos.left || 'auto',
+      right:  pos.right || 'auto'
+    });
+    bg.appendChild(star);
+  });
+}
+
+/* ========================================================
+   SCROLL FADE-IN ANIMATIONS
+   ======================================================== */
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.feature-card, .step-card, .dash-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+    observer.observe(el);
+  });
+}
+
+/* ========================================================
+   SAVE LAST POSITION HELPER (Feature 11)
+   — Called from other pages via postMessage or direct call
+   ======================================================== */
+function saveLastPosition(url, label) {
+  localStorage.setItem('hom3_last_position', url);
+  if (label) localStorage.setItem('hom3_last_position_label', label);
+  if (firebaseReady && currentUser && db) {
+    db.collection('users').doc(currentUser.uid).update({
+      lastPosition: url,
+      lastPositionLabel: label || null
+    }).catch(() => {});
+  }
+}
+
+/* ========================================================
+   INIT
+   ======================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  handleReferral();
+  initSparkles();
+  initGeoOrnaments();
+  checkLastPosition();
+  initAuth();
+
+  // Defer scroll animations slightly so layout is stable
+  setTimeout(initScrollAnimations, 300);
+
+  // Close mobile menu on outside click
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const ham  = document.getElementById('hamburger');
+    if (menu && ham && !menu.contains(e.target) && !ham.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  // Close email modal on overlay click
+  const emailOverlay = document.getElementById('emailModal');
+  if (emailOverlay) {
+    emailOverlay.addEventListener('click', (e) => {
+      if (e.target === emailOverlay) closeEmailModal();
+    });
+  }
+});
+</script>
+</body>
+</html>
